@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>In The Media - The Wild Thyme Group</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #05070d; color: #e5e7eb; }
+    .accent { color: #f97316; }
+    .panel { background: #0f1118; border: 1px solid rgba(255,255,255,0.08); }
+  </style>
+</head>
+<body class="min-h-screen font-sans">
+  <header class="border-b border-white/10 bg-black/60 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl tracking-[0.2em] uppercase font-semibold text-white">In The Media</h1>
+        <p class="text-xs tracking-widest text-slate-400 uppercase mt-1">Corporate Archives</p>
+      </div>
+      <a href="index.html#media-hub" class="text-xs uppercase tracking-widest text-white border-b border-white/40 hover:border-orange-500 hover:text-orange-400">Back to Main Site</a>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-12 space-y-10">
+    <section class="panel p-6 md:p-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-6 mb-8">
+        <div>
+          <span class="text-xs font-semibold tracking-widest accent uppercase block mb-1">Corporate Archives</span>
+          <h2 class="text-3xl font-serif text-white uppercase tracking-wider">Media Coverage</h2>
+        </div>
+        <button id="add-media-btn" class="hidden text-xs uppercase tracking-widest bg-orange-500 text-white px-5 py-3 font-medium hover:bg-white hover:text-black transition-all duration-300 shadow-lg opacity-50 cursor-not-allowed" disabled>+ Add Media</button>
+      </div>
+
+      <div id="media-admin-panel" class="hidden max-w-xl panel p-6 mb-10">
+        <h3 class="text-xs uppercase tracking-widest text-amber-300 font-semibold mb-4">Publish New Coverage Artifact</h3>
+        <form id="media-generation-form" class="space-y-4">
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="media-pub">Outlet Source</label>
+            <input class="w-full bg-black/40 border border-white/10 px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-orange-500" type="text" id="media-pub" placeholder="e.g., Forbes, Food & Wine" required>
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="media-title">Headline</label>
+            <input class="w-full bg-black/40 border border-white/10 px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-orange-500" type="text" id="media-title" placeholder="e.g., Reimagining Lebanese Gastronomy Networks" required>
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="media-url">Article Destination Link (URL)</label>
+            <input class="w-full bg-black/40 border border-white/10 px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-orange-500" type="url" id="media-url" placeholder="https://example.com/story" required>
+          </div>
+          <button type="submit" class="w-full bg-orange-500 text-white uppercase tracking-widest text-[10px] font-semibold py-2.5 hover:bg-white hover:text-black transition-all">Commit Entry to Feed</button>
+        </form>
+      </div>
+
+      <div id="media-feed-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <article class="panel p-8 flex flex-col justify-between min-h-72">
+          <div>
+            <span class="text-[10px] font-mono text-amber-300 uppercase tracking-widest block mb-2">Vanguard Culinary Journal</span>
+            <h4 class="text-5 leading-snug font-serif text-white">The Fine Art of Modern Lebanese Catering Engineering</h4>
+          </div>
+          <a href="https://example.com/culinary-journal" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-slate-400 hover:text-white transition-colors">Read Coverage</a>
+        </article>
+
+        <article class="panel p-8 flex flex-col justify-between min-h-72">
+          <div>
+            <span class="text-[10px] font-mono text-amber-300 uppercase tracking-widest block mb-2">Hospitality Masterclass Review</span>
+            <h4 class="text-5 leading-snug font-serif text-white">How Clementine Systems Are Redefining Boutique Private Events</h4>
+          </div>
+          <a href="https://example.com/hospitality-masterclass" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-slate-400 hover:text-white transition-colors">Read Coverage</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const ADMIN_SESSION_KEY = 'wt_holding_admin_connected';
+    const MEDIA_STORAGE_KEY = 'wt_holding_media_items';
+
+    const addMediaBtn = document.getElementById('add-media-btn');
+    const mediaAdminPanel = document.getElementById('media-admin-panel');
+    const mediaGenerationForm = document.getElementById('media-generation-form');
+    const mediaFeedGrid = document.getElementById('media-feed-grid');
+
+    function escapeHTML(value) {
+      const div = document.createElement('div');
+      div.textContent = value;
+      return div.innerHTML;
+    }
+
+    function injectMediaCard(outlet, headline, url) {
+      const markup = `
+        <article class="panel p-8 flex flex-col justify-between min-h-72">
+          <div>
+            <span class="text-[10px] font-mono text-amber-300 uppercase tracking-widest block mb-2">${escapeHTML(outlet)}</span>
+            <h4 class="text-5 leading-snug font-serif text-white">${escapeHTML(headline)}</h4>
+          </div>
+          <a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-slate-400 hover:text-white transition-colors">Read Coverage</a>
+        </article>`;
+      mediaFeedGrid.insertAdjacentHTML('afterbegin', markup);
+    }
+
+    function loadSavedMediaItems() {
+      const stored = localStorage.getItem(MEDIA_STORAGE_KEY);
+      const items = stored ? JSON.parse(stored) : [];
+      items.forEach(item => injectMediaCard(item.outlet, item.headline, item.url));
+    }
+
+    const isAdminConnected = localStorage.getItem(ADMIN_SESSION_KEY) === 'true';
+    if (isAdminConnected) {
+      addMediaBtn.classList.remove('hidden', 'opacity-50', 'cursor-not-allowed');
+      addMediaBtn.disabled = false;
+      addMediaBtn.addEventListener('click', () => {
+        mediaAdminPanel.classList.toggle('hidden');
+      });
+    }
+
+    mediaGenerationForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!isAdminConnected) {
+        return;
+      }
+
+      const payload = {
+        outlet: document.getElementById('media-pub').value.trim(),
+        headline: document.getElementById('media-title').value.trim(),
+        url: document.getElementById('media-url').value.trim()
+      };
+
+      const stored = localStorage.getItem(MEDIA_STORAGE_KEY);
+      const items = stored ? JSON.parse(stored) : [];
+      items.push(payload);
+      localStorage.setItem(MEDIA_STORAGE_KEY, JSON.stringify(items));
+
+      injectMediaCard(payload.outlet, payload.headline, payload.url);
+      mediaGenerationForm.reset();
+      mediaAdminPanel.classList.add('hidden');
+    });
+
+    loadSavedMediaItems();
+  </script>
+</body>
+</html>

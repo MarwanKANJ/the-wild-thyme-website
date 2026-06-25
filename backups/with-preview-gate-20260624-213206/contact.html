@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — The Wild Thyme Group</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        holding: {
+                            dark: '#0A0A0A',
+                            charcoal: '#121212',
+                            fireball: '#FF4500',
+                            azure: '#007FFF',
+                            gold: '#C5A880',
+                            goldHover: '#E2C9A6',
+                            electricGreen: '#00FF66',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght=0,400;0,600;1,400&family=Inter:wght=300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            color: #e5e7eb;
+            background:
+                radial-gradient(1200px 700px at 62% 20%, #2a2a2b 0%, #1e1f21 42%, #141518 78%, #0f1012 100%);
+        }
+        .logo-left-block {
+            background: transparent;
+            border: 0;
+            box-shadow: none;
+        }
+        .logo-seamless {
+            mix-blend-mode: normal;
+            filter: none;
+        }
+        h2, h3, h4, p, span, a, button {
+            transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen font-sans">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-transparent border-0 px-6">
+        <div class="max-w-7xl mx-auto h-20 flex items-center justify-between">
+            <a href="index2.html" class="flex flex-col cursor-pointer group">
+                <span class="text-sm font-semibold tracking-[0.4em] text-white uppercase group-hover:text-orange-500 transition-colors duration-300">THE WILD THYME GROUP</span>
+                <span class="text-[9px] tracking-[0.5em] text-holding-gold uppercase">EST. 2026 • HOLDING CO.</span>
+            </a>
+            <a href="index2.html" class="group text-xs uppercase tracking-widest text-slate-400 border-b border-white/20 pb-1 hover:text-orange-500 hover:border-orange-500 transition-all duration-300">
+                <span class="text-orange-500 group-hover:text-holding-electricGreen transition-colors duration-300">←</span> Back to Main Site
+            </a>
+        </div>
+    </header>
+
+    <!-- Page Hero with embedded form -->
+    <section class="px-6 py-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+            <!-- Left: title -->
+            <div class="space-y-8">
+                <div class="logo-left-block w-full max-w-[430px]">
+                    <img src="images/WT Group logo 3 D charcoal.png" alt="Wild Thyme Group Logo" class="logo-seamless w-full h-auto object-contain mx-auto block" loading="eager">
+                </div>
+                <span class="text-xs font-semibold tracking-widest text-slate-400 uppercase block mb-3 hover:text-orange-500 transition-colors duration-300">Send a Message</span>
+            </div>
+
+            <!-- Right: form -->
+            <!-- =====================================================
+                 FORMSPREE SETUP (one-time, 2 minutes):
+                 1. Go to https://formspree.io and create a free account
+                 2. Click "New Form", name it "Wild Thyme Contact"
+                 3. Copy your Form Endpoint (looks like: https://formspree.io/f/xxxxxxxx)
+                 4. Replace YOUR_FORMSPREE_ENDPOINT below with that URL
+                 5. In your Formspree dashboard, add marwan@thewildthymegroup.com
+                    as a second notification recipient
+                 ===================================================== -->
+            <form id="contact-form" class="space-y-5">
+                <!-- Hidden fields for Formspree routing -->
+                <input type="hidden" name="_subject" value="New Contact Form Submission — The Wild Thyme Group">
+                <input type="hidden" name="_cc" value="Marwan@thewildthymegroup.com">
+                <input type="hidden" name="_replyto" id="cf-replyto-mirror">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="group block text-[10px] uppercase tracking-wider text-slate-400 font-medium mb-1.5 hover:text-orange-500 transition-colors duration-300" for="cf-email">
+                            Email Address <span class="text-holding-fireball group-hover:text-holding-electricGreen transition-colors duration-300">*</span>
+                        </label>
+                        <input class="w-full bg-[#17191d] border border-white/10 px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-holding-fireball transition-colors" type="email" name="email" id="cf-email" placeholder="your@email.com" required>
+                    </div>
+                    <div>
+                        <label class="group block text-[10px] uppercase tracking-wider text-slate-400 font-medium mb-1.5 hover:text-orange-500 transition-colors duration-300" for="cf-phone">
+                            Phone Number <span class="text-orange-500 normal-case tracking-normal group-hover:text-holding-electricGreen transition-colors duration-300">(optional)</span>
+                        </label>
+                        <input class="w-full bg-[#17191d] border border-white/10 px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-holding-fireball transition-colors" type="tel" name="phone" id="cf-phone" placeholder="+1 (000) 000-0000">
+                    </div>
+                </div>
+                <div>
+                    <label class="group block text-[10px] uppercase tracking-wider text-slate-400 font-medium mb-1.5 hover:text-orange-500 transition-colors duration-300" for="cf-subject">
+                        Subject <span class="text-holding-fireball group-hover:text-holding-electricGreen transition-colors duration-300">*</span>
+                    </label>
+                    <input class="w-full bg-[#17191d] border border-white/10 px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-holding-fireball transition-colors" type="text" name="subject" id="cf-subject" placeholder="e.g., Catering inquiry, Partnership, Press" required>
+                </div>
+                <div>
+                    <label class="group block text-[10px] uppercase tracking-wider text-slate-400 font-medium mb-1.5 hover:text-orange-500 transition-colors duration-300" for="cf-message">
+                        Message <span class="text-holding-fireball group-hover:text-holding-electricGreen transition-colors duration-300">*</span>
+                    </label>
+                    <textarea class="w-full bg-[#17191d] border border-white/10 px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-holding-fireball transition-colors h-40 resize-none leading-relaxed" name="message" id="cf-message" placeholder="Write your message here..." required></textarea>
+                </div>
+                <p class="text-[10px] text-slate-600 uppercase tracking-wider"><span class="text-holding-fireball">*</span> Required fields</p>
+                <button type="submit" id="cf-submit-btn" class="w-full bg-holding-fireball text-white uppercase tracking-widest text-xs font-semibold py-4 hover:bg-holding-electricGreen hover:text-black transition-all duration-300">
+                    Send Message
+                </button>
+                <div id="cf-success" class="hidden text-center text-xs uppercase tracking-widest text-holding-electricGreen py-2">
+                    Message sent. We'll be in touch soon.
+                </div>
+                <div id="cf-error" class="hidden text-center text-xs uppercase tracking-widest text-red-400 py-2">
+                    Something went wrong. Please try again or email us directly.
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Investors Login Modal -->
+    <div id="security-modal-overlay" class="hidden fixed inset-0 z-[100] backdrop-blur-md bg-black/80 flex items-center justify-center opacity-0 transition-all duration-300 px-4">
+        <div class="bg-holding-charcoal w-full max-w-sm border border-white/10 p-8 relative flex flex-col">
+            <button onclick="closeSecurePortalModal()" class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <span class="text-[10px] uppercase tracking-widest text-holding-azure font-semibold mb-1">Secure Access Terminal</span>
+            <h3 class="text-xl font-serif text-white uppercase tracking-wider mb-6">Investors Portal</h3>
+            <form id="portal-login-form" onsubmit="executePortalAuth(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1.5" for="portal-user">Username</label>
+                    <input type="text" id="portal-user" class="w-full bg-holding-dark border border-white/10 px-3 py-2.5 text-sm text-white focus:outline-none focus:border-holding-azure" required>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1.5" for="portal-pass">Password</label>
+                    <input type="password" id="portal-pass" class="w-full bg-holding-dark border border-white/10 px-3 py-2.5 text-sm text-white focus:outline-none focus:border-holding-azure" required>
+                </div>
+                <div id="portal-error" class="hidden text-[10px] text-red-400 uppercase tracking-widest">Invalid credentials.</div>
+                <button type="submit" class="w-full bg-holding-azure text-white uppercase tracking-widest text-xs font-semibold py-3 hover:bg-white hover:text-black transition-all duration-300 mt-2">
+                    Authenticate
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-holding-dark py-12 border-t border-white/5 px-6 text-[11px] font-light tracking-wider text-slate-500">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+            <span class="text-holding-electricGreen">© 2026 The Wild Thyme Group Inc.</span>
+            <div class="flex items-center gap-6">
+                <a href="#" class="text-slate-400 hover:text-holding-gold transition-colors duration-300" title="Follow us on Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <circle cx="17.5" cy="6.5" r="1.5"></circle>
+                    </svg>
+                </a>
+                <a href="#" class="text-slate-400 hover:text-holding-gold transition-colors duration-300" title="Connect with us on LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect x="2" y="9" width="4" height="12"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // ── Modal controls ──
+        function openSecurePortalModal() {
+            const overlay = document.getElementById('security-modal-overlay');
+            overlay.classList.remove('hidden');
+            requestAnimationFrame(() => overlay.classList.remove('opacity-0'));
+        }
+        function closeSecurePortalModal() {
+            const overlay = document.getElementById('security-modal-overlay');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
+            document.getElementById('portal-error').classList.add('hidden');
+            document.getElementById('portal-login-form').reset();
+        }
+
+        // ── Admin authentication ──
+        function executePortalAuth(event) {
+            event.preventDefault();
+            const user = document.getElementById('portal-user').value.trim();
+            const pass = document.getElementById('portal-pass').value.trim();
+            if (user === 'admin' && pass === 'holding2026') {
+                localStorage.setItem('wt_holding_admin_connected', 'true');
+                closeSecurePortalModal();
+                window.location.href = 'index2.html';
+            } else {
+                document.getElementById('portal-error').classList.remove('hidden');
+            }
+        }
+
+        // ── Contact form → Formspree ──
+        // Replace 'YOUR_FORMSPREE_ENDPOINT' with your actual endpoint from formspree.io
+        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORMSPREE_ENDPOINT';
+
+        document.getElementById('contact-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            // Mirror email into _replyto for reply-to header
+            document.getElementById('cf-replyto-mirror').value = document.getElementById('cf-email').value;
+
+            const btn = document.getElementById('cf-submit-btn');
+            const successMsg = document.getElementById('cf-success');
+            const errorMsg = document.getElementById('cf-error');
+
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+            successMsg.classList.add('hidden');
+            errorMsg.classList.add('hidden');
+
+            try {
+                const response = await fetch(FORMSPREE_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: new FormData(this)
+                });
+
+                if (response.ok) {
+                    this.reset();
+                    successMsg.classList.remove('hidden');
+                    setTimeout(() => successMsg.classList.add('hidden'), 6000);
+                } else {
+                    errorMsg.classList.remove('hidden');
+                }
+            } catch (err) {
+                errorMsg.classList.remove('hidden');
+            } finally {
+                btn.textContent = 'Send Message';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

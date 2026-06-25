@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate News — The Wild Thyme Group</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        holding: {
+                            dark: '#0A0A0A',
+                            charcoal: '#121212',
+                            fireball: '#FF4500',
+                            azure: '#007FFF',
+                            gold: '#C5A880',
+                            goldHover: '#E2C9A6',
+                            electricGreen: '#00FF66',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght=0,400;0,600;1,400&family=Inter:wght=300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background: #0A0A0A; color: #e5e7eb; }
+        h2, h3, h4, p, span, a, button {
+            transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        :root {
+            --cedar-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='none'/%3E%3Cpath d='M16 2.5c-3.4 2.5-5.8 4.5-7.9 6.9h3.5c-1.5 1.4-3 2.9-4.2 4.5h4c-1.2 1.2-2.4 2.6-3.2 4h4.3c-1 1.1-1.8 2.3-2.5 3.6H14v5.7h4v-5.7h4.1c-.7-1.3-1.5-2.5-2.5-3.6h4.3c-.8-1.4-2-2.8-3.2-4h4c-1.2-1.6-2.7-3.1-4.2-4.5H24c-2.1-2.4-4.5-4.4-8-6.9z' fill='%23006030' stroke='%2300421f' stroke-width='1.0' stroke-linejoin='round'/%3E%3Crect x='14.8' y='21.2' width='2.4' height='8' rx='0.8' fill='%235a3f22'/%3E%3C/svg%3E") 5 3;
+        }
+
+        a[href],
+        button,
+        [role="button"],
+        [onclick],
+        input[type="button"],
+        input[type="submit"],
+        .cursor-pointer {
+            cursor: var(--cedar-cursor), pointer !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen font-sans">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-holding-dark/90 backdrop-blur-xl border-b border-white/5 px-6">
+        <div class="max-w-7xl mx-auto h-20 flex items-center justify-between">
+            <a href="index.html" class="flex flex-col cursor-pointer group">
+                <span class="text-sm font-semibold tracking-[0.4em] text-white uppercase group-hover:text-holding-gold transition-colors duration-300">THE WILD THYME GROUP</span>
+                <span class="text-[9px] tracking-[0.5em] text-holding-gold uppercase">EST. 2026 • HOLDING CO.</span>
+            </a>
+            <a href="index.html" class="text-xs uppercase tracking-widest text-slate-400 border-b border-white/20 pb-1 hover:text-holding-electricGreen hover:border-holding-electricGreen transition-all duration-300">
+                ← Back to Main Site
+            </a>
+        </div>
+    </header>
+
+    <!-- Page Title -->
+    <section class="py-20 px-6 border-b border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <span class="text-xs font-semibold tracking-widest text-holding-fireball uppercase block mb-3">Corporate Communications</span>
+            <h1 class="text-4xl md:text-6xl font-serif text-white uppercase tracking-wider mb-4">Corporate News</h1>
+            <p class="text-sm text-slate-400 font-light max-w-xl">Official announcements, strategic updates, and institutional communications from The Wild Thyme Group.</p>
+        </div>
+    </section>
+
+    <!-- Admin Controls (hidden until admin session detected) -->
+    <div id="news-admin-bar" class="hidden bg-holding-charcoal border-b border-holding-azure/20 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <span class="text-[10px] uppercase tracking-widest text-holding-azure font-semibold">Admin Mode — Corporate News</span>
+            <button id="add-news-btn" onclick="openNewsModal()" class="text-xs uppercase tracking-widest bg-holding-fireball text-white px-5 py-2.5 font-medium hover:bg-holding-electricGreen hover:text-black transition-all duration-300 flex items-center gap-2">
+                <i data-lucide="plus" class="w-4 h-4"></i> Add News
+            </button>
+        </div>
+    </div>
+
+    <!-- News Feed -->
+    <main class="max-w-7xl mx-auto px-6 py-16">
+        <div id="news-feed" class="space-y-0"></div>
+
+        <!-- Empty state (shown if no entries) -->
+        <div id="news-empty-state" class="hidden text-center py-24">
+            <p class="text-slate-600 text-sm uppercase tracking-widest">No announcements posted yet.</p>
+        </div>
+    </main>
+
+    <!-- Add News Modal (admin only) -->
+    <div id="news-modal" class="hidden fixed inset-0 z-[110] backdrop-blur-lg bg-black/85 flex items-center justify-center p-4">
+        <div class="bg-holding-charcoal w-full max-w-lg border border-white/10 p-8 relative">
+            <button onclick="closeNewsModal()" class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h3 class="text-sm font-semibold uppercase tracking-widest text-holding-gold mb-2">Post Corporate Announcement</h3>
+            <p class="text-xs text-slate-400 font-light mb-6">Publish a new corporate news entry to the public feed.</p>
+            <form id="news-form" class="space-y-5">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-wider text-slate-400 font-medium mb-1.5" for="news-headline">Header</label>
+                    <input class="w-full bg-holding-dark border border-white/10 px-3 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-holding-fireball tracking-wide" type="text" id="news-headline" placeholder="e.g., Wild Thyme Group Expands to New Market" required>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-wider text-slate-400 font-medium mb-1.5" for="news-date">Date</label>
+                    <input class="w-full bg-holding-dark border border-white/10 px-3 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-holding-fireball tracking-wide" type="text" id="news-date" placeholder="e.g., June 2026" required>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-wider text-slate-400 font-medium mb-1.5" for="news-category">Type</label>
+                    <input class="w-full bg-holding-dark border border-white/10 px-3 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-holding-fireball tracking-wide" type="text" id="news-category" placeholder="e.g., Announcement" value="Announcement" required>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-wider text-slate-400 font-medium mb-1.5" for="news-body">Body of the Text</label>
+                    <textarea class="w-full bg-holding-dark border border-white/10 px-3 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-holding-fireball tracking-wide h-28 resize-none leading-relaxed" id="news-body" placeholder="Write the announcement content..." required></textarea>
+                </div>
+                <button type="submit" class="w-full bg-holding-fireball text-white uppercase tracking-widest text-xs font-semibold py-3 hover:bg-holding-electricGreen hover:text-black transition-all duration-300 mt-2">
+                    Add News
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-holding-dark py-12 border-t border-white/5 px-6 text-[11px] font-light tracking-wider text-slate-500">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+            <span class="text-holding-electricGreen">© 2026 The Wild Thyme Group Inc.</span>
+            <div class="flex items-center gap-6">
+                <a href="#" class="text-slate-400 hover:text-holding-gold transition-colors duration-300" title="Follow us on Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <circle cx="17.5" cy="6.5" r="1.5"></circle>
+                    </svg>
+                </a>
+                <a href="#" class="text-slate-400 hover:text-holding-gold transition-colors duration-300" title="Connect with us on LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect x="2" y="9" width="4" height="12"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const NEWS_STORAGE_KEY = 'wt_holding_news_items';
+        const NEWS_SCHEMA_KEY = 'wt_holding_news_schema_v2';
+        const DEFAULT_NEWS_ITEMS = [
+            {
+                id: 'seed-1',
+                date: 'June 2026',
+                category: 'Announcement',
+                headline: 'The Wild Thyme Group Officially Established as a Hospitality Holding Company',
+                body: 'The Wild Thyme Group Inc. is formally incorporated, unifying Wild Thyme Restaurant and Clementine Catering under a single corporate holding structure. This milestone marks the beginning of our strategic expansion across culinary and hospitality verticals.'
+            },
+            {
+                id: 'seed-2',
+                date: 'June 2026',
+                category: 'Operations',
+                headline: 'Clementine Catering Expands Private Events Portfolio Across Metro Vancouver',
+                body: 'Clementine Catering has extended its private events operations to serve high-profile corporate clients throughout Metro Vancouver, leveraging its premium Lebanese culinary expertise and boutique service model.'
+            }
+        ];
+
+        // ── Admin session check ──
+        function escapeHTML(str) {
+            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+        }
+
+        const isAdmin = localStorage.getItem('wt_holding_admin_connected') === 'true';
+        if (isAdmin) {
+            document.getElementById('news-admin-bar').classList.remove('hidden');
+        }
+
+        const newsFeed = document.getElementById('news-feed');
+        const newsEmptyState = document.getElementById('news-empty-state');
+        const newsForm = document.getElementById('news-form');
+        const newsModal = document.getElementById('news-modal');
+        const newsModalTitle = newsModal.querySelector('h3');
+        const newsModalSubtitle = newsModal.querySelector('p');
+        const newsSubmitButton = newsForm.querySelector('button[type="submit"]');
+        let editingNewsId = null;
+
+        function createNewsId() {
+            return `news-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+        }
+
+        function normalizeItem(item, fallbackIndex = 0) {
+            return {
+                id: item && item.id ? item.id : `legacy-${Date.now()}-${fallbackIndex}`,
+                date: item && item.date ? String(item.date) : '',
+                category: item && item.category ? String(item.category) : 'Announcement',
+                headline: item && item.headline ? String(item.headline) : '',
+                body: item && item.body ? String(item.body) : ''
+            };
+        }
+
+        function getNewsItems() {
+            let parsedItems = [];
+            try {
+                parsedItems = JSON.parse(localStorage.getItem(NEWS_STORAGE_KEY) || '[]');
+            } catch (error) {
+                parsedItems = [];
+            }
+
+            if (localStorage.getItem(NEWS_SCHEMA_KEY) !== 'true') {
+                const legacyItems = Array.isArray(parsedItems) ? parsedItems.map((item, index) => normalizeItem(item, index)) : [];
+                const seeded = [...DEFAULT_NEWS_ITEMS, ...legacyItems.map((item) => ({ ...item, id: item.id || createNewsId() }))];
+                localStorage.setItem(NEWS_STORAGE_KEY, JSON.stringify(seeded));
+                localStorage.setItem(NEWS_SCHEMA_KEY, 'true');
+                return seeded;
+            }
+
+            if (!Array.isArray(parsedItems)) {
+                return [];
+            }
+
+            return parsedItems.map((item, index) => normalizeItem(item, index));
+        }
+
+        function saveNewsItems(items) {
+            localStorage.setItem(NEWS_STORAGE_KEY, JSON.stringify(items));
+        }
+
+        function updateEmptyState(items) {
+            if (!newsEmptyState) return;
+            newsEmptyState.classList.toggle('hidden', items.length > 0);
+        }
+
+        // ── Modal controls ──
+        function setNewsModalMode(mode) {
+            if (mode === 'edit') {
+                newsModalTitle.textContent = 'Edit Corporate Announcement';
+                newsModalSubtitle.textContent = 'Update an existing corporate news entry.';
+                newsSubmitButton.textContent = 'Save Changes';
+                return;
+            }
+
+            newsModalTitle.textContent = 'Post Corporate Announcement';
+            newsModalSubtitle.textContent = 'Publish a new corporate news entry to the public feed.';
+            newsSubmitButton.textContent = 'Add News';
+        }
+
+        function openNewsModal() {
+            editingNewsId = null;
+            setNewsModalMode('add');
+            newsModal.classList.remove('hidden');
+        }
+
+        function openEditNewsModal(id) {
+            if (!isAdmin) return;
+
+            const target = getNewsItems().find((item) => item.id === id);
+            if (!target) return;
+
+            editingNewsId = id;
+            setNewsModalMode('edit');
+            document.getElementById('news-headline').value = target.headline;
+            document.getElementById('news-date').value = target.date;
+            document.getElementById('news-category').value = target.category || 'Announcement';
+            document.getElementById('news-body').value = target.body;
+            newsModal.classList.remove('hidden');
+        }
+
+        function closeNewsModal() {
+            newsModal.classList.add('hidden');
+            newsForm.reset();
+            editingNewsId = null;
+            setNewsModalMode('add');
+            const categoryInput = document.getElementById('news-category');
+            if (categoryInput) {
+                categoryInput.value = 'Announcement';
+            }
+        }
+
+        function removeNewsItem(id) {
+            if (!isAdmin) return;
+            if (!confirm('Remove this news entry?')) return;
+
+            const items = getNewsItems().filter((item) => item.id !== id);
+            saveNewsItems(items);
+            renderNewsFeed();
+        }
+
+        // ── Render a single news card ──
+        function injectNewsCard(item) {
+            const article = document.createElement('article');
+            article.className = 'group border-b border-white/5 py-10 grid grid-cols-1 md:grid-cols-12 gap-6 hover:bg-holding-charcoal/30 px-4 transition-all duration-300 -mx-4';
+
+            const controls = isAdmin
+                ? `<div class="mt-3 flex flex-wrap items-center gap-2">
+                    <button type="button" class="text-[10px] uppercase tracking-widest bg-holding-azure/10 text-holding-azure border border-holding-azure/30 px-3 py-1.5 hover:bg-holding-azure hover:text-white transition-all" onclick="openEditNewsModal('${escapeHTML(item.id)}')">Edit</button>
+                    <button type="button" class="text-[10px] uppercase tracking-widest bg-holding-fireball/10 text-holding-fireball border border-holding-fireball/30 px-3 py-1.5 hover:bg-holding-fireball hover:text-white transition-all" onclick="removeNewsItem('${escapeHTML(item.id)}')">Remove</button>
+                </div>`
+                : '';
+
+            article.innerHTML = `
+                <div class="md:col-span-2">
+                    <span class="text-[10px] font-mono text-holding-gold uppercase tracking-widest block">${escapeHTML(item.date)}</span>
+                    <span class="text-[9px] text-slate-600 uppercase tracking-wider block mt-1">${escapeHTML(item.category)}</span>
+                    ${controls}
+                </div>
+                <div class="md:col-span-10">
+                    <h2 class="text-xl md:text-2xl font-serif text-white tracking-wide group-hover:text-holding-fireball transition-colors duration-300 mb-3">${escapeHTML(item.headline)}</h2>
+                    <p class="text-sm text-slate-400 font-light leading-relaxed max-w-3xl">${escapeHTML(item.body)}</p>
+                </div>
+            `;
+            newsFeed.appendChild(article);
+        }
+
+        // ── Render feed from storage ──
+        function renderNewsFeed() {
+            const items = getNewsItems();
+            newsFeed.innerHTML = '';
+
+            items.forEach((item) => {
+                injectNewsCard(item);
+            });
+
+            updateEmptyState(items);
+        }
+        renderNewsFeed();
+
+        // ── Handle form submission ──
+        newsForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const items = getNewsItems();
+
+            if (editingNewsId) {
+                const targetIndex = items.findIndex((item) => item.id === editingNewsId);
+                if (targetIndex !== -1) {
+                    items[targetIndex] = {
+                        ...items[targetIndex],
+                        headline: document.getElementById('news-headline').value.trim(),
+                        date: document.getElementById('news-date').value.trim(),
+                        category: document.getElementById('news-category').value.trim() || 'Announcement',
+                        body: document.getElementById('news-body').value.trim()
+                    };
+                }
+            } else {
+                const payload = {
+                    id: createNewsId(),
+                    headline: document.getElementById('news-headline').value.trim(),
+                    date: document.getElementById('news-date').value.trim(),
+                    category: document.getElementById('news-category').value.trim() || 'Announcement',
+                    body: document.getElementById('news-body').value.trim()
+                };
+
+                items.unshift(payload);
+            }
+
+            saveNewsItems(items);
+
+            renderNewsFeed();
+            closeNewsModal();
+        });
+
+        window.removeNewsItem = removeNewsItem;
+        window.openEditNewsModal = openEditNewsModal;
+    </script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>In The Media - The Wild Thyme Group</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #05070d; color: #e5e7eb; }
+    .accent { color: #f97316; }
+    .panel { background: #0f1118; border: 1px solid rgba(255,255,255,0.08); }
+
+    :root {
+      --cedar-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='none'/%3E%3Cpath d='M16 2.5c-3.4 2.5-5.8 4.5-7.9 6.9h3.5c-1.5 1.4-3 2.9-4.2 4.5h4c-1.2 1.2-2.4 2.6-3.2 4h4.3c-1 1.1-1.8 2.3-2.5 3.6H14v5.7h4v-5.7h4.1c-.7-1.3-1.5-2.5-2.5-3.6h4.3c-.8-1.4-2-2.8-3.2-4h4c-1.2-1.6-2.7-3.1-4.2-4.5H24c-2.1-2.4-4.5-4.4-8-6.9z' fill='%23006030' stroke='%2300421f' stroke-width='1.0' stroke-linejoin='round'/%3E%3Crect x='14.8' y='21.2' width='2.4' height='8' rx='0.8' fill='%235a3f22'/%3E%3C/svg%3E") 5 3;
+    }
+
+    a[href],
+    button,
+    [role="button"],
+    [onclick],
+    input[type="button"],
+    input[type="submit"],
+    .cursor-pointer {
+      cursor: var(--cedar-cursor), pointer !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen font-sans">
+  <header class="border-b border-white/10 bg-black/60 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl tracking-[0.2em] uppercase font-semibold text-white">In The Media</h1>
+        <p class="text-xs tracking-widest text-slate-400 uppercase mt-1">Corporate Archives</p>
+      </div>
+      <a href="index2.html#media-hub" class="text-xs uppercase tracking-widest text-white border-b border-white/40 hover:border-orange-500 hover:text-orange-400">Back to Main Site</a>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-12 space-y-10">
+    <section class="panel p-6 md:p-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-6 mb-8">
+        <div>
+          <span class="text-xs font-semibold tracking-widest accent uppercase block mb-1">Corporate Archives</span>
+          <h2 class="text-3xl font-serif text-white uppercase tracking-wider">Media Coverage</h2>
+        </div>
+        <button id="add-media-btn" class="hidden text-xs uppercase tracking-widest bg-orange-500 text-white px-5 py-3 font-medium hover:bg-white hover:text-black transition-all duration-300 shadow-lg opacity-50 cursor-not-allowed" disabled>+ Add Media</button>
+      </div>
+
+      <div id="media-admin-panel" class="hidden max-w-xl panel p-6 mb-10">
+        <h3 class="text-xs uppercase tracking-widest text-amber-300 font-semibold mb-4">Publish New Coverage Artifact</h3>
+        <form id="media-generation-form" class="space-y-4">
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="media-pub">Outlet Source</label>
+            <input class="w-full bg-black/40 border border-white/10 px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-orange-500" type="text" id="media-pub" placeholder="e.g., Forbes, Food & Wine" required>
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="media-title">Headline</label>
+            <input class="w-full bg-black/40 border border-white/10 px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-orange-500" type="text" id="media-title" placeholder="e.g., Reimagining Lebanese Gastronomy Networks" required>
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="media-url">Article Destination Link (URL)</label>
+            <input class="w-full bg-black/40 border border-white/10 px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-orange-500" type="url" id="media-url" placeholder="https://example.com/story" required>
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="media-image-url">Main Article Image URL</label>
+            <input class="w-full bg-black/40 border border-white/10 px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-orange-500" type="url" id="media-image-url" placeholder="https://example.com/cover.jpg">
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="media-image-file">Or Upload Main Image</label>
+            <input class="block w-full text-[10px] text-slate-300 file:mr-2 file:text-[9px] file:uppercase file:tracking-widest file:bg-orange-500/10 file:text-orange-400 file:border file:border-orange-500/30 file:px-2 file:py-1 file:rounded-none" type="file" id="media-image-file" accept="image/*">
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="media-social-url">Social Video URL</label>
+            <input class="w-full bg-black/40 border border-white/10 px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-orange-500" type="url" id="media-social-url" placeholder="Instagram, TikTok, Facebook, YouTube post URL">
+            <p class="mt-1 text-[10px] text-slate-500">If provided, this preview appears inside the article card. YouTube works best; Instagram/TikTok/Facebook use embed-friendly links when available.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button type="submit" class="flex-1 bg-orange-500 text-white uppercase tracking-widest text-[10px] font-semibold py-2.5 hover:bg-white hover:text-black transition-all">Commit Entry to Feed</button>
+            <button id="cancel-media-edit-btn" type="button" class="hidden flex-1 bg-white/5 text-slate-300 uppercase tracking-widest text-[10px] font-semibold py-2.5 border border-white/15 hover:bg-white hover:text-black transition-all">Cancel Edit</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="media-feed-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+    </section>
+  </main>
+
+  <script>
+    const ADMIN_SESSION_KEY = 'wt_holding_admin_connected';
+    const MEDIA_STORAGE_KEY = 'wt_holding_media_items';
+    const MEDIA_SCHEMA_KEY = 'wt_holding_media_schema_v2';
+    const DEFAULT_MEDIA_ITEMS = [
+      {
+        id: 'media-seed-1',
+        outlet: 'Vanguard Culinary Journal',
+        headline: 'The Fine Art of Modern Lebanese Catering Engineering',
+        url: 'https://example.com/culinary-journal',
+        imageUrl: '',
+        imageDataUrl: '',
+        socialUrl: ''
+      },
+      {
+        id: 'media-seed-2',
+        outlet: 'Hospitality Masterclass Review',
+        headline: 'How Clementine Systems Are Redefining Boutique Private Events',
+        url: 'https://example.com/hospitality-masterclass',
+        imageUrl: '',
+        imageDataUrl: '',
+        socialUrl: ''
+      }
+    ];
+
+    const addMediaBtn = document.getElementById('add-media-btn');
+    const mediaAdminPanel = document.getElementById('media-admin-panel');
+    const mediaGenerationForm = document.getElementById('media-generation-form');
+    const mediaFeedGrid = document.getElementById('media-feed-grid');
+    const cancelMediaEditBtn = document.getElementById('cancel-media-edit-btn');
+    const mediaImageFileInput = document.getElementById('media-image-file');
+    let editingMediaItemId = null;
+    let pendingMediaImageDataUrl = '';
+
+    function escapeHTML(value) {
+      const div = document.createElement('div');
+      div.textContent = value;
+      return div.innerHTML;
+    }
+
+    function createMediaId() {
+      return `media-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    }
+
+    function getWebsitePreviewImage(url) {
+      if (!url || url === '#') return '';
+      return `https://image.thum.io/get/width/1200/crop/700/noanimate/${encodeURIComponent(url)}`;
+    }
+
+    function normalizeMediaItem(item, index) {
+      return {
+        id: item && item.id ? item.id : `media-legacy-${index}`,
+        outlet: item && item.outlet ? String(item.outlet) : '',
+        headline: item && item.headline ? String(item.headline) : '',
+        url: item && item.url ? String(item.url) : '#',
+        imageUrl: item && item.imageUrl ? String(item.imageUrl) : '',
+        imageDataUrl: item && item.imageDataUrl ? String(item.imageDataUrl) : '',
+        socialUrl: item && item.socialUrl ? String(item.socialUrl) : ''
+      };
+    }
+
+    function extractPlatformPreview(url) {
+      if (!url) return null;
+
+      try {
+        const parsed = new URL(url);
+        const host = parsed.hostname.replace(/^www\./, '');
+
+        if (host.includes('youtube.com') || host.includes('youtu.be')) {
+          const videoId = host.includes('youtu.be')
+            ? parsed.pathname.split('/').filter(Boolean)[0]
+            : parsed.searchParams.get('v');
+          if (!videoId) return null;
+          return {
+            platform: 'youtube',
+            thumbnailUrl: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+            destinationUrl: url
+          };
+        }
+
+        if (host.includes('instagram.com')) {
+          return {
+            platform: 'instagram',
+            destinationUrl: url
+          };
+        }
+
+        if (host.includes('tiktok.com')) {
+          return {
+            platform: 'tiktok',
+            destinationUrl: url
+          };
+        }
+
+        if (host.includes('facebook.com') || host.includes('fb.watch')) {
+          return {
+            platform: 'facebook',
+            destinationUrl: url
+          };
+        }
+      } catch (error) {
+        return null;
+      }
+
+      return null;
+    }
+
+    function buildMediaPreview(item) {
+      const previewSourceUrl = item.socialUrl || item.url;
+      const imageSrc = item.imageDataUrl || item.imageUrl;
+      const socialPreview = extractPlatformPreview(previewSourceUrl);
+      const websitePreviewImage = getWebsitePreviewImage(item.url);
+
+      if (socialPreview && socialPreview.platform === 'youtube' && socialPreview.thumbnailUrl) {
+        return `
+          <a href="${escapeHTML(socialPreview.destinationUrl)}" target="_blank" rel="noopener noreferrer" class="mb-5 block overflow-hidden rounded-sm border border-white/10 bg-black/40 group">
+            <div class="relative h-52 bg-black">
+              <img src="${escapeHTML(socialPreview.thumbnailUrl)}" alt="${escapeHTML(item.headline)}" class="w-full h-full object-cover opacity-90 group-hover:scale-[1.02] transition-transform duration-300">
+              <div class="absolute inset-0 bg-black/25"></div>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-16 h-16 rounded-full bg-white/90 text-black flex items-center justify-center shadow-xl">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+                </div>
+              </div>
+            </div>
+            <div class="px-3 py-2 text-[10px] uppercase tracking-widest text-slate-400">YouTube preview</div>
+          </a>`;
+      }
+
+      if (socialPreview) {
+        return `
+          <a href="${escapeHTML(socialPreview.destinationUrl)}" target="_blank" rel="noopener noreferrer" class="mb-5 block overflow-hidden rounded-sm border border-white/10 bg-gradient-to-br from-black to-slate-900 group">
+            <div class="h-52 px-5 py-4 flex flex-col justify-between">
+              <span class="text-[10px] uppercase tracking-[0.24em] text-orange-400">${escapeHTML(socialPreview.platform)} post</span>
+              <div>
+                <div class="text-white text-xl font-serif leading-snug">${escapeHTML(item.headline)}</div>
+                <div class="mt-3 text-[11px] uppercase tracking-widest text-slate-400 group-hover:text-white transition-colors">Open social post</div>
+              </div>
+            </div>
+          </a>`;
+      }
+
+      if (imageSrc) {
+        return `
+          <div class="mb-5 overflow-hidden rounded-sm border border-white/10 bg-black/40">
+            <img src="${escapeHTML(imageSrc)}" alt="${escapeHTML(item.headline)}" referrerpolicy="no-referrer" data-fallback-src="${escapeHTML(websitePreviewImage)}" class="w-full h-52 object-cover" onerror="handleMediaPreviewImageError(this);">
+            <div class="hidden h-52 px-5 py-4 bg-gradient-to-br from-[#13151d] to-[#0b0d13] flex flex-col justify-between">
+              <span class="text-[10px] uppercase tracking-[0.24em] text-orange-400">Article preview</span>
+              <div>
+                <div class="text-[10px] font-mono uppercase tracking-widest text-amber-300 mb-3">${escapeHTML(item.outlet)}</div>
+                <div class="text-white text-xl font-serif leading-snug">${escapeHTML(item.headline)}</div>
+                <div class="mt-3 text-[11px] uppercase tracking-widest text-slate-400">Image unavailable, open article</div>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      if (websitePreviewImage) {
+        return `
+          <a href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer" class="mb-5 block overflow-hidden rounded-sm border border-white/10 bg-black/40 group">
+            <div class="relative h-52 bg-black">
+              <img src="${escapeHTML(websitePreviewImage)}" alt="${escapeHTML(item.headline)}" referrerpolicy="no-referrer" class="w-full h-full object-cover opacity-90 group-hover:scale-[1.02] transition-transform duration-300" onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');">
+              <div class="hidden h-full px-5 py-4 bg-gradient-to-br from-[#13151d] to-[#0b0d13] flex flex-col justify-between">
+                <span class="text-[10px] uppercase tracking-[0.24em] text-orange-400">Article preview</span>
+                <div>
+                  <div class="text-[10px] font-mono uppercase tracking-widest text-amber-300 mb-3">${escapeHTML(item.outlet)}</div>
+                  <div class="text-white text-xl font-serif leading-snug">${escapeHTML(item.headline)}</div>
+                  <div class="mt-3 text-[11px] uppercase tracking-widest text-slate-400">Preview unavailable, open article</div>
+                </div>
+              </div>
+            </div>
+            <div class="px-3 py-2 text-[10px] uppercase tracking-widest text-slate-400">Article preview</div>
+          </a>`;
+      }
+
+      return `
+        <a href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer" class="mb-5 block overflow-hidden rounded-sm border border-white/10 bg-gradient-to-br from-[#13151d] to-[#0b0d13] group">
+          <div class="h-52 px-5 py-4 flex flex-col justify-between">
+            <span class="text-[10px] uppercase tracking-[0.24em] text-orange-400">Article preview</span>
+            <div>
+              <div class="text-[10px] font-mono uppercase tracking-widest text-amber-300 mb-3">${escapeHTML(item.outlet)}</div>
+              <div class="text-white text-xl font-serif leading-snug">${escapeHTML(item.headline)}</div>
+              <div class="mt-3 text-[11px] uppercase tracking-widest text-slate-400 group-hover:text-white transition-colors">Open article</div>
+            </div>
+          </div>
+        </a>`;
+    }
+
+    function handleMediaPreviewImageError(imageNode) {
+      if (!imageNode) return;
+
+      const fallbackSrc = imageNode.getAttribute('data-fallback-src');
+      const hasTriedFallback = imageNode.getAttribute('data-fallback-tried') === 'true';
+
+      if (fallbackSrc && !hasTriedFallback) {
+        imageNode.setAttribute('data-fallback-tried', 'true');
+        imageNode.src = fallbackSrc;
+        return;
+      }
+
+      imageNode.classList.add('hidden');
+      if (imageNode.nextElementSibling) {
+        imageNode.nextElementSibling.classList.remove('hidden');
+      }
+    }
+
+    function getMediaItems() {
+      let parsed = [];
+      try {
+        parsed = JSON.parse(localStorage.getItem(MEDIA_STORAGE_KEY) || '[]');
+      } catch (error) {
+        parsed = [];
+      }
+
+      if (!Array.isArray(parsed)) {
+        parsed = [];
+      }
+
+      if (localStorage.getItem(MEDIA_SCHEMA_KEY) !== 'true') {
+        const migrated = [...DEFAULT_MEDIA_ITEMS, ...parsed.map((item, index) => normalizeMediaItem(item, index))];
+        localStorage.setItem(MEDIA_STORAGE_KEY, JSON.stringify(migrated));
+        localStorage.setItem(MEDIA_SCHEMA_KEY, 'true');
+        return migrated;
+      }
+
+      return parsed.map((item, index) => normalizeMediaItem(item, index));
+    }
+
+    function saveMediaItems(items) {
+      localStorage.setItem(MEDIA_STORAGE_KEY, JSON.stringify(items));
+      localStorage.setItem(MEDIA_SCHEMA_KEY, 'true');
+    }
+
+    function renderMediaFeed() {
+      const items = getMediaItems();
+      mediaFeedGrid.innerHTML = items.map((item) => {
+        const adminControls = isAdminConnected
+          ? `
+            <div class="mt-5 flex items-center gap-2">
+              <button type="button" onclick="openEditMediaItem('${escapeHTML(item.id)}')" class="text-[10px] uppercase tracking-widest bg-orange-500/10 text-orange-400 border border-orange-500/30 px-3 py-1.5 hover:bg-orange-500 hover:text-white transition-all">Edit</button>
+              <button type="button" onclick="removeMediaItem('${escapeHTML(item.id)}')" class="text-[10px] uppercase tracking-widest bg-white/5 text-slate-300 border border-white/20 px-3 py-1.5 hover:bg-white hover:text-black transition-all">Remove</button>
+            </div>`
+          : '';
+
+        return `
+          <article class="panel p-8 flex flex-col justify-between min-h-72">
+            <div>
+              ${buildMediaPreview(item)}
+              <span class="text-[10px] font-mono text-amber-300 uppercase tracking-widest block mb-2">${escapeHTML(item.outlet)}</span>
+              <h4 class="text-5 leading-snug font-serif text-white">${escapeHTML(item.headline)}</h4>
+              ${adminControls}
+            </div>
+            <a href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-slate-400 hover:text-white transition-colors">Read Coverage</a>
+          </article>`;
+      }).join('');
+    }
+
+    function resetMediaFormState() {
+      editingMediaItemId = null;
+      pendingMediaImageDataUrl = '';
+      mediaGenerationForm.reset();
+      const submitButton = mediaGenerationForm.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.textContent = 'Commit Entry to Feed';
+      }
+      if (cancelMediaEditBtn) {
+        cancelMediaEditBtn.classList.add('hidden');
+      }
+    }
+
+    function openEditMediaItem(id) {
+      if (!isAdminConnected) return;
+      const target = getMediaItems().find((item) => item.id === id);
+      if (!target) return;
+
+      editingMediaItemId = id;
+      document.getElementById('media-pub').value = target.outlet;
+      document.getElementById('media-title').value = target.headline;
+      document.getElementById('media-url').value = target.url;
+      document.getElementById('media-image-url').value = target.imageUrl || '';
+      document.getElementById('media-social-url').value = target.socialUrl || '';
+      pendingMediaImageDataUrl = target.imageDataUrl || '';
+      const submitButton = mediaGenerationForm.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.textContent = 'Save Changes';
+      }
+      if (cancelMediaEditBtn) {
+        cancelMediaEditBtn.classList.remove('hidden');
+      }
+      mediaAdminPanel.classList.remove('hidden');
+    }
+
+    function cancelMediaEdit() {
+      resetMediaFormState();
+      mediaAdminPanel.classList.add('hidden');
+    }
+
+    function removeMediaItem(id) {
+      if (!isAdminConnected) return;
+      if (!confirm('Remove this media coverage entry?')) return;
+
+      const items = getMediaItems().filter((item) => item.id !== id);
+      saveMediaItems(items);
+      renderMediaFeed();
+    }
+
+    const isAdminConnected = localStorage.getItem(ADMIN_SESSION_KEY) === 'true';
+    if (isAdminConnected) {
+      addMediaBtn.classList.remove('hidden', 'opacity-50', 'cursor-not-allowed');
+      addMediaBtn.disabled = false;
+      addMediaBtn.addEventListener('click', () => {
+        const isHidden = mediaAdminPanel.classList.toggle('hidden');
+        if (isHidden) {
+          resetMediaFormState();
+        }
+      });
+    }
+
+    if (cancelMediaEditBtn) {
+      cancelMediaEditBtn.addEventListener('click', cancelMediaEdit);
+    }
+
+    if (mediaImageFileInput) {
+      mediaImageFileInput.addEventListener('change', (event) => {
+        const target = event.target;
+        const file = target.files && target.files[0] ? target.files[0] : null;
+        if (!file) {
+          pendingMediaImageDataUrl = '';
+          return;
+        }
+
+        if (!file.type.startsWith('image/')) {
+          alert('Please upload an image file.');
+          target.value = '';
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          pendingMediaImageDataUrl = typeof reader.result === 'string' ? reader.result : '';
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    mediaGenerationForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!isAdminConnected) {
+        return;
+      }
+
+      const items = getMediaItems();
+
+      if (editingMediaItemId) {
+        const targetIndex = items.findIndex((item) => item.id === editingMediaItemId);
+        if (targetIndex !== -1) {
+          items[targetIndex] = {
+            ...items[targetIndex],
+            outlet: document.getElementById('media-pub').value.trim(),
+            headline: document.getElementById('media-title').value.trim(),
+            url: document.getElementById('media-url').value.trim(),
+            imageUrl: document.getElementById('media-image-url').value.trim(),
+            imageDataUrl: pendingMediaImageDataUrl || items[targetIndex].imageDataUrl || '',
+            socialUrl: document.getElementById('media-social-url').value.trim()
+          };
+        }
+      } else {
+        items.unshift({
+          id: createMediaId(),
+          outlet: document.getElementById('media-pub').value.trim(),
+          headline: document.getElementById('media-title').value.trim(),
+          url: document.getElementById('media-url').value.trim(),
+          imageUrl: document.getElementById('media-image-url').value.trim(),
+          imageDataUrl: pendingMediaImageDataUrl,
+          socialUrl: document.getElementById('media-social-url').value.trim()
+        });
+      }
+
+      saveMediaItems(items);
+      renderMediaFeed();
+      resetMediaFormState();
+      mediaAdminPanel.classList.add('hidden');
+    });
+
+    window.openEditMediaItem = openEditMediaItem;
+    window.removeMediaItem = removeMediaItem;
+    window.handleMediaPreviewImageError = handleMediaPreviewImageError;
+    renderMediaFeed();
+  </script>
+</body>
+</html>

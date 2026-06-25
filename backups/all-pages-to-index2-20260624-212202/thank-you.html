@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You | The Wild Thyme Group</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .touch-orange {
+      transition: color 0.25s ease;
+    }
+
+    .touch-orange:hover {
+      color: #ff4500;
+    }
+
+    .brand-dynamic {
+      display: inline-block;
+      transition: color 0.3s ease, transform 0.3s ease, letter-spacing 0.3s ease, text-shadow 0.3s ease;
+      transform-origin: center;
+    }
+
+    .brand-dynamic:hover {
+      color: #ff4500;
+      letter-spacing: 0.32em;
+      transform: translateY(-2px) scale(1.03);
+      text-shadow: 0 0 14px rgba(255, 69, 0, 0.35);
+    }
+
+    :root {
+      --cedar-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='none'/%3E%3Cpath d='M16 2.5c-3.4 2.5-5.8 4.5-7.9 6.9h3.5c-1.5 1.4-3 2.9-4.2 4.5h4c-1.2 1.2-2.4 2.6-3.2 4h4.3c-1 1.1-1.8 2.3-2.5 3.6H14v5.7h4v-5.7h4.1c-.7-1.3-1.5-2.5-2.5-3.6h4.3c-.8-1.4-2-2.8-3.2-4h4c-1.2-1.6-2.7-3.1-4.2-4.5H24c-2.1-2.4-4.5-4.4-8-6.9z' fill='%23006030' stroke='%2300421f' stroke-width='1.0' stroke-linejoin='round'/%3E%3Crect x='14.8' y='21.2' width='2.4' height='8' rx='0.8' fill='%235a3f22'/%3E%3C/svg%3E") 5 3;
+    }
+
+    a[href],
+    button,
+    [role="button"],
+    [onclick],
+    input[type="button"],
+    input[type="submit"],
+    .cursor-pointer {
+      cursor: var(--cedar-cursor), pointer !important;
+    }
+  </style>
+</head>
+<body class="bg-[#141414] text-slate-100 min-h-screen">
+  <main class="max-w-4xl mx-auto px-6 py-16 md:py-24">
+    <section class="bg-[#141414] p-8 md:p-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center">
+        <div class="p-2 md:p-4 flex items-center justify-center">
+          <img
+            src="images/WT Group logo 3 D charcoal.png"
+            alt="The Wild Thyme Group Logo"
+            class="w-[24rem] h-[24rem] md:w-full md:h-full object-contain"
+          >
+        </div>
+
+        <div class="p-2 md:p-4">
+          <p class="brand-dynamic text-[11px] uppercase tracking-[0.25em] text-orange-300 mb-4">The Wild Thyme Group</p>
+          <h1 class="touch-orange text-3xl md:text-5xl font-light uppercase tracking-[0.08em]">Thank You</h1>
+          <p class="mt-5 text-slate-300 leading-relaxed">
+            Your message has been sent successfully. Our team will review it and get back to you soon.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a href="index2.html" class="text-[#FF4500] text-xs uppercase tracking-[0.2em] font-semibold hover:text-[#00FF66] transition-colors duration-300">
+              Back to Front Page
+            </a>
+            <a href="send-message.html" class="text-[#FF4500] text-xs uppercase tracking-[0.2em] font-semibold hover:text-[#00FF66] transition-colors duration-300">
+              Send Another Message
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

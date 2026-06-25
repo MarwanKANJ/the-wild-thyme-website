@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About the Group - The Wild Thyme Group</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        holding: {
+                            dark: '#0A0A0A',
+                            charcoal: '#121212',
+                            fireball: '#FF4500',
+                            gold: '#C5A880',
+                            parchment: '#F5F5F0'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    letterSpacing: {
+                        superwide: '0.25em',
+                        megawide: '0.4em'
+                    }
+                }
+            }
+        };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: radial-gradient(circle at 10% 10%, rgba(197, 168, 128, 0.16), transparent 40%),
+                        radial-gradient(circle at 90% 30%, rgba(255, 69, 0, 0.14), transparent 45%),
+                        linear-gradient(180deg, #090909 0%, #121212 55%, #171717 100%);
+        }
+
+        .narrative-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+        }
+
+        .story-line {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .story-line::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.45rem;
+            width: 0.55rem;
+            height: 0.55rem;
+            border-radius: 9999px;
+            background: #FF4500;
+            box-shadow: 0 0 0 6px rgba(255, 69, 0, 0.15);
+        }
+
+        .admin-edit-toolbar {
+            display: none;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .admin-edit-toolbar.visible {
+            display: inline-flex;
+        }
+
+        .admin-editable {
+            transition: box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+        .admin-editable.is-editing {
+            box-shadow: inset 0 0 0 1px rgba(255, 69, 0, 0.7);
+            background-color: rgba(255, 69, 0, 0.08);
+            border-radius: 0.35rem;
+            outline: none;
+        }
+
+        .about-brand-link.edit-mode-active {
+            cursor: default;
+        }
+
+        .about-brand-link.edit-mode-active .about-brand-title-link {
+            pointer-events: none;
+        }
+
+        .about-brand-link:not(.edit-mode-active):hover {
+            transform: translateY(-1px);
+        }
+
+        .about-brand-title-link {
+            display: inline-block;
+            width: fit-content;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .about-brand-title-link:not(.edit-mode-active):hover {
+            color: #FF4500;
+            transform: translateY(-1px);
+        }
+
+        .about-edit-badge {
+            display: none;
+            margin-bottom: 0.85rem;
+            font-size: 9px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: #FF4500;
+            font-weight: 700;
+        }
+
+        .about-brand-link.edit-mode-active .about-edit-badge {
+            display: block;
+        }
+
+        /* About page text hover treatment */
+        main h1,
+        main h2,
+        main h3,
+        main p,
+        main a,
+        header .tracking-superwide div,
+        header > div a {
+            transition: color 0.22s ease;
+        }
+
+        main h1:hover,
+        main h2:hover,
+        main h3:hover,
+        main p:hover,
+        main a:hover,
+        header .tracking-superwide div:hover,
+        header > div a:hover {
+            color: #FF4500 !important;
+        }
+    </style>
+</head>
+<body class="text-slate-200 font-sans antialiased min-h-screen">
+    <header class="border-b border-white/10 bg-black/25 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div class="tracking-superwide text-xs text-white uppercase">
+                <div class="font-semibold tracking-megawide">The Wild Thyme Group</div>
+                <div class="text-[10px] text-holding-gold mt-1">EST. 2026 • HOLDING CO.</div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div id="about-admin-toolbar" class="admin-edit-toolbar">
+                    <button id="about-edit-toggle" type="button" class="text-[10px] uppercase tracking-widest border border-holding-fireball/60 text-holding-fireball px-3 py-2 hover:bg-holding-fireball hover:text-white transition-colors duration-200">Edit Text</button>
+                    <button id="about-save" type="button" class="hidden text-[10px] uppercase tracking-widest border border-holding-gold/70 text-holding-gold px-3 py-2 hover:bg-holding-gold hover:text-black transition-colors duration-200">Save</button>
+                    <button id="about-cancel" type="button" class="hidden text-[10px] uppercase tracking-widest border border-white/40 text-white px-3 py-2 hover:bg-white hover:text-black transition-colors duration-200">Cancel</button>
+                    <button id="about-reset" type="button" class="text-[10px] uppercase tracking-widest border border-red-400/60 text-red-300 px-3 py-2 hover:bg-red-400 hover:text-black transition-colors duration-200">Reset</button>
+                </div>
+                <a href="index.html" class="text-xs uppercase tracking-widest border border-white/30 px-4 py-2 hover:border-holding-fireball hover:text-holding-fireball transition-colors duration-300">Back to Home</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+        <section class="mb-14 md:mb-20">
+            <p class="text-[11px] uppercase tracking-[0.35em] text-holding-gold mb-5">About the Group</p>
+            <h1 data-admin-edit="hero_title" class="admin-editable font-serif text-4xl md:text-6xl leading-tight text-white max-w-4xl mb-6">
+                Serving Excellence Since 2016.
+            </h1>
+            <p data-admin-edit="hero_body" class="admin-editable max-w-3xl text-slate-300 text-lg leading-relaxed">
+                The Wild Thyme Group was founded to unify two ideas that rarely grow under one roof: operational excellence and emotional storytelling. As a holding company, we support each brand with strategic structure while preserving its soul, voice, and cultural identity.
+            </p>
+        </section>
+
+        <section class="grid md:grid-cols-5 gap-8 md:gap-10 mb-14 md:mb-20">
+            <div class="md:col-span-2 narrative-card rounded-xl p-6 md:p-7">
+                <h2 data-admin-edit="narrative_title" class="admin-editable font-serif text-2xl md:text-3xl text-white mb-4">Our Narrative</h2>
+                <p data-admin-edit="narrative_body_1" class="admin-editable text-slate-300 leading-relaxed mb-4">
+                    What started as one restaurant concept evolved into a multi-brand hospitality platform. We expanded intentionally, choosing projects that could deliver consistency at scale without losing warmth at the table.
+                </p>
+                <p data-admin-edit="narrative_body_2" class="admin-editable text-slate-300 leading-relaxed">
+                    Today, the group develops and operates brands across dining and catering, investing in systems, leadership, and long-term brand equity.
+                </p>
+            </div>
+            <div class="md:col-span-3 narrative-card rounded-xl p-6 md:p-8 space-y-6">
+                <div class="story-line">
+                    <h3 class="text-white uppercase tracking-widest text-xs mb-2">Vision</h3>
+                    <p data-admin-edit="vision_body" class="admin-editable text-slate-300 leading-relaxed">To create a portfolio of hospitality companies recognized for quality, trust, and cultural relevance.</p>
+                </div>
+                <div class="story-line">
+                    <h3 class="text-white uppercase tracking-widest text-xs mb-2">Mission</h3>
+                    <p data-admin-edit="mission_body" class="admin-editable text-slate-300 leading-relaxed">To give each brand the strategic backbone it needs while preserving the character guests fall in love with.</p>
+                </div>
+                <div class="story-line">
+                    <h3 class="text-white uppercase tracking-widest text-xs mb-2">Commitment</h3>
+                    <p data-admin-edit="commitment_body" class="admin-editable text-slate-300 leading-relaxed">To measure success by long-term impact: guest loyalty, team growth, and the strength of every community we serve.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="narrative-card rounded-xl p-7 md:p-10">
+            <h2 data-admin-edit="brand_platform_title" class="admin-editable font-serif text-3xl md:text-4xl text-white mb-6">Brand Platform</h2>
+            <div class="grid md:grid-cols-2 gap-7">
+                <div class="about-brand-link block border border-white/10 rounded-lg p-6 hover:border-holding-fireball transition-colors duration-300">
+                    <div class="about-edit-badge">Editing Locked</div>
+                    <p data-admin-edit="wild_thyme_label" class="admin-editable text-[11px] uppercase tracking-[0.28em] text-holding-gold mb-3">Restaurant</p>
+                    <h3 class="mb-2">
+                        <a href="wild-thyme-restaurant.html" data-brand-href="wild-thyme-restaurant.html" class="about-brand-title-link admin-editable text-white text-xl font-medium">Wild Thyme</a>
+                    </h3>
+                    <p data-admin-edit="wild_thyme_desc" class="admin-editable text-slate-300">A modern Lebanese dining brand designed around craft, hospitality, and repeatable excellence.</p>
+                </div>
+                <div class="about-brand-link block border border-white/10 rounded-lg p-6 hover:border-holding-fireball transition-colors duration-300">
+                    <div class="about-edit-badge">Editing Locked</div>
+                    <p data-admin-edit="clementine_label" class="admin-editable text-[11px] uppercase tracking-[0.28em] text-holding-gold mb-3">Catering</p>
+                    <h3 class="mb-2">
+                        <a href="clementine-catering.html" data-brand-href="clementine-catering.html" class="about-brand-title-link admin-editable text-white text-xl font-medium">Clementine</a>
+                    </h3>
+                    <p data-admin-edit="clementine_desc" class="admin-editable text-slate-300">A full-service catering and events company built to deliver precision, style, and reliability.</p>
+                </div>
+            </div>
+
+            <div id="brand-editor-panel" class="hidden mt-8 border border-white/10 rounded-xl p-5 md:p-6 bg-black/20">
+                <div class="flex items-center justify-between gap-4 mb-5">
+                    <div>
+                        <p class="text-[10px] uppercase tracking-[0.28em] text-holding-fireball font-semibold">Admin Brand Editor</p>
+                        <p class="text-[11px] text-slate-400 mt-1">Edit the Brands section here when inline editing feels awkward.</p>
+                    </div>
+                    <span class="text-[10px] uppercase tracking-[0.22em] text-slate-500">Changes save with the page</span>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="brand-platform-title-input" class="block text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-2">Brand Platform Title</label>
+                            <input id="brand-platform-title-input" type="text" class="w-full bg-holding-dark border border-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:border-holding-fireball" />
+                        </div>
+                        <div>
+                            <label for="wild-thyme-label-input" class="block text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-2">Wild Thyme Label</label>
+                            <input id="wild-thyme-label-input" type="text" class="w-full bg-holding-dark border border-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:border-holding-fireball" />
+                        </div>
+                        <div>
+                            <label for="wild-thyme-title-input" class="block text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-2">Wild Thyme Title</label>
+                            <input id="wild-thyme-title-input" type="text" class="w-full bg-holding-dark border border-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:border-holding-fireball" />
+                        </div>
+                        <div>
+                            <label for="wild-thyme-desc-input" class="block text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-2">Wild Thyme Description</label>
+                            <textarea id="wild-thyme-desc-input" rows="4" class="w-full bg-holding-dark border border-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:border-holding-fireball resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="clementine-label-input" class="block text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-2">Clementine Label</label>
+                            <input id="clementine-label-input" type="text" class="w-full bg-holding-dark border border-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:border-holding-fireball" />
+                        </div>
+                        <div>
+                            <label for="clementine-title-input" class="block text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-2">Clementine Title</label>
+                            <input id="clementine-title-input" type="text" class="w-full bg-holding-dark border border-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:border-holding-fireball" />
+                        </div>
+                        <div>
+                            <label for="clementine-desc-input" class="block text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-2">Clementine Description</label>
+                            <textarea id="clementine-desc-input" rows="4" class="w-full bg-holding-dark border border-white/10 px-3 py-2 text-sm text-white focus:outline-none focus:border-holding-fireball resize-none"></textarea>
+                        </div>
+                        <div class="pt-2">
+                            <button id="brand-editor-apply-btn" type="button" class="bg-holding-fireball text-white text-[10px] uppercase tracking-widest font-semibold px-4 py-2 hover:bg-holding-electricGreen hover:text-black transition-all duration-300">Apply Brand Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const ABOUT_STORAGE_KEY = 'wt_about_group_content';
+        const ABOUT_STORAGE_BACKUP_KEY = 'wt_about_group_content_backup';
+        const adminToolbar = document.getElementById('about-admin-toolbar');
+        const editToggleBtn = document.getElementById('about-edit-toggle');
+        const saveBtn = document.getElementById('about-save');
+        const cancelBtn = document.getElementById('about-cancel');
+        const resetBtn = document.getElementById('about-reset');
+        const editableNodes = Array.from(document.querySelectorAll('[data-admin-edit]'));
+        const aboutBrandLinks = Array.from(document.querySelectorAll('.about-brand-link'));
+        const aboutBrandTitleLinks = Array.from(document.querySelectorAll('.about-brand-title-link'));
+        const brandEditorPanel = document.getElementById('brand-editor-panel');
+        const brandEditorApplyBtn = document.getElementById('brand-editor-apply-btn');
+        const brandEditorFields = {
+            brand_platform_title: document.getElementById('brand-platform-title-input'),
+            wild_thyme_label: document.getElementById('wild-thyme-label-input'),
+            wild_thyme_title: document.getElementById('wild-thyme-title-input'),
+            wild_thyme_desc: document.getElementById('wild-thyme-desc-input'),
+            clementine_label: document.getElementById('clementine-label-input'),
+            clementine_title: document.getElementById('clementine-title-input'),
+            clementine_desc: document.getElementById('clementine-desc-input')
+        };
+
+        let editMode = false;
+        let draftSnapshot = {};
+
+        function isAdminConnected() {
+            return localStorage.getItem('wt_holding_admin_connected') === 'true';
+        }
+
+        function parseStoredSnapshot(raw) {
+            if (!raw) return {};
+
+            try {
+                const parsed = JSON.parse(raw);
+                return parsed && typeof parsed === 'object' ? parsed : {};
+            } catch (_err) {
+                return {};
+            }
+        }
+
+        function readStoredContent() {
+            const primary = parseStoredSnapshot(localStorage.getItem(ABOUT_STORAGE_KEY));
+            if (Object.keys(primary).length > 0) return primary;
+
+            const backup = parseStoredSnapshot(localStorage.getItem(ABOUT_STORAGE_BACKUP_KEY));
+            if (Object.keys(backup).length > 0) {
+                localStorage.setItem(ABOUT_STORAGE_KEY, JSON.stringify(backup));
+                return backup;
+            }
+
+            return {};
+        }
+
+        function buildCurrentSnapshot() {
+            const snapshot = {};
+            editableNodes.forEach((node) => {
+                const key = node.getAttribute('data-admin-edit');
+                if (!key) return;
+                snapshot[key] = node.textContent.trim();
+            });
+            return snapshot;
+        }
+
+        function applySnapshot(snapshot) {
+            editableNodes.forEach((node) => {
+                const key = node.getAttribute('data-admin-edit');
+                if (!key) return;
+                if (Object.prototype.hasOwnProperty.call(snapshot, key)) {
+                    node.textContent = snapshot[key];
+                }
+            });
+
+            Object.entries(brandEditorFields).forEach(([key, field]) => {
+                if (!field) return;
+                if (Object.prototype.hasOwnProperty.call(snapshot, key)) {
+                    field.value = snapshot[key];
+                }
+            });
+        }
+
+        function readBrandEditorFields() {
+            const snapshot = {};
+            Object.entries(brandEditorFields).forEach(([key, field]) => {
+                if (!field) return;
+                snapshot[key] = field.value.trim();
+            });
+            return snapshot;
+        }
+
+        function setEditMode(enabled) {
+            editMode = enabled;
+
+            editableNodes.forEach((node) => {
+                node.contentEditable = enabled ? 'true' : 'false';
+                node.classList.toggle('is-editing', enabled);
+            });
+
+            aboutBrandLinks.forEach((link) => {
+                link.classList.toggle('edit-mode-active', enabled);
+                link.setAttribute('aria-disabled', enabled ? 'true' : 'false');
+            });
+
+            aboutBrandTitleLinks.forEach((link) => {
+                link.classList.toggle('edit-mode-active', enabled);
+                link.setAttribute('aria-disabled', enabled ? 'true' : 'false');
+                if (enabled) {
+                    if (!link.dataset.originalHref) {
+                        link.dataset.originalHref = link.getAttribute('href') || '';
+                    }
+                    link.setAttribute('href', '#');
+                } else if (link.dataset.originalHref) {
+                    link.setAttribute('href', link.dataset.originalHref);
+                }
+            });
+
+            if (brandEditorPanel) {
+                brandEditorPanel.classList.toggle('hidden', !enabled);
+            }
+
+            if (saveBtn) saveBtn.classList.toggle('hidden', !enabled);
+            if (cancelBtn) cancelBtn.classList.toggle('hidden', !enabled);
+            if (editToggleBtn) editToggleBtn.classList.toggle('hidden', enabled);
+
+            if (enabled) {
+                draftSnapshot = buildCurrentSnapshot();
+            }
+        }
+
+        function initializeAdminEditing() {
+            const storedContent = readStoredContent();
+            applySnapshot(storedContent);
+
+            if (adminToolbar) {
+                adminToolbar.classList.toggle('visible', isAdminConnected());
+            }
+
+            setEditMode(false);
+        }
+
+        if (editToggleBtn) {
+            editToggleBtn.addEventListener('click', () => {
+                setEditMode(true);
+            });
+        }
+
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                const updatedSnapshot = buildCurrentSnapshot();
+                Object.assign(updatedSnapshot, readBrandEditorFields());
+                const payload = JSON.stringify(updatedSnapshot);
+                localStorage.setItem(ABOUT_STORAGE_KEY, payload);
+                localStorage.setItem(ABOUT_STORAGE_BACKUP_KEY, payload);
+                setEditMode(false);
+                alert('About page content saved.');
+            });
+        }
+
+        if (brandEditorApplyBtn) {
+            brandEditorApplyBtn.addEventListener('click', () => {
+                const updatedSnapshot = buildCurrentSnapshot();
+                Object.assign(updatedSnapshot, readBrandEditorFields());
+                applySnapshot(updatedSnapshot);
+            });
+        }
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                applySnapshot(draftSnapshot);
+                setEditMode(false);
+            });
+        }
+
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                const isConfirmed = window.confirm('Reset all About page edits and restore original text?');
+                if (!isConfirmed) return;
+                localStorage.removeItem(ABOUT_STORAGE_KEY);
+                localStorage.removeItem(ABOUT_STORAGE_BACKUP_KEY);
+                window.location.reload();
+            });
+        }
+
+        aboutBrandTitleLinks.forEach((link) => {
+            link.addEventListener('click', (event) => {
+                if (editMode) {
+                    event.preventDefault();
+                    return;
+                }
+
+                const href = link.getAttribute('data-brand-href');
+                if (href) {
+                    window.location.href = href;
+                }
+            });
+        });
+
+        initializeAdminEditing();
+    </script>
+</body>
+</html>

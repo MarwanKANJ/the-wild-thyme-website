@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wild Thyme Group — Hospitality & Culinary Holding Group</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        holding: {
+                            dark: '#0A0A0A',
+                            charcoal: '#121212',
+                            fireball: '#FF4500',
+                            azure: '#007FFF',
+                            gold: '#C5A880',
+                            goldHover: '#E2C9A6',
+                            electricGreen: '#00FF66',
+                            electricIndigo: '#4F46E5',
+                            logoSeamless: '#1C1E22'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        superwide: '0.25em',
+                        megawide: '0.4em'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght=0,400;0,600;1,400&family=Inter:wght=300;400;500;600&family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @font-face {
+            font-family: 'Monsieur La Doulaise Local';
+            src: local('Monsieur La Doulaise');
+        }
+
+        /* Global typography element transitions */
+        h2, h3, h4, p, span, a, i, button, label, input, textarea {
+            transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        /* Direct trigger states for standard text content excluding custom brand overrides */
+        h2:hover, h3:hover, h4:hover, p:not(.target-orange):not(.touch-green):hover, span:not(.interactive-orange):hover, a:not(.brand-link):not(.secure-login-btn):not(.portal-btn):not(.target-orange-link):not(.interactive-orange):hover, label:not(.interactive-orange):hover {
+            color: #FF4500 !important;
+            cursor: default;
+        }
+
+        /* Target Core Columns Styling: Force Fireball Orange default, Electric Green hover */
+        .target-orange {
+            color: #FF4500 !important;
+            transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .target-orange-wrap:hover .target-orange {
+            color: #00FF66 !important;
+        }
+
+        .target-orange-link {
+            color: #FF4500 !important;
+            transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .target-orange-link:hover {
+            color: #00FF66 !important;
+        }
+        .target-orange-link:hover i {
+            color: #00FF66 !important;
+        }
+
+        /* Portfolio Brand Ecosystem Links */
+        .brand-link-wt, .brand-link-cc {
+            color: #FF4500 !important;
+            transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .brand-link-wt i, .brand-link-cc i {
+            color: #FF4500 !important;
+            transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .brand-link-wt:hover, .brand-link-cc:hover {
+            color: #00FF66 !important;
+        }
+        .brand-link-wt:hover i, .brand-link-cc:hover i {
+            color: #00FF66 !important;
+        }
+
+        /* Premium custom portal card zoom interactions */
+        .portal-card:hover .portal-bg {
+            transform: scale(1.04);
+        }
+        .portal-card:hover .portal-overlay {
+            background-color: rgba(0, 0, 0, 0.25);
+        }
+        
+        /* Custom Portal Gateway Button Rules */
+        .portal-btn {
+            transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, transform 0.3s ease !important;
+        }
+        .portal-btn:hover {
+            background-color: transparent !important;
+            color: #FF4500 !important;
+            border-color: #FF4500 !important;
+            transform: translateY(-2px);
+            cursor: pointer;
+        }
+        .portal-btn:hover i {
+            color: #FF4500 !important;
+        }
+
+        /* Custom Secure Login Button Overrides */
+        .secure-login-btn {
+            color: #FF4500 !important;
+            transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .secure-login-btn:hover {
+            color: #00FF66 !important;
+        }
+
+        /* Dynamic Interactive Elements Class Rule */
+        .interactive-orange {
+            color: #FF4500 !important;
+            transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .interactive-orange:hover {
+            color: #00FF66 !important;
+            cursor: pointer;
+        }
+        
+        /* Input styling with placeholder transition effects */
+        .custom-placeholder {
+            color: #FF4500 !important;
+            background-color: rgba(10, 10, 10, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        .custom-placeholder::placeholder {
+            color: #FF4500 !important;
+            opacity: 0.8;
+            transition: color 0.3s ease;
+        }
+        .custom-placeholder:hover {
+            color: #00FF66 !important;
+            border-color: rgba(0, 255, 102, 0.3);
+            cursor: text;
+        }
+        .custom-placeholder:hover::placeholder {
+            color: #00FF66 !important;
+        }
+        .custom-placeholder:focus {
+            color: #00FF66 !important;
+            border-color: #00FF66 !important;
+            outline: none;
+        }
+        
+        /* Interactive brand logo hover treatment */
+        .logo-cleanup {
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, filter;
+        }
+        .logo-cleanup:hover {
+            transform: translateY(-6px) scale(1.04) rotate(-1deg);
+            filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.16));
+            cursor: pointer;
+        }
+        .logo-cleanup:active {
+            transform: translateY(-2px) scale(0.99) rotate(0deg);
+        }
+
+        /* Interactive portrait image frames */
+        .portrait-frame {
+            position: relative;
+            overflow: hidden;
+        }
+        .portrait-frame img {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+        }
+        .portrait-card:hover .portrait-frame img {
+            transform: scale(1.03);
+            filter: grayscale(0%);
+        }
+
+        /* Footer ticker (bottom-to-top scrolling text) */
+        .footer-ticker-viewport {
+            height: 94px;
+            overflow: hidden;
+            position: relative;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%);
+        }
+
+        .footer-ticker-track {
+            --ticker-duration: 24s;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            animation: footerTickerUp var(--ticker-duration) linear infinite;
+            will-change: transform;
+        }
+
+        .footer-ticker-line {
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #475569;
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        @keyframes footerTickerUp {
+            from { transform: translateY(0%); }
+            to { transform: translateY(-50%); }
+        }
+
+        /* Header color shift once white section is reached */
+        #site-header.at-light-section #brands-menu-toggle,
+        #site-header.at-light-section #brands-menu-toggle i,
+        #site-header.at-light-section #header-nav > a,
+        #site-header.at-light-section #mobile-menu-toggle,
+        #site-header.at-light-section #mobile-menu-toggle i {
+            color: #FF4500 !important;
+        }
+
+        /* Cedar cursor on clickable elements */
+        :root {
+            --cedar-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='none'/%3E%3Cpath d='M16 2.5c-3.4 2.5-5.8 4.5-7.9 6.9h3.5c-1.5 1.4-3 2.9-4.2 4.5h4c-1.2 1.2-2.4 2.6-3.2 4h4.3c-1 1.1-1.8 2.3-2.5 3.6H14v5.7h4v-5.7h4.1c-.7-1.3-1.5-2.5-2.5-3.6h4.3c-.8-1.4-2-2.8-3.2-4h4c-1.2-1.6-2.7-3.1-4.2-4.5H24c-2.1-2.4-4.5-4.4-8-6.9z' fill='%23006030' stroke='%2300421f' stroke-width='1.0' stroke-linejoin='round'/%3E%3Crect x='14.8' y='21.2' width='2.4' height='8' rx='0.8' fill='%235a3f22'/%3E%3C/svg%3E") 5 3;
+        }
+
+        a[href],
+        button,
+        [role="button"],
+        [onclick],
+        input[type="button"],
+        input[type="submit"],
+        .cursor-pointer {
+            cursor: var(--cedar-cursor), pointer !important;
+        }
+    </style>
+</head>
+<body class="bg-holding-dark text-slate-200 font-sans antialiased selection:bg-holding-fireball selection:text-white overflow-x-hidden">
+
+    <header id="site-header" class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-black/10 border-b border-white/5 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+            
+            <div id="logo-trigger-zone" class="flex flex-col tracking-superwide text-xs font-light text-white cursor-pointer py-2 select-none">
+                <span class="font-semibold text-sm tracking-megawide transition-colors duration-300 uppercase">THE WILD THYME GROUP</span>
+                
+                <div class="h-0 opacity-0 overflow-visible transition-all duration-500 ease-out mt-1 origin-left" id="logo-reveal-container">
+                    <span class="text-[10px] tracking-[0.5em] text-holding-gold uppercase block whitespace-nowrap hover:scale-110 transition-transform duration-300">
+                        EST. 2026 • HOLDING CO.
+                    </span>
+                </div>
+            </div>
+
+            <nav id="header-nav" class="hidden md:flex items-center gap-10 text-xs font-medium tracking-widest text-slate-400 uppercase">
+                <div id="brands-menu-wrap" class="relative group">
+                    <button id="brands-menu-toggle" class="text-white hover:text-holding-fireball focus:text-holding-fireball focus:outline-none transition-colors duration-300 cursor-pointer uppercase tracking-widest inline-flex items-center gap-2" type="button" aria-expanded="false" aria-controls="brands-menu-dropdown" aria-haspopup="menu">
+                        Our Brands
+                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 transition-transform duration-300 group-[.open]:rotate-180"></i>
+                    </button>
+                    
+                    <div id="brands-menu-dropdown" class="opacity-0 pointer-events-none scale-95 absolute top-full left-0 mt-4 min-w-[250px] bg-transparent border-0 backdrop-blur-none p-0 space-y-3 transition-all duration-200 ease-out z-50" role="menu" aria-label="Our Brands options">
+                        <button type="button" role="menuitem" data-href="wild-thyme-restaurant.html" class="block w-full text-left py-1 text-xs font-medium tracking-widest text-slate-400 hover:text-holding-fireball focus:text-holding-fireball focus:outline-none transition-colors duration-300 bg-transparent uppercase">
+                            Wild Thyme Restaurant
+                        </button>
+                        <button type="button" role="menuitem" data-href="clementine-catering.html" class="block w-full text-left py-1 text-xs font-medium tracking-widest text-slate-400 hover:text-holding-fireball focus:text-holding-fireball focus:outline-none transition-colors duration-300 bg-transparent uppercase">
+                            Clementine Catering
+                        </button>
+                    </div>
+                </div>
+                
+                <a href="about-the-group.html" class="hover:text-holding-fireball transition-colors duration-300 cursor-pointer">About the Group</a>
+                <a href="corporate-news.html" class="hover:text-holding-fireball transition-colors duration-300 cursor-pointer">CORPORATE NEWS</a>
+                <a href="media-coverage-archive.html" class="hover:text-holding-fireball transition-colors duration-300 cursor-pointer">IN THE MEDIA</a>
+                <a href="the-team-narrative.html" class="hover:text-holding-fireball transition-colors duration-300 cursor-pointer">THE TEAM</a>
+                <a href="send-message.html" class="hover:text-holding-fireball transition-colors duration-300 cursor-pointer">CONTACT US</a>
+            </nav>
+
+            <button id="mobile-menu-toggle" class="md:hidden p-2 text-slate-400 hover:text-white focus:outline-none" aria-label="Toggle Mobile Menu">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-holding-charcoal/95 backdrop-blur-xl border-b border-white/5 px-8 py-8 space-y-6 flex flex-col text-sm uppercase tracking-widest font-medium text-slate-400">
+            <a href="#portals">Brands</a>
+            <a href="about-the-group.html">About the Group</a>
+            <a href="corporate-news.html">Corporate News</a>
+            <a href="media-coverage-archive.html">In the Media</a>
+            <a href="the-team-narrative.html">The Team</a>
+            <a href="send-message.html">Contact Us</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="portals" class="w-full min-h-screen md:h-screen flex flex-col md:flex-row pt-24 md:pt-0">
+            <div class="portal-card relative w-full h-[50vh] md:h-full md:w-1/2 flex flex-col items-center justify-center text-center overflow-hidden border-b md:border-b-0 md:border-r border-white/5 group">
+                <div class="portal-bg absolute inset-0 bg-[url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1974&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-1000 ease-out"></div>
+                <div class="portal-overlay absolute inset-0 bg-black/50 transition-colors duration-500 ease-out z-10"></div>
+                
+                <div class="relative z-20 px-6 max-w-md flex flex-col items-center">
+                    <h2 class="font-serif font-light text-4xl sm:text-5xl md:text-6xl text-white tracking-widest uppercase mb-4">
+                        WILD THYME
+                    </h2>
+                    <p class="font-serif italic text-base sm:text-lg text-slate-300 tracking-wide font-semibold mb-8 max-w-xs">
+                        Simply Lebanese food
+                    </p>
+                    <a href="wild-thyme-restaurant.html" data-public-brand-link="true" class="portal-btn inline-flex items-center gap-3 px-6 py-3 rounded-none text-xs uppercase tracking-widest font-medium text-white border border-white/40 bg-transparent transform">
+                        Explore Restaurant 
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5 transition-colors duration-300"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="portal-card relative w-full h-[50vh] md:h-full md:w-1/2 flex flex-col items-center justify-center text-center overflow-hidden group">
+                <div class="portal-bg absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=1770&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-1000 ease-out"></div>
+                <div class="portal-overlay absolute inset-0 bg-black/55 transition-colors duration-500 ease-out z-10"></div>
+                
+                <div class="relative z-20 px-6 max-w-md flex flex-col items-center">
+                    <h2 class="font-serif font-light text-4xl sm:text-5xl md:text-6xl text-white tracking-widest uppercase mb-4">
+                        CLEMENTINE
+                    </h2>
+                    <p class="font-serif italic text-base sm:text-lg text-slate-300 tracking-wide font-semibold mb-8 max-w-xs">
+                        We leave an impression
+                    </p>
+                    <a href="clementine-catering.html" data-public-brand-link="true" class="portal-btn inline-flex items-center gap-3 px-6 py-3 rounded-none text-xs uppercase tracking-widest font-medium text-white border border-white/40 bg-transparent transform">
+                        Explore Catering 
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5 transition-colors duration-300"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="border-t border-white/5 relative min-h-[18rem] md:min-h-[20rem] flex items-center" style="background-color:#F5F5F0; color:#222222;">
+            <div class="max-w-7xl mx-auto w-full px-6 py-12 md:py-16">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-0 relative items-center">
+                    <div class="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-px h-72" style="background-color:#222222;"></div>
+
+                    <a href="#portals" class="flex flex-col items-center justify-center text-center px-4 min-h-[10rem] md:min-h-[12rem] cursor-pointer block">
+                        <img src="images/wild-thyme-logo-final.jpeg" alt="Wild Thyme Logo" class="logo-cleanup h-[12rem] md:h-[14rem] w-auto object-contain max-w-[1040px]">
+                    </a>
+
+                    <a href="#portals" class="flex flex-col items-center justify-center text-center px-4 min-h-[10rem] md:min-h-[12rem] cursor-pointer block">
+                        <img src="images/clementine-logo-final.jpg" alt="Clementine Logo" class="logo-cleanup h-[12rem] md:h-[14rem] w-auto object-contain max-w-[1040px]">
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="restricted-dashboard" class="hidden py-24 bg-zinc-950 border-t-2 border-holding-azure/30 transition-all duration-500">
+            <div class="max-w-5xl mx-auto px-6">
+                <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-8">
+                    <div>
+                        <span class="text-xs font-semibold tracking-widest text-holding-azure uppercase block mb-1">Authenticated Terminal Access</span>
+                        <h3 class="text-2xl font-serif text-white uppercase tracking-wider">Strategic Portal & Data Hub</h3>
+                    </div>
+                    <button onclick="logoutSecurePortal()" class="text-[10px] uppercase tracking-widest border border-white/20 px-4 py-2 hover:bg-white hover:text-black transition-all">
+                        Terminate Session
+                    </button>
+                </div>
+
+                <div id="super-admin-management-panel" class="hidden bg-holding-charcoal p-6 border border-holding-gold/20 mb-8 transition-all duration-300">
+                    <div class="flex items-center gap-2 mb-4 text-holding-gold">
+                        <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                        <h4 class="text-xs uppercase tracking-wider font-semibold">Super Admin Registry Portal Gateway</h4>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                        <form id="add-admin-form" onsubmit="handleNewAdminCreation(event)" class="md:col-span-4 space-y-3 bg-black/30 p-4 border border-white/5">
+                            <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider block">Add Subsidiary Admin Token</span>
+                            <input type="text" id="new-admin-id" placeholder="Admin Username ID" class="w-full bg-holding-dark border border-white/10 px-2 py-1.5 text-xs text-white focus:outline-none focus:border-holding-gold" required />
+                            <button type="submit" class="w-full bg-holding-gold text-black uppercase tracking-widest text-[10px] font-bold py-2 hover:bg-white transition-all">
+                                Provision Account
+                            </button>
+                        </form>
+                        
+                        <div class="md:col-span-8">
+                            <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider block mb-2">Active Admin Roster Registry</span>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-white/5 text-[9px] uppercase text-slate-500 font-mono tracking-wider">
+                                            <th class="pb-2">Identity Token</th>
+                                            <th class="pb-2">First-Time Match Status</th>
+                                            <th class="pb-2 text-right">Revocation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-roster-rows" class="text-xs text-slate-300 divide-y divide-white/5">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-holding-charcoal p-6 border border-white/5 mb-8">
+                    <div class="flex items-center gap-2 mb-4 text-holding-gold">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                        <h4 class="text-xs uppercase tracking-wider font-semibold">User Access Approval Queue</h4>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-white/10 text-[10px] uppercase tracking-wider text-slate-400">
+                                    <th class="pb-3 font-medium">Requested Identity</th>
+                                    <th class="pb-3 font-medium">Security Tier</th>
+                                    <th class="pb-3 font-medium text-right">Action Interface</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-xs text-slate-300 divide-y divide-white/5">
+                                <tr>
+                                    <td class="py-3 font-mono">analyst_temp_91</td>
+                                    <td class="py-3 text-holding-azure">Tier-2 Analytical Data Access</td>
+                                    <td class="py-3 text-right">
+                                        <button onclick="this.closest('tr').remove()" class="bg-holding-fireball/10 text-holding-fireball border border-holding-fireball/20 px-3 py-1 text-[10px] uppercase tracking-widest hover:bg-holding-fireball hover:text-white transition-all">Approve User</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 font-mono">logistics_lead_van</td>
+                                    <td class="py-3 text-holding-electricGreen">Tier-1 Supply Chain Entry</td>
+                                    <td class="py-3 text-right">
+                                        <button onclick="this.closest('tr').remove()" class="bg-holding-fireball/10 text-holding-fireball border border-holding-fireball/20 px-3 py-1 text-[10px] uppercase tracking-widest hover:bg-holding-fireball hover:text-white transition-all">Approve User</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-holding-charcoal p-6 border border-white/5 mb-8">
+                    <div class="flex items-center gap-2 mb-4 text-holding-gold">
+                        <i data-lucide="share-2" class="w-4 h-4"></i>
+                        <h4 class="text-xs uppercase tracking-wider font-semibold">Social Media Link Manager</h4>
+                    </div>
+                    <p class="text-xs text-slate-400 font-light mb-4">Set Instagram and LinkedIn links for sharing from the front page footer area.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="admin-instagram-link-input" class="block text-[10px] uppercase tracking-widest text-slate-500 mb-1">Instagram URL</label>
+                            <input id="admin-instagram-link-input" type="url" placeholder="https://instagram.com/yourpage" class="w-full bg-holding-dark border border-white/10 px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-holding-azure" />
+                        </div>
+                        <div>
+                            <label for="admin-linkedin-link-input" class="block text-[10px] uppercase tracking-widest text-slate-500 mb-1">LinkedIn URL</label>
+                            <input id="admin-linkedin-link-input" type="url" placeholder="https://linkedin.com/company/yourpage" class="w-full bg-holding-dark border border-white/10 px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-holding-azure" />
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2 mt-3">
+                        <button id="save-social-links-btn" type="button" class="text-[10px] uppercase tracking-widest bg-holding-azure/10 text-holding-azure border border-holding-azure/30 px-3 py-1.5 hover:bg-holding-azure hover:text-white transition-all duration-200">Save Social Links</button>
+                        <button id="clear-social-links-btn" type="button" class="text-[10px] uppercase tracking-widest bg-white/5 text-slate-300 border border-white/20 px-3 py-1.5 hover:bg-white hover:text-black transition-all duration-200">Clear Social Links</button>
+                    </div>
+                    <div class="mt-3 flex flex-wrap items-center gap-4">
+                        <a id="dashboard-instagram-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden text-[11px] uppercase tracking-wider text-white underline hover:text-holding-azure">Open Instagram</a>
+                        <a id="dashboard-linkedin-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden text-[11px] uppercase tracking-wider text-white underline hover:text-holding-azure">Open LinkedIn</a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-holding-charcoal p-6 border border-white/5" data-resource-key="presentationDecks">
+                        <h4 class="text-xs uppercase tracking-wider text-holding-gold font-semibold mb-2">Presentation Decks</h4>
+                        <p class="text-xs text-slate-400 font-light mb-4">Q3/Q4 Expansion Strategies & Regional Gastronomy Infrastructure plans.</p>
+                        <div class="flex flex-wrap items-center gap-3 mb-3">
+                            <a data-resource-action="slides" href="#" target="_blank" rel="noopener noreferrer" class="hidden text-[11px] uppercase tracking-wider text-white underline hover:text-holding-azure">Open Google Slides</a>
+                            <a data-resource-action="pdf" href="#" target="_blank" rel="noopener noreferrer" class="hidden text-[11px] uppercase tracking-wider text-white underline hover:text-holding-azure">Open PDF</a>
+                        </div>
+                        <p data-resource-empty class="text-[10px] text-slate-500 mb-4">No Slides link or PDF uploaded yet.</p>
+                        <div class="border-t border-white/10 pt-4 space-y-3">
+                            <div>
+                                <label class="block text-[9px] uppercase tracking-widest text-slate-500 mb-1">Google Slides URL</label>
+                                <input data-resource-input="slides" type="url" placeholder="https://docs.google.com/presentation/..." class="w-full bg-holding-dark border border-white/10 px-2 py-2 text-[10px] text-white placeholder-slate-600 focus:outline-none focus:border-holding-azure" />
+                                <div class="flex items-center gap-2 mt-2">
+                                    <button type="button" data-resource-btn="save-slides" class="text-[9px] uppercase tracking-widest bg-holding-azure/10 text-holding-azure border border-holding-azure/30 px-2 py-1 hover:bg-holding-azure hover:text-white transition-all duration-200">Save Link</button>
+                                    <button type="button" data-resource-btn="clear-slides" class="text-[9px] uppercase tracking-widest bg-white/5 text-slate-300 border border-white/20 px-2 py-1 hover:bg-white hover:text-black transition-all duration-200">Clear Link</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[9px] uppercase tracking-widest text-slate-500 mb-1">Upload PDF</label>
+                                <input data-resource-input="pdf" type="file" accept="application/pdf" class="block w-full text-[10px] text-slate-300 file:mr-2 file:text-[9px] file:uppercase file:tracking-widest file:bg-holding-fireball/10 file:text-holding-fireball file:border file:border-holding-fireball/30 file:px-2 file:py-1 file:rounded-none" />
+                                <p data-resource-pdf-name class="mt-1 text-[10px] text-slate-500"></p>
+                                <button type="button" data-resource-btn="clear-pdf" class="mt-2 text-[9px] uppercase tracking-widest bg-white/5 text-slate-300 border border-white/20 px-2 py-1 hover:bg-white hover:text-black transition-all duration-200">Remove PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-holding-charcoal p-6 border border-white/5" data-resource-key="analyticalDataSheets">
+                        <h4 class="text-xs uppercase tracking-wider text-holding-gold font-semibold mb-2">Analytical Data Sheets</h4>
+                        <p class="text-xs text-slate-400 font-light mb-4">Live logistical master supply chain metrics and overhead balances.</p>
+                        <div class="flex flex-wrap items-center gap-3 mb-3">
+                            <a data-resource-action="slides" href="#" target="_blank" rel="noopener noreferrer" class="hidden text-[11px] uppercase tracking-wider text-white underline hover:text-holding-azure">Open Google Slides</a>
+                            <a data-resource-action="pdf" href="#" target="_blank" rel="noopener noreferrer" class="hidden text-[11px] uppercase tracking-wider text-white underline hover:text-holding-azure">Open PDF</a>
+                        </div>
+                        <p data-resource-empty class="text-[10px] text-slate-500 mb-4">No Slides link or PDF uploaded yet.</p>
+                        <div class="border-t border-white/10 pt-4 space-y-3">
+                            <div>
+                                <label class="block text-[9px] uppercase tracking-widest text-slate-500 mb-1">Google Slides URL</label>
+                                <input data-resource-input="slides" type="url" placeholder="https://docs.google.com/presentation/..." class="w-full bg-holding-dark border border-white/10 px-2 py-2 text-[10px] text-white placeholder-slate-600 focus:outline-none focus:border-holding-azure" />
+                                <div class="flex items-center gap-2 mt-2">
+                                    <button type="button" data-resource-btn="save-slides" class="text-[9px] uppercase tracking-widest bg-holding-azure/10 text-holding-azure border border-holding-azure/30 px-2 py-1 hover:bg-holding-azure hover:text-white transition-all duration-200">Save Link</button>
+                                    <button type="button" data-resource-btn="clear-slides" class="text-[9px] uppercase tracking-widest bg-white/5 text-slate-300 border border-white/20 px-2 py-1 hover:bg-white hover:text-black transition-all duration-200">Clear Link</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[9px] uppercase tracking-widest text-slate-500 mb-1">Upload PDF</label>
+                                <input data-resource-input="pdf" type="file" accept="application/pdf" class="block w-full text-[10px] text-slate-300 file:mr-2 file:text-[9px] file:uppercase file:tracking-widest file:bg-holding-fireball/10 file:text-holding-fireball file:border file:border-holding-fireball/30 file:px-2 file:py-1 file:rounded-none" />
+                                <p data-resource-pdf-name class="mt-1 text-[10px] text-slate-500"></p>
+                                <button type="button" data-resource-btn="clear-pdf" class="mt-2 text-[9px] uppercase tracking-widest bg-white/5 text-slate-300 border border-white/20 px-2 py-1 hover:bg-white hover:text-black transition-all duration-200">Remove PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-holding-charcoal p-6 border border-white/5" data-resource-key="balanceSheets">
+                        <h4 class="text-xs uppercase tracking-wider text-holding-gold font-semibold mb-2">Balance Sheets</h4>
+                        <p class="text-xs text-slate-400 font-light mb-4">Audited institutional compilation portfolios and asset equity allocations.</p>
+                        <div class="flex flex-wrap items-center gap-3 mb-3">
+                            <a data-resource-action="slides" href="#" target="_blank" rel="noopener noreferrer" class="hidden text-[11px] uppercase tracking-wider text-white underline hover:text-holding-azure">Open Google Slides</a>
+                            <a data-resource-action="pdf" href="#" target="_blank" rel="noopener noreferrer" class="hidden text-[11px] uppercase tracking-wider text-white underline hover:text-holding-azure">Open PDF</a>
+                        </div>
+                        <p data-resource-empty class="text-[10px] text-slate-500 mb-4">No Slides link or PDF uploaded yet.</p>
+                        <div class="border-t border-white/10 pt-4 space-y-3">
+                            <div>
+                                <label class="block text-[9px] uppercase tracking-widest text-slate-500 mb-1">Google Slides URL</label>
+                                <input data-resource-input="slides" type="url" placeholder="https://docs.google.com/presentation/..." class="w-full bg-holding-dark border border-white/10 px-2 py-2 text-[10px] text-white placeholder-slate-600 focus:outline-none focus:border-holding-azure" />
+                                <div class="flex items-center gap-2 mt-2">
+                                    <button type="button" data-resource-btn="save-slides" class="text-[9px] uppercase tracking-widest bg-holding-azure/10 text-holding-azure border border-holding-azure/30 px-2 py-1 hover:bg-holding-azure hover:text-white transition-all duration-200">Save Link</button>
+                                    <button type="button" data-resource-btn="clear-slides" class="text-[9px] uppercase tracking-widest bg-white/5 text-slate-300 border border-white/20 px-2 py-1 hover:bg-white hover:text-black transition-all duration-200">Clear Link</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[9px] uppercase tracking-widest text-slate-500 mb-1">Upload PDF</label>
+                                <input data-resource-input="pdf" type="file" accept="application/pdf" class="block w-full text-[10px] text-slate-300 file:mr-2 file:text-[9px] file:uppercase file:tracking-widest file:bg-holding-fireball/10 file:text-holding-fireball file:border file:border-holding-fireball/30 file:px-2 file:py-1 file:rounded-none" />
+                                <p data-resource-pdf-name class="mt-1 text-[10px] text-slate-500"></p>
+                                <button type="button" data-resource-btn="clear-pdf" class="mt-2 text-[9px] uppercase tracking-widest bg-white/5 text-slate-300 border border-white/20 px-2 py-1 hover:bg-white hover:text-black transition-all duration-200">Remove PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="relative py-4 pb-14 bg-holding-charcoal border-t border-black/10 px-6">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_minmax(360px,420px)] items-start gap-6 md:gap-8">
+                <div class="flex flex-col">
+                    <a href="https://maps.google.com/?q=705+12th+street+V3M4J7+New+Westminster+BC+Canada" target="_blank" rel="noopener noreferrer" class="target-orange-wrap block mb-4">
+                        <p class="target-orange text-sm font-light leading-relaxed duration-300">
+                            The Wild Thyme Group Inc.<br>
+                            705 12th street, V3M4J7<br>
+                            New Westminster, BC, Canada
+                        </p>
+                    </a>
+                    <a href="mailto:Paula@thewildthymegroup.com" class="target-orange-link text-sm font-light cursor-pointer duration-300">
+                        Paula@thewildthymegroup.com
+                    </a>
+                    <div class="mt-5 w-full flex items-center gap-3">
+                        <button id="admin-login-btn" onclick="openSecurePortalModal()" class="bg-[#4B5358] backdrop-blur-md border border-white/10 hover:border-holding-fireball text-slate-200 px-4 py-2.5 text-xs font-medium uppercase tracking-widest transition-all duration-300 rounded shadow-2xl flex items-center gap-2">
+                            <i data-lucide="key" class="w-3.5 h-3.5 text-holding-gold"></i> Login
+                        </button>
+                        <button id="admin-logout-btn" onclick="logoutSecurePortal()" class="hidden bg-holding-fireball border border-holding-fireball/70 hover:bg-white hover:text-black text-white px-4 py-2.5 text-xs font-medium uppercase tracking-widest transition-all duration-300 rounded shadow-2xl flex items-center gap-2">
+                            <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Logout
+                        </button>
+
+                        <div class="ml-auto flex items-center gap-2">
+                            <a id="public-instagram-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Open Instagram" class="inline-flex items-center justify-center w-16 h-16 rounded-md border border-white/10 hover:scale-105 transition-transform duration-200 pointer-events-none">
+                                <svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true">
+                                    <defs>
+                                        <linearGradient id="instaGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="#f09433"/>
+                                            <stop offset="25%" stop-color="#e6683c"/>
+                                            <stop offset="50%" stop-color="#dc2743"/>
+                                            <stop offset="75%" stop-color="#cc2366"/>
+                                            <stop offset="100%" stop-color="#bc1888"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <rect x="2" y="2" width="20" height="20" rx="5" fill="url(#instaGradient)"></rect>
+                                    <circle cx="12" cy="12" r="4.2" fill="none" stroke="#ffffff" stroke-width="1.8"></circle>
+                                    <circle cx="17.5" cy="6.5" r="1.2" fill="#ffffff"></circle>
+                                </svg>
+                            </a>
+
+                            <a id="public-linkedin-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Open LinkedIn" class="inline-flex items-center justify-center w-16 h-16 rounded-md border border-white/10 hover:scale-105 transition-transform duration-200 pointer-events-none">
+                                <svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true">
+                                    <rect x="2" y="2" width="20" height="20" rx="3" fill="#0A66C2"></rect>
+                                    <rect x="6" y="9" width="2.2" height="9" fill="#ffffff"></rect>
+                                    <circle cx="7.1" cy="6.9" r="1.1" fill="#ffffff"></circle>
+                                    <path d="M11 9h2.1v1.2c.5-.9 1.4-1.5 2.8-1.5 2.3 0 3.6 1.5 3.6 4.2V18h-2.2v-4.7c0-1.5-.6-2.3-1.8-2.3-1.2 0-1.9.9-1.9 2.3V18H11z" fill="#ffffff"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-[420px] md:justify-self-end">
+                    <p class="text-[10px] uppercase tracking-[0.22em] mb-2 font-semibold" style="color:#FF4500;">GROUP UPDATES</p>
+                    <div class="footer-ticker-viewport border-y border-white/10 py-2">
+                        <div id="footer-ticker-track" class="footer-ticker-track"></div>
+                    </div>
+
+                    <div id="footer-ticker-admin" class="hidden mt-3">
+                        <label for="footer-ticker-input" class="block text-[9px] uppercase tracking-[0.18em] text-slate-500 mb-1">Add Ticker Text (Admin)</label>
+                        <div class="flex items-center gap-2">
+                            <input id="footer-ticker-input" type="text" placeholder="Type a new line for ticker" class="flex-1 bg-holding-charcoal border border-white/10 px-3 py-2 text-[10px] text-white placeholder-slate-600 focus:outline-none focus:border-holding-fireball" />
+                            <button id="footer-ticker-add-btn" type="button" class="bg-holding-fireball text-white text-[10px] uppercase tracking-widest font-semibold px-4 py-2 hover:bg-holding-electricGreen hover:text-black transition-all duration-300">Add</button>
+                        </div>
+                        <div class="mt-3">
+                            <span class="block text-[9px] uppercase tracking-[0.18em] text-slate-500 mb-2">Manage Dynamic Updates</span>
+                            <div id="footer-ticker-custom-list" class="space-y-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <span class="absolute bottom-3 left-6 text-[#00C853] text-[11px] font-bold tracking-wider">© 2026 The Wild Thyme Group Inc.</span>
+        </section>
+    </main>
+
+    <div id="security-modal-overlay" class="hidden fixed inset-0 z-[100] backdrop-blur-md bg-black/80 flex items-center justify-center opacity-0 transition-all duration-300 px-4">
+        <div class="bg-holding-charcoal w-full max-w-sm border border-white/10 p-8 relative flex flex-col">
+            <button onclick="closeSecurePortalModal()" class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-holding-azure/30 bg-holding-azure/5 text-holding-azure mb-3">
+                    <i data-lucide="lock" class="w-4 h-4"></i>
+                </div>
+                <h4 class="text-sm font-semibold uppercase tracking-widest text-white">System Authentication</h4>
+                <p class="text-[11px] text-slate-400 font-light mt-1">Authorized access identity checkpoint</p>
+            </div>
+
+            <form id="portal-auth-form" onsubmit="executePortalAuth(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-wider text-slate-400 font-medium mb-1.5" for="auth-username">User Account</label>
+                    <input class="w-full bg-holding-dark border border-white/10 px-3 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-holding-azure tracking-wide" type="text" id="auth-username" placeholder="Username" required autocomplete="off">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-wider text-slate-400 font-medium mb-1.5" for="auth-password">Security Password</label>
+                    <input class="w-full bg-holding-dark border border-white/10 px-3 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-holding-azure tracking-wide" type="password" id="auth-password" placeholder="••••••••••••" required>
+                    <label class="mt-2 inline-flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500 cursor-pointer">
+                        <input type="checkbox" id="auth-show-password-toggle" class="accent-holding-fireball">
+                        Show Password
+                    </label>
+                </div>
+                
+                <div id="auth-error-banner" class="hidden text-[11px] font-medium text-holding-fireball text-center bg-holding-fireball/5 py-2 border border-holding-fireball/20">
+                    Invalid signature token match. Access Denied.
+                </div>
+
+                <button type="submit" class="w-full bg-white text-holding-dark uppercase tracking-widest text-[10px] font-semibold py-3 hover:bg-holding-azure hover:text-white transition-all duration-300 mt-2">
+                    Verify Credentials
+                </button>
+            </form>
+
+            <div id="password-reset-workflow-container" class="hidden mt-4 pt-4 border-t border-white/10 space-y-3">
+                <span class="text-[10px] text-holding-gold uppercase font-semibold tracking-wider block">First-Time Initialization Required</span>
+                <p class="text-[11px] text-slate-400 font-light">Your security access token requires modernization. Modify your password below to authorize session deployment keys.</p>
+                <input type="password" id="new-personal-password" placeholder="New Password Token" class="w-full bg-holding-dark border border-white/10 px-3 py-2 text-xs text-white focus:outline-none focus:border-holding-electricGreen" />
+                <label class="inline-flex items-center gap-2 text-[10px] uppercase tracking-wider text-slate-500 cursor-pointer">
+                    <input type="checkbox" id="reset-show-password-toggle" class="accent-holding-fireball">
+                    Show Password
+                </label>
+                <button onclick="commitAdminPasswordRotation()" class="w-full bg-holding-electricGreen text-black font-bold uppercase tracking-widest text-[10px] py-2 hover:bg-white transition-all">
+                    Commit Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const FOOTER_TICKER_STORAGE_KEY = 'wt_footer_ticker_items';
+        const FOOTER_TICKER_SCHEMA_KEY = 'wt_footer_ticker_schema_v2';
+        const FOOTER_TICKER_DEFAULT_LINES = [
+            'Wild Thyme Group strategic updates',
+            'Culinary excellence across all brands',
+            'Guest experience first, always',
+            'Hospitality with Lebanese soul',
+            'Corporate innovations in motion'
+        ];
+
+        const footerTickerTrack = document.getElementById('footer-ticker-track');
+        const footerTickerAdmin = document.getElementById('footer-ticker-admin');
+        const footerTickerInput = document.getElementById('footer-ticker-input');
+        const footerTickerAddBtn = document.getElementById('footer-ticker-add-btn');
+        const footerTickerCustomList = document.getElementById('footer-ticker-custom-list');
+        const adminLoginBtn = document.getElementById('admin-login-btn');
+        const adminLogoutBtn = document.getElementById('admin-logout-btn');
+        let editingFooterTickerIndex = null;
+
+        function isAdminConnected() {
+            return localStorage.getItem('wt_holding_admin_connected') === 'true';
+        }
+
+        function setAuthButtonsVisibility(isLoggedIn) {
+            if (adminLoginBtn) {
+                adminLoginBtn.classList.toggle('hidden', isLoggedIn);
+            }
+            if (adminLogoutBtn) {
+                adminLogoutBtn.classList.toggle('hidden', !isLoggedIn);
+            }
+        }
+
+        function getFooterTickerLines() {
+            return getManagedFooterTickerLines();
+        }
+
+        function getManagedFooterTickerLines() {
+            let storedLines = [];
+            try {
+                storedLines = JSON.parse(localStorage.getItem(FOOTER_TICKER_STORAGE_KEY) || '[]');
+            } catch (error) {
+                storedLines = [];
+            }
+
+            if (!Array.isArray(storedLines)) {
+                storedLines = [];
+            }
+
+            if (localStorage.getItem(FOOTER_TICKER_SCHEMA_KEY) !== 'true') {
+                const migratedLines = [...FOOTER_TICKER_DEFAULT_LINES, ...storedLines];
+                localStorage.setItem(FOOTER_TICKER_STORAGE_KEY, JSON.stringify(migratedLines));
+                localStorage.setItem(FOOTER_TICKER_SCHEMA_KEY, 'true');
+                return migratedLines;
+            }
+
+            return storedLines;
+        }
+
+        function setManagedFooterTickerLines(lines) {
+            localStorage.setItem(FOOTER_TICKER_STORAGE_KEY, JSON.stringify(lines));
+            localStorage.setItem(FOOTER_TICKER_SCHEMA_KEY, 'true');
+        }
+
+        function renderFooterTicker() {
+            if (!footerTickerTrack) return;
+
+            const lines = getFooterTickerLines();
+            footerTickerTrack.innerHTML = '';
+
+            const allLines = [...lines, ...lines];
+            allLines.forEach((line) => {
+                const item = document.createElement('div');
+                item.className = 'footer-ticker-line';
+                item.textContent = line;
+                footerTickerTrack.appendChild(item);
+            });
+
+            const duration = Math.max(18, lines.length * 4);
+            footerTickerTrack.style.setProperty('--ticker-duration', `${duration}s`);
+        }
+
+        function setFooterTickerAdminVisibility(visible) {
+            if (!footerTickerAdmin) return;
+            if (visible) {
+                footerTickerAdmin.classList.remove('hidden');
+            } else {
+                footerTickerAdmin.classList.add('hidden');
+            }
+        }
+
+        function renderFooterTickerCustomList() {
+            if (!footerTickerCustomList) return;
+            const managedLines = getManagedFooterTickerLines();
+
+            if (!managedLines.length) {
+                footerTickerCustomList.innerHTML = '<p class="text-[10px] text-slate-500">No updates yet.</p>';
+                return;
+            }
+
+            footerTickerCustomList.innerHTML = managedLines.map((line, index) => {
+                if (editingFooterTickerIndex === index) {
+                    return `
+                        <div class="bg-black/20 border border-white/10 px-2 py-2 space-y-2">
+                            <input id="footer-ticker-edit-input-${index}" type="text" value="${escapeHTML(line)}" onkeydown="handleFooterTickerEditKeydown(event, ${index})" class="w-full bg-holding-charcoal border border-white/10 px-2 py-1.5 text-[10px] text-white focus:outline-none focus:border-holding-azure" />
+                            <div class="flex items-center gap-2 justify-end">
+                                <button type="button" onclick="saveEditedFooterTickerText(${index})" class="text-[9px] uppercase tracking-widest bg-holding-electricGreen/10 text-holding-electricGreen border border-holding-electricGreen/30 px-2 py-1 hover:bg-holding-electricGreen hover:text-black transition-all duration-200">Save</button>
+                                <button type="button" onclick="cancelEditFooterTickerText()" class="text-[9px] uppercase tracking-widest bg-white/5 text-slate-300 border border-white/20 px-2 py-1 hover:bg-white hover:text-black transition-all duration-200">Cancel</button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="flex items-center gap-2 bg-black/20 border border-white/10 px-2 py-2">
+                        <span class="flex-1 text-[10px] text-slate-200 break-words">${escapeHTML(line)}</span>
+                        <button type="button" onclick="startEditFooterTickerText(${index})" class="text-[9px] uppercase tracking-widest bg-holding-azure/10 text-holding-azure border border-holding-azure/30 px-2 py-1 hover:bg-holding-azure hover:text-white transition-all duration-200">Edit</button>
+                        <button type="button" onclick="removeFooterTickerText(${index})" class="text-[9px] uppercase tracking-widest bg-holding-fireball/10 text-holding-fireball border border-holding-fireball/30 px-2 py-1 hover:bg-holding-fireball hover:text-white transition-all duration-200">Remove</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addFooterTickerText() {
+            if (!isAdminConnected()) {
+                setFooterTickerAdminVisibility(false);
+                return;
+            }
+            if (!footerTickerInput) return;
+            const value = footerTickerInput.value.trim();
+            if (!value) return;
+
+            const managedLines = getManagedFooterTickerLines();
+            managedLines.push(value);
+            setManagedFooterTickerLines(managedLines);
+
+            footerTickerInput.value = '';
+            renderFooterTicker();
+            renderFooterTickerCustomList();
+        }
+
+        function startEditFooterTickerText(index) {
+            if (!isAdminConnected()) return;
+            const managedLines = getManagedFooterTickerLines();
+            const current = managedLines[index];
+            if (typeof current !== 'string') return;
+
+            editingFooterTickerIndex = index;
+            renderFooterTickerCustomList();
+        }
+
+        function saveEditedFooterTickerText(index) {
+            if (!isAdminConnected()) return;
+            const managedLines = getManagedFooterTickerLines();
+            if (typeof managedLines[index] !== 'string') return;
+
+            const editInput = document.getElementById(`footer-ticker-edit-input-${index}`);
+            if (!editInput) return;
+
+            const cleaned = editInput.value.trim();
+            if (!cleaned) {
+                alert('Ticker text cannot be empty.');
+                return;
+            }
+
+            managedLines[index] = cleaned;
+            editingFooterTickerIndex = null;
+            setManagedFooterTickerLines(managedLines);
+            renderFooterTicker();
+            renderFooterTickerCustomList();
+        }
+
+        function cancelEditFooterTickerText() {
+            editingFooterTickerIndex = null;
+            renderFooterTickerCustomList();
+        }
+
+        function handleFooterTickerEditKeydown(event, index) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                saveEditedFooterTickerText(index);
+                return;
+            }
+
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                cancelEditFooterTickerText();
+            }
+        }
+
+        function removeFooterTickerText(index) {
+            if (!isAdminConnected()) return;
+            const managedLines = getManagedFooterTickerLines();
+            if (typeof managedLines[index] !== 'string') return;
+            if (!confirm('Remove this ticker update?')) return;
+
+            managedLines.splice(index, 1);
+            editingFooterTickerIndex = null;
+            setManagedFooterTickerLines(managedLines);
+            renderFooterTicker();
+            renderFooterTickerCustomList();
+        }
+
+        if (footerTickerAddBtn) {
+            footerTickerAddBtn.addEventListener('click', addFooterTickerText);
+        }
+
+        if (footerTickerInput) {
+            footerTickerInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    addFooterTickerText();
+                }
+            });
+        }
+
+        renderFooterTicker();
+        renderFooterTickerCustomList();
+        setFooterTickerAdminVisibility(false);
+        setFooterTickerAdminVisibility(isAdminConnected());
+        setAuthButtonsVisibility(isAdminConnected());
+        window.startEditFooterTickerText = startEditFooterTickerText;
+        window.saveEditedFooterTickerText = saveEditedFooterTickerText;
+        window.cancelEditFooterTickerText = cancelEditFooterTickerText;
+        window.handleFooterTickerEditKeydown = handleFooterTickerEditKeydown;
+        window.removeFooterTickerText = removeFooterTickerText;
+
+        // Database simulator registry object matching security guidelines exactly
+        const DEFAULT_ROSTER = {
+            Marwan: { pass: "Backfrommytrip1$", isSuper: true },
+            Paula: { pass: "Peace&Love1$", isSuper: false, firstLogin: true },
+            Julie: { pass: "Peace&Love1$", isSuper: false, firstLogin: true },
+            ElBro: { pass: "Peace&Love1$", isSuper: false, firstLogin: true }
+        };
+
+        function initializeSecurityRoster() {
+            if (!localStorage.getItem('wt_admin_credentials_db')) {
+                localStorage.setItem('wt_admin_credentials_db', JSON.stringify(DEFAULT_ROSTER));
+            }
+        }
+        initializeSecurityRoster();
+
+        let activelyConnectedUser = null;
+        const ADMIN_SESSION_USER_KEY = 'wt_holding_admin_user';
+        const ADMIN_SESSION_SUPER_KEY = 'wt_holding_admin_is_super';
+        const DASHBOARD_RESOURCE_STORAGE_KEY = 'wt_dashboard_resource_library_v1';
+        const DASHBOARD_RESOURCE_KEYS = ['presentationDecks', 'analyticalDataSheets', 'balanceSheets'];
+        const SOCIAL_LINKS_STORAGE_KEY = 'wt_social_links_v1';
+        const adminInstagramInput = document.getElementById('admin-instagram-link-input');
+        const adminLinkedInInput = document.getElementById('admin-linkedin-link-input');
+        const saveSocialLinksBtn = document.getElementById('save-social-links-btn');
+        const clearSocialLinksBtn = document.getElementById('clear-social-links-btn');
+        const dashboardInstagramLink = document.getElementById('dashboard-instagram-link');
+        const dashboardLinkedInLink = document.getElementById('dashboard-linkedin-link');
+        const publicInstagramLink = document.getElementById('public-instagram-link');
+        const publicLinkedInLink = document.getElementById('public-linkedin-link');
+
+        function getSocialLinks() {
+            let parsed = {};
+            try {
+                parsed = JSON.parse(localStorage.getItem(SOCIAL_LINKS_STORAGE_KEY) || '{}');
+            } catch (error) {
+                parsed = {};
+            }
+
+            return {
+                instagram: typeof parsed.instagram === 'string' ? parsed.instagram : '',
+                linkedin: typeof parsed.linkedin === 'string' ? parsed.linkedin : ''
+            };
+        }
+
+        function setSocialLinks(links) {
+            localStorage.setItem(SOCIAL_LINKS_STORAGE_KEY, JSON.stringify(links));
+        }
+
+        function applySocialLink(anchor, url) {
+            if (!anchor) return;
+            const hasUrl = Boolean(url);
+            anchor.href = hasUrl ? url : '#';
+            anchor.setAttribute('aria-disabled', hasUrl ? 'false' : 'true');
+
+            const isPublicRowIcon = anchor.id === 'public-instagram-link' || anchor.id === 'public-linkedin-link';
+            if (isPublicRowIcon) {
+                anchor.classList.remove('hidden');
+                anchor.classList.toggle('pointer-events-none', !hasUrl);
+                return;
+            }
+
+            anchor.classList.toggle('hidden', !hasUrl);
+        }
+
+        function renderSocialLinks() {
+            const links = getSocialLinks();
+
+            if (adminInstagramInput) {
+                adminInstagramInput.value = links.instagram;
+            }
+            if (adminLinkedInInput) {
+                adminLinkedInInput.value = links.linkedin;
+            }
+
+            applySocialLink(dashboardInstagramLink, links.instagram);
+            applySocialLink(dashboardLinkedInLink, links.linkedin);
+            applySocialLink(publicInstagramLink, links.instagram);
+            applySocialLink(publicLinkedInLink, links.linkedin);
+        }
+
+        function saveSocialLinks() {
+            if (!isAdminConnected()) return;
+
+            const instagram = adminInstagramInput ? adminInstagramInput.value.trim() : '';
+            const linkedin = adminLinkedInInput ? adminLinkedInInput.value.trim() : '';
+
+            if (instagram && !isValidHttpUrl(instagram)) {
+                alert('Please enter a valid Instagram URL.');
+                return;
+            }
+            if (linkedin && !isValidHttpUrl(linkedin)) {
+                alert('Please enter a valid LinkedIn URL.');
+                return;
+            }
+
+            setSocialLinks({ instagram, linkedin });
+            renderSocialLinks();
+        }
+
+        function clearSocialLinks() {
+            if (!isAdminConnected()) return;
+            setSocialLinks({ instagram: '', linkedin: '' });
+            renderSocialLinks();
+        }
+
+        function getDashboardResourceLibrary() {
+            let parsed = {};
+            try {
+                parsed = JSON.parse(localStorage.getItem(DASHBOARD_RESOURCE_STORAGE_KEY) || '{}');
+            } catch (error) {
+                parsed = {};
+            }
+
+            const normalized = {};
+            DASHBOARD_RESOURCE_KEYS.forEach((key) => {
+                const current = parsed && parsed[key] ? parsed[key] : {};
+                normalized[key] = {
+                    slidesUrl: typeof current.slidesUrl === 'string' ? current.slidesUrl : '',
+                    pdfDataUrl: typeof current.pdfDataUrl === 'string' ? current.pdfDataUrl : '',
+                    pdfFileName: typeof current.pdfFileName === 'string' ? current.pdfFileName : ''
+                };
+            });
+
+            return normalized;
+        }
+
+        function setDashboardResourceLibrary(library) {
+            localStorage.setItem(DASHBOARD_RESOURCE_STORAGE_KEY, JSON.stringify(library));
+        }
+
+        function renderDashboardResourceCard(key) {
+            const card = document.querySelector(`[data-resource-key="${key}"]`);
+            if (!card) return;
+
+            const library = getDashboardResourceLibrary();
+            const data = library[key];
+
+            const slidesLink = card.querySelector('[data-resource-action="slides"]');
+            const pdfLink = card.querySelector('[data-resource-action="pdf"]');
+            const emptyText = card.querySelector('[data-resource-empty]');
+            const slidesInput = card.querySelector('[data-resource-input="slides"]');
+            const pdfName = card.querySelector('[data-resource-pdf-name]');
+
+            const hasSlides = Boolean(data.slidesUrl);
+            const hasPdf = Boolean(data.pdfDataUrl);
+
+            if (slidesLink) {
+                slidesLink.href = hasSlides ? data.slidesUrl : '#';
+                slidesLink.classList.toggle('hidden', !hasSlides);
+            }
+
+            if (pdfLink) {
+                pdfLink.href = hasPdf ? data.pdfDataUrl : '#';
+                pdfLink.download = data.pdfFileName || `${key}.pdf`;
+                pdfLink.classList.toggle('hidden', !hasPdf);
+            }
+
+            if (slidesInput) {
+                slidesInput.value = data.slidesUrl;
+            }
+
+            if (pdfName) {
+                pdfName.textContent = hasPdf ? `Uploaded: ${data.pdfFileName || 'document.pdf'}` : 'No PDF uploaded';
+            }
+
+            if (emptyText) {
+                emptyText.classList.toggle('hidden', hasSlides || hasPdf);
+            }
+        }
+
+        function renderDashboardResourceLibrary() {
+            DASHBOARD_RESOURCE_KEYS.forEach((key) => renderDashboardResourceCard(key));
+        }
+
+        function isValidHttpUrl(value) {
+            try {
+                const parsed = new URL(value);
+                return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+            } catch (error) {
+                return false;
+            }
+        }
+
+        function saveResourceSlidesLink(key) {
+            const card = document.querySelector(`[data-resource-key="${key}"]`);
+            if (!card) return;
+
+            const slidesInput = card.querySelector('[data-resource-input="slides"]');
+            if (!slidesInput) return;
+
+            const value = slidesInput.value.trim();
+            if (value && !isValidHttpUrl(value)) {
+                alert('Please enter a valid Google Slides URL.');
+                return;
+            }
+
+            const library = getDashboardResourceLibrary();
+            library[key].slidesUrl = value;
+            setDashboardResourceLibrary(library);
+            renderDashboardResourceCard(key);
+        }
+
+        function clearResourceSlidesLink(key) {
+            const library = getDashboardResourceLibrary();
+            library[key].slidesUrl = '';
+            setDashboardResourceLibrary(library);
+            renderDashboardResourceCard(key);
+        }
+
+        function clearResourcePdf(key) {
+            const library = getDashboardResourceLibrary();
+            library[key].pdfDataUrl = '';
+            library[key].pdfFileName = '';
+            setDashboardResourceLibrary(library);
+            renderDashboardResourceCard(key);
+        }
+
+        function handleResourcePdfUpload(key, file) {
+            if (!file) return;
+            if (file.type !== 'application/pdf') {
+                alert('Only PDF files are supported.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                const library = getDashboardResourceLibrary();
+                library[key].pdfDataUrl = typeof reader.result === 'string' ? reader.result : '';
+                library[key].pdfFileName = file.name;
+                setDashboardResourceLibrary(library);
+                renderDashboardResourceCard(key);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function bindDashboardResourceCard(key) {
+            const card = document.querySelector(`[data-resource-key="${key}"]`);
+            if (!card) return;
+
+            const saveSlidesBtn = card.querySelector('[data-resource-btn="save-slides"]');
+            const clearSlidesBtn = card.querySelector('[data-resource-btn="clear-slides"]');
+            const clearPdfBtn = card.querySelector('[data-resource-btn="clear-pdf"]');
+            const slidesInput = card.querySelector('[data-resource-input="slides"]');
+            const pdfInput = card.querySelector('[data-resource-input="pdf"]');
+
+            if (saveSlidesBtn) {
+                saveSlidesBtn.addEventListener('click', () => saveResourceSlidesLink(key));
+            }
+
+            if (clearSlidesBtn) {
+                clearSlidesBtn.addEventListener('click', () => clearResourceSlidesLink(key));
+            }
+
+            if (clearPdfBtn) {
+                clearPdfBtn.addEventListener('click', () => clearResourcePdf(key));
+            }
+
+            if (slidesInput) {
+                slidesInput.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        saveResourceSlidesLink(key);
+                    }
+                });
+            }
+
+            if (pdfInput) {
+                pdfInput.addEventListener('change', (event) => {
+                    const target = event.target;
+                    const file = target.files && target.files[0] ? target.files[0] : null;
+                    handleResourcePdfUpload(key, file);
+                    target.value = '';
+                });
+            }
+        }
+
+        DASHBOARD_RESOURCE_KEYS.forEach((key) => bindDashboardResourceCard(key));
+        renderDashboardResourceLibrary();
+        if (saveSocialLinksBtn) {
+            saveSocialLinksBtn.addEventListener('click', saveSocialLinks);
+        }
+        if (clearSocialLinksBtn) {
+            clearSocialLinksBtn.addEventListener('click', clearSocialLinks);
+        }
+        if (adminInstagramInput) {
+            adminInstagramInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    saveSocialLinks();
+                }
+            });
+        }
+        if (adminLinkedInInput) {
+            adminLinkedInInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    saveSocialLinks();
+                }
+            });
+        }
+        renderSocialLinks();
+
+        function cleanupLogoBackgrounds() {
+            const logos = document.querySelectorAll('img.logo-cleanup');
+            logos.forEach((img) => {
+                const src = img.getAttribute('src');
+                if (!src) return;
+
+                const temp = new Image();
+                temp.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = temp.naturalWidth;
+                    canvas.height = temp.naturalHeight;
+                    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                    if (!ctx) return;
+
+                    ctx.drawImage(temp, 0, 0);
+                    const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const data = frame.data;
+
+                    for (let i = 0; i < data.length; i += 4) {
+                        const r = data[i];
+                        const g = data[i + 1];
+                        const b = data[i + 2];
+                        const max = Math.max(r, g, b);
+                        const min = Math.min(r, g, b);
+                        const sat = max - min;
+
+                        const isNeutral = sat <= 26;
+                        const isLight = max >= 120;
+                        const isNearWhite = r >= 230 && g >= 230 && b >= 230;
+                        if ((isNeutral && isLight) || isNearWhite) {
+                            data[i + 3] = 0;
+                        }
+                    }
+
+                    ctx.putImageData(frame, 0, 0);
+                    img.src = canvas.toDataURL('image/png');
+                };
+                temp.src = src;
+            });
+        }
+
+        cleanupLogoBackgrounds();
+
+        const brandLogos = document.querySelectorAll('#about img.logo-cleanup');
+        brandLogos.forEach((logo) => {
+            logo.addEventListener('mouseover', () => {
+                logo.style.transform = 'translateY(-6px) scale(1.04) rotate(-1deg)';
+                logo.style.filter = 'drop-shadow(0 14px 24px rgba(0, 0, 0, 0.16))';
+                logo.style.cursor = 'pointer';
+            });
+
+            logo.addEventListener('mouseout', () => {
+                logo.style.transform = '';
+                logo.style.filter = '';
+                logo.style.cursor = '';
+            });
+        });
+
+        const triggerZone = document.getElementById('logo-trigger-zone');
+        const logoContainer = document.getElementById('logo-reveal-container');
+        const portalsBox = document.getElementById('portals');
+
+        function revealLogo() {
+            logoContainer.style.height = '24px';
+            logoContainer.style.opacity = '1';
+        }
+
+        function hideLogo() {
+            logoContainer.style.height = '0px';
+            logoContainer.style.opacity = '0';
+        }
+
+        triggerZone.addEventListener('mouseenter', revealLogo);
+        triggerZone.addEventListener('mouseleave', hideLogo);
+        portalsBox.addEventListener('mouseenter', revealLogo);
+        portalsBox.addEventListener('mouseleave', hideLogo);
+
+        const menuToggleBtn = document.getElementById('mobile-menu-toggle');
+        const mobileNavMenu = document.getElementById('mobile-menu');
+        const brandsMenuWrap = document.getElementById('brands-menu-wrap');
+        const brandsMenuToggle = document.getElementById('brands-menu-toggle');
+        const brandsMenuDropdown = document.getElementById('brands-menu-dropdown');
+        const brandMenuItems = Array.from(document.querySelectorAll('#brands-menu-dropdown button[data-href]'));
+        const publicBrandLinks = Array.from(document.querySelectorAll('[data-public-brand-link]'));
+        const siteHeader = document.getElementById('site-header');
+        const aboutSection = document.getElementById('about');
+
+        function setBrandNavigationAccess() {
+            const isAdminMode = isAdminConnected();
+
+            brandMenuItems.forEach((item) => {
+                item.classList.toggle('opacity-50', isAdminMode);
+                item.classList.toggle('cursor-not-allowed', isAdminMode);
+            });
+
+            publicBrandLinks.forEach((link) => {
+                link.classList.toggle('opacity-50', isAdminMode);
+                link.classList.toggle('cursor-not-allowed', isAdminMode);
+                link.setAttribute('aria-disabled', isAdminMode ? 'true' : 'false');
+            });
+        }
+
+        publicBrandLinks.forEach((link) => {
+            link.addEventListener('click', (event) => {
+                if (!isAdminConnected()) return;
+                event.preventDefault();
+            });
+        });
+
+        setBrandNavigationAccess();
+
+        function syncHeaderColorOnWhiteSection() {
+            if (!siteHeader || !aboutSection) return;
+
+            const headerHeight = siteHeader.offsetHeight || 0;
+            const aboutTop = aboutSection.getBoundingClientRect().top;
+            const hasReachedWhiteSection = aboutTop <= headerHeight + 6;
+
+            siteHeader.classList.toggle('at-light-section', hasReachedWhiteSection);
+        }
+
+        window.addEventListener('scroll', syncHeaderColorOnWhiteSection, { passive: true });
+        window.addEventListener('resize', syncHeaderColorOnWhiteSection);
+        syncHeaderColorOnWhiteSection();
+
+        if (brandsMenuWrap && brandsMenuToggle && brandsMenuDropdown) {
+            let isBrandsMenuOpen = false;
+
+            const setBrandsMenuOpen = (open) => {
+                isBrandsMenuOpen = open;
+                brandsMenuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                
+                if (open) {
+                    brandsMenuWrap.classList.add('open');
+                    brandsMenuDropdown.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+                    brandsMenuDropdown.classList.add('opacity-100', 'pointer-events-auto', 'scale-100');
+                } else {
+                    brandsMenuWrap.classList.remove('open');
+                    brandsMenuDropdown.classList.remove('opacity-100', 'pointer-events-auto', 'scale-100');
+                    brandsMenuDropdown.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+                }
+            };
+
+            brandsMenuToggle.addEventListener('click', (event) => {
+                event.stopPropagation();
+                setBrandsMenuOpen(!isBrandsMenuOpen);
+            });
+
+            document.addEventListener('click', (event) => {
+                if (!isBrandsMenuOpen) return;
+                
+                const isClickInside = brandsMenuWrap.contains(event.target);
+                if (!isClickInside) {
+                    setBrandsMenuOpen(false);
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && isBrandsMenuOpen) {
+                    setBrandsMenuOpen(false);
+                    brandsMenuToggle.focus();
+                }
+            });
+
+            brandsMenuDropdown.querySelectorAll('button[data-href]').forEach((item) => {
+                item.addEventListener('click', () => {
+                    if (isAdminConnected()) return;
+                    const href = item.getAttribute('data-href');
+                    if (!href) return;
+                    window.location.href = href;
+                });
+            });
+        }
+
+        menuToggleBtn.addEventListener('click', () => {
+            mobileNavMenu.classList.toggle('hidden');
+            const inlineIconNode = menuToggleBtn.querySelector('i');
+            inlineIconNode.setAttribute('data-lucide', mobileNavMenu.classList.contains('hidden') ? 'menu' : 'x');
+            lucide.createIcons();
+        });
+
+        // MULTI ACCOUNT SYSTEM SECURITY AUTHENTICATION PROCESSOR
+        const modalOverlay = document.getElementById('security-modal-overlay');
+        const authForm = document.getElementById('portal-auth-form');
+        const errorBanner = document.getElementById('auth-error-banner');
+        const dashboardSection = document.getElementById('restricted-dashboard');
+        const superAdminPanel = document.getElementById('super-admin-management-panel');
+        const resetWorkflow = document.getElementById('password-reset-workflow-container');
+        const authPasswordInput = document.getElementById('auth-password');
+        const authShowPasswordToggle = document.getElementById('auth-show-password-toggle');
+        const newPersonalPasswordInput = document.getElementById('new-personal-password');
+        const resetShowPasswordToggle = document.getElementById('reset-show-password-toggle');
+
+        function bindPasswordVisibilityToggle(toggleEl, inputEl) {
+            if (!toggleEl || !inputEl) return;
+
+            toggleEl.addEventListener('change', () => {
+                inputEl.type = toggleEl.checked ? 'text' : 'password';
+            });
+        }
+
+        bindPasswordVisibilityToggle(authShowPasswordToggle, authPasswordInput);
+        bindPasswordVisibilityToggle(resetShowPasswordToggle, newPersonalPasswordInput);
+
+        function openSecurePortalModal() {
+            modalOverlay.classList.remove('hidden');
+            setTimeout(() => modalOverlay.classList.add('opacity-100'), 10);
+            errorBanner.classList.add('hidden');
+            resetWorkflow.classList.add('hidden');
+            authForm.classList.remove('hidden');
+            authForm.reset();
+        }
+
+        function closeSecurePortalModal() {
+            modalOverlay.classList.remove('opacity-100');
+            setTimeout(() => modalOverlay.classList.add('hidden'), 300);
+        }
+
+        function executePortalAuth(event) {
+            event.preventDefault();
+            const userVal = document.getElementById('auth-username').value.trim();
+            const passVal = document.getElementById('auth-password').value;
+
+            const db = JSON.parse(localStorage.getItem('wt_admin_credentials_db'));
+            const matchedUser = db[userVal];
+
+            if (matchedUser && matchedUser.pass === passVal) {
+                errorBanner.classList.add('hidden');
+                activelyConnectedUser = userVal;
+
+                // Forced password reset prompts triggering on first match lifecycle
+                if (!matchedUser.isSuper && matchedUser.firstLogin) {
+                    authForm.classList.add('hidden');
+                    resetWorkflow.classList.remove('hidden');
+                    return;
+                }
+
+                grantAccessSession(matchedUser.isSuper);
+            } else {
+                errorBanner.classList.remove('hidden');
+            }
+        }
+
+        function grantAccessSession(isSuperAdmin) {
+            closeSecurePortalModal();
+            localStorage.setItem('wt_holding_admin_connected', 'true');
+            if (activelyConnectedUser) {
+                localStorage.setItem(ADMIN_SESSION_USER_KEY, activelyConnectedUser);
+            }
+            localStorage.setItem(ADMIN_SESSION_SUPER_KEY, isSuperAdmin ? 'true' : 'false');
+            setFooterTickerAdminVisibility(true);
+            setAuthButtonsVisibility(true);
+            setBrandNavigationAccess();
+            
+            // DYNAMIC CONSOLE LOGS: Explicitly tracing credentials alerts dispatched contextually
+            if (!isSuperAdmin) {
+                console.log(`%c[SECURITY DIAL-ALERT] OUTGOING ENCRYPTED DISPATCH TO MARWAN: Admin instance verified. User "${activelyConnectedUser}" successfully logged into terminal gateway node. Broadcast timestamp: ${new Date().toISOString()}`, "color: #FF4500; font-weight: bold; background: #0A0A0A; padding: 4px;");
+            } else {
+                console.log(`%c[SECURITY DIAL-ALERT] SUPER-ADMIN OK: Master session initiated safely by user "${activelyConnectedUser}". Management terminal unlocked.`, "color: #00FF66; font-weight: bold; background: #0A0A0A; padding: 4px;");
+            }
+
+            dashboardSection.classList.remove('hidden');
+
+            if (isSuperAdmin) {
+                superAdminPanel.classList.remove('hidden');
+                renderAdminRosterRows();
+            } else {
+                superAdminPanel.classList.add('hidden');
+            }
+
+            dashboardSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function commitAdminPasswordRotation() {
+            const inputVal = document.getElementById('new-personal-password').value.trim();
+            if (inputVal.length < 6) {
+                alert("Security error: New password complexity verification failed. Must be at least 6 characters.");
+                return;
+            }
+
+            const db = JSON.parse(localStorage.getItem('wt_admin_credentials_db'));
+            db[activelyConnectedUser].pass = inputVal;
+            db[activelyConnectedUser].firstLogin = false;
+            localStorage.setItem('wt_admin_credentials_db', JSON.stringify(db));
+
+            alert("Security matrix configuration updated. Password successfully rotated.");
+            grantAccessSession(false);
+        }
+
+        function logoutSecurePortal() {
+            superAdminPanel.classList.add('hidden');
+            dashboardSection.classList.add('hidden');
+            activelyConnectedUser = null;
+            localStorage.setItem('wt_holding_admin_connected', 'false');
+            localStorage.removeItem(ADMIN_SESSION_USER_KEY);
+            localStorage.removeItem(ADMIN_SESSION_SUPER_KEY);
+            setFooterTickerAdminVisibility(false);
+            setAuthButtonsVisibility(false);
+            setBrandNavigationAccess();
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function restoreAdminSessionIfAny() {
+            if (localStorage.getItem('wt_holding_admin_connected') !== 'true') return;
+
+            activelyConnectedUser = localStorage.getItem(ADMIN_SESSION_USER_KEY) || 'Session User';
+            const isSuperAdmin = localStorage.getItem(ADMIN_SESSION_SUPER_KEY) === 'true';
+
+            setFooterTickerAdminVisibility(true);
+            setAuthButtonsVisibility(true);
+            setBrandNavigationAccess();
+            dashboardSection.classList.remove('hidden');
+
+            if (isSuperAdmin) {
+                superAdminPanel.classList.remove('hidden');
+                renderAdminRosterRows();
+            } else {
+                superAdminPanel.classList.add('hidden');
+            }
+        }
+
+        // ==========================================
+        // SUPER ADMIN ACCOUNT MANAGEMENT CONTROL
+        // ==========================================
+        const rosterRowsContainer = document.getElementById('admin-roster-rows');
+
+        function renderAdminRosterRows() {
+            const db = JSON.parse(localStorage.getItem('wt_admin_credentials_db'));
+            rosterRowsContainer.innerHTML = "";
+
+            Object.keys(db).forEach(username => {
+                if (db[username].isSuper) return; // Super admin protected state override
+
+                const markup = `
+                    <tr class="border-b border-white/5">
+                        <td class="py-2.5 font-mono text-xs text-white">${escapeHTML(username)}</td>
+                        <td class="py-2.5 text-[11px] font-medium ${db[username].firstLogin ? 'text-holding-fireball' : 'text-holding-electricGreen'}">
+                            ${db[username].firstLogin ? 'Unchanged (First Login Pending)' : 'Synchronized Token Profile'}
+                        </td>
+                        <td class="py-2.5 text-right">
+                            <button onclick="revokeAdminAccount('${username}')" class="text-[9px] uppercase tracking-widest bg-holding-fireball/10 text-holding-fireball border border-holding-fireball/30 px-2 py-1 hover:bg-holding-fireball hover:text-white transition-all duration-200">Revoke Access</button>
+                        </td>
+                    </tr>
+                `;
+                rosterRowsContainer.insertAdjacentHTML('beforeend', markup);
+            });
+        }
+
+        function handleNewAdminCreation(event) {
+            event.preventDefault();
+            const inputField = document.getElementById('new-admin-id');
+            const targetUsername = inputField.value.trim();
+
+            if (!targetUsername) return;
+
+            const db = JSON.parse(localStorage.getItem('wt_admin_credentials_db'));
+            
+            if (db[targetUsername]) {
+                alert("Creation denied: Administrative account identifier already registered.");
+                return;
+            }
+
+            db[targetUsername] = {
+                pass: "Peace&Love1$",
+                isSuper: false,
+                firstLogin: true
+            };
+
+            localStorage.setItem('wt_admin_credentials_db', JSON.stringify(db));
+            inputField.value = "";
+            renderAdminRosterRows();
+            console.log(`%c[SUPER-ADMIN COMMAND] Success: Created new admin user node for "${targetUsername}". Default initialization password assigned.`, "color: #007FFF; font-weight: bold;");
+        }
+
+        function revokeAdminAccount(username) {
+            if (!confirm(`Are you sure you want to securely purge the credential node for admin user "${username}"?`)) return;
+            
+            const db = JSON.parse(localStorage.getItem('wt_admin_credentials_db'));
+            delete db[username];
+            localStorage.setItem('wt_admin_credentials_db', JSON.stringify(db));
+            renderAdminRosterRows();
+            console.log(`%c[SUPER-ADMIN COMMAND] Warning: Revoked all administrative system access authorization for identity token "${username}".`, "color: #FF4500; font-weight: bold;");
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, tag => ({
+                '&': '&', '<': '<', '>': '>', "' text": "'", '"': '"'
+            }[tag] || tag));
+        }
+
+        restoreAdminSessionIfAny();
+    </script>
+</body>
+</html>

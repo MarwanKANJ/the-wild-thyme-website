@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Team - The Wild Thyme Group</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #05070d; color: #e5e7eb; }
+    .accent { color: #f97316; }
+    .panel { background: #0f1118; border: 1px solid rgba(255,255,255,0.08); }
+  </style>
+</head>
+<body class="min-h-screen font-sans">
+  <header class="border-b border-white/10 bg-black/60 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl tracking-[0.2em] uppercase font-semibold text-white">The Team</h1>
+        <p id="team-mode-label" class="text-xs tracking-widest text-slate-400 uppercase mt-1">User View</p>
+      </div>
+      <a href="index.html#team-hub" class="text-xs uppercase tracking-widest text-white border-b border-white/40 hover:border-orange-500 hover:text-orange-400">Back to Main Site</a>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-12 space-y-10">
+    <section class="panel p-6 md:p-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-6 mb-8">
+        <div>
+          <span class="text-xs font-semibold tracking-widest accent uppercase block mb-1">Leadership Registry</span>
+          <h2 class="text-3xl font-serif text-white uppercase tracking-wider">Our Team</h2>
+        </div>
+        <button id="add-team-member-btn" class="hidden text-xs uppercase tracking-widest bg-orange-500 text-white px-5 py-3 font-medium hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2 shadow-lg opacity-50 cursor-not-allowed" disabled>+ Add Team Member</button>
+      </div>
+
+      <div id="team-feed-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        <article class="panel p-6 flex flex-col items-center text-center hover:border-white/20 transition-all">
+          <div class="w-32 h-32 rounded-full bg-cover bg-center mb-4 border border-white/10" style="background-image:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600');"></div>
+          <h3 class="text-base font-serif text-white uppercase tracking-wider">Paula Executive</h3>
+          <p class="text-[10px] font-mono text-amber-300 uppercase tracking-widest mt-1">Managing Principal</p>
+          <p class="text-xs text-slate-400 mt-3 leading-relaxed">Overseeing strategic global scaling directives and capital portfolio allocations across our culinary properties.</p>
+        </article>
+
+        <article class="panel p-6 flex flex-col items-center text-center hover:border-white/20 transition-all">
+          <div class="w-32 h-32 rounded-full bg-cover bg-center mb-4 border border-white/10" style="background-image:url('https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=600');"></div>
+          <h3 class="text-base font-serif text-white uppercase tracking-wider">Karim Operations</h3>
+          <p class="text-[10px] font-mono text-amber-300 uppercase tracking-widest mt-1">Operations Director</p>
+          <p class="text-xs text-slate-400 mt-3 leading-relaxed">Leading performance systems, service standards, and culinary operations across all group entities.</p>
+        </article>
+      </div>
+
+      <div id="team-member-panel" class="hidden mt-8 panel p-6">
+        <h3 class="text-xs uppercase tracking-widest text-amber-300 font-semibold mb-4">Add Team Member</h3>
+        <form id="team-member-form" class="space-y-4">
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="member-header">Header / Name</label>
+            <input class="w-full bg-black/40 border border-white/10 px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-orange-500" type="text" id="member-header" placeholder="e.g., Nora Hospitality" required>
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="member-text">Description</label>
+            <textarea class="w-full bg-black/40 border border-white/10 px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-orange-500 min-h-[120px]" id="member-text" placeholder="Write team member narrative..." required></textarea>
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="member-picture">Load Picture</label>
+            <input class="w-full bg-black/40 border border-white/10 px-3 py-2 text-xs text-white file:mr-3 file:border-0 file:bg-orange-500 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white hover:file:bg-white hover:file:text-black" type="file" id="member-picture" accept="image/*" required>
+          </div>
+          <button type="submit" class="w-full bg-orange-500 text-white uppercase tracking-widest text-[10px] font-semibold py-2.5 hover:bg-white hover:text-black transition-all">Add Member</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="team-admin-controls" class="hidden panel p-6 md:p-8">
+      <h3 class="text-sm uppercase tracking-widest text-white mb-4">Admin Controls</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button class="border border-white/20 px-4 py-3 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all">Edit Profiles</button>
+        <button class="border border-white/20 px-4 py-3 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all">Upload Headshots</button>
+        <button class="border border-orange-500 text-orange-400 px-4 py-3 text-xs uppercase tracking-widest hover:bg-orange-500 hover:text-white transition-all">Publish Changes</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const ADMIN_SESSION_KEY = 'wt_holding_admin_connected';
+    const TEAM_STORAGE_KEY = 'wt_holding_team_members';
+
+    const addTeamMemberBtn = document.getElementById('add-team-member-btn');
+    const teamAdminControls = document.getElementById('team-admin-controls');
+    const teamModeLabel = document.getElementById('team-mode-label');
+    const teamFeedGrid = document.getElementById('team-feed-grid');
+    const teamMemberPanel = document.getElementById('team-member-panel');
+    const teamMemberForm = document.getElementById('team-member-form');
+    const isAdminConnected = localStorage.getItem(ADMIN_SESSION_KEY) === 'true';
+
+    function escapeHTML(value) {
+      const div = document.createElement('div');
+      div.textContent = value;
+      return div.innerHTML;
+    }
+
+    function injectTeamMemberCard(member) {
+      const markup = `
+        <article class="panel p-6 flex flex-col items-center text-center hover:border-white/20 transition-all">
+          <div class="w-32 h-32 rounded-full bg-cover bg-center mb-4 border border-white/10" style="background-image:url('${escapeHTML(member.photo)}');"></div>
+          <h3 class="text-base font-serif text-white uppercase tracking-wider">${escapeHTML(member.header)}</h3>
+          <p class="text-xs text-slate-400 mt-3 leading-relaxed">${escapeHTML(member.text)}</p>
+        </article>`;
+      teamFeedGrid.insertAdjacentHTML('beforeend', markup);
+    }
+
+    function loadSavedTeamMembers() {
+      const stored = localStorage.getItem(TEAM_STORAGE_KEY);
+      const members = stored ? JSON.parse(stored) : [];
+      members.forEach((member) => injectTeamMemberCard(member));
+    }
+
+    function readFileAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('Unable to read image file'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    loadSavedTeamMembers();
+
+    if (isAdminConnected) {
+      addTeamMemberBtn.classList.remove('hidden', 'opacity-50', 'cursor-not-allowed');
+      addTeamMemberBtn.disabled = false;
+      teamAdminControls.classList.remove('hidden');
+      teamModeLabel.textContent = 'Admin Perspective';
+
+      addTeamMemberBtn.addEventListener('click', () => {
+        teamMemberPanel.classList.toggle('hidden');
+      });
+    } else {
+      teamMemberPanel.classList.add('hidden');
+    }
+
+    teamMemberForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!isAdminConnected) return;
+
+      const header = document.getElementById('member-header').value.trim();
+      const text = document.getElementById('member-text').value.trim();
+      const fileInput = document.getElementById('member-picture');
+      const file = fileInput.files && fileInput.files[0];
+
+      if (!file) return;
+
+      try {
+        const photo = await readFileAsDataURL(file);
+        const payload = { header, text, photo };
+
+        const stored = localStorage.getItem(TEAM_STORAGE_KEY);
+        const members = stored ? JSON.parse(stored) : [];
+        members.push(payload);
+        localStorage.setItem(TEAM_STORAGE_KEY, JSON.stringify(members));
+
+        injectTeamMemberCard(payload);
+        teamMemberForm.reset();
+        teamMemberPanel.classList.add('hidden');
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>

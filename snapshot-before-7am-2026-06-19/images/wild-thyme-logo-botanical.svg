@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img" aria-label="Wild Thyme botanical logo">
+  <defs>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7b5d2b"/>
+      <stop offset="45%" stop-color="#d2b070"/>
+      <stop offset="100%" stop-color="#84612f"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#101b33"/>
+      <stop offset="100%" stop-color="#243a63"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6f8d48"/>
+      <stop offset="100%" stop-color="#31491f"/>
+    </linearGradient>
+    <linearGradient id="flowerRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d94a58"/>
+      <stop offset="100%" stop-color="#8f2430"/>
+    </linearGradient>
+    <linearGradient id="flowerGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f2c85b"/>
+      <stop offset="100%" stop-color="#b27f1b"/>
+    </linearGradient>
+    <linearGradient id="flowerMagenta" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c95aa7"/>
+      <stop offset="100%" stop-color="#7d3266"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="500" height="500" fill="transparent"/>
+  <circle cx="250" cy="250" r="195" fill="#f7f3ea" stroke="url(#ring)" stroke-width="10"/>
+  <circle cx="250" cy="250" r="178" fill="none" stroke="#a88b54" stroke-width="2" stroke-dasharray="2 12" opacity="0.9"/>
+  <circle cx="250" cy="250" r="166" fill="none" stroke="#d7c29a" stroke-width="1" opacity="0.7"/>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M250 122 C226 140 210 165 205 196 C223 188 238 175 250 156 C262 175 277 188 295 196 C290 165 274 140 250 122 Z" fill="url(#leaf)" stroke="#25371a" stroke-width="2.2"/>
+    <path d="M250 378 C226 360 210 335 205 304 C223 312 238 325 250 344 C262 325 277 312 295 304 C290 335 274 360 250 378 Z" fill="url(#leaf)" stroke="#25371a" stroke-width="2.2"/>
+    <path d="M122 250 C140 274 165 290 196 295 C188 277 175 262 156 250 C175 238 188 223 196 205 C165 210 140 226 122 250 Z" fill="url(#leaf)" stroke="#25371a" stroke-width="2.2"/>
+    <path d="M378 250 C360 274 335 290 304 295 C312 277 325 262 344 250 C325 238 312 223 304 205 C335 210 360 226 378 250 Z" fill="url(#leaf)" stroke="#25371a" stroke-width="2.2"/>
+
+    <path d="M250 84 C240 105 232 129 228 154 C239 149 247 139 250 126 C253 139 261 149 272 154 C268 129 260 105 250 84 Z" fill="url(#flowerRed)" stroke="#7b1e28" stroke-width="1.6"/>
+    <path d="M250 416 C240 395 232 371 228 346 C239 351 247 361 250 374 C253 361 261 351 272 346 C268 371 260 395 250 416 Z" fill="url(#flowerRed)" stroke="#7b1e28" stroke-width="1.6"/>
+    <path d="M84 250 C105 260 129 268 154 272 C149 261 139 253 126 250 C139 247 149 239 154 228 C129 232 105 240 84 250 Z" fill="url(#flowerGold)" stroke="#9b7216" stroke-width="1.6"/>
+    <path d="M416 250 C395 260 371 268 346 272 C351 261 361 253 374 250 C361 247 351 239 346 228 C371 232 395 240 416 250 Z" fill="url(#flowerMagenta)" stroke="#7b3263" stroke-width="1.6"/>
+
+    <path d="M154 154 C171 166 185 184 194 205 C181 201 169 194 159 183 C158 172 156 163 154 154 Z" fill="#f0c14f" stroke="#a67c1c" stroke-width="1.4"/>
+    <path d="M346 154 C329 166 315 184 306 205 C319 201 331 194 341 183 C342 172 344 163 346 154 Z" fill="#f0c14f" stroke="#a67c1c" stroke-width="1.4"/>
+    <path d="M154 346 C171 334 185 316 194 295 C181 299 169 306 159 317 C158 328 156 337 154 346 Z" fill="#c95aa7" stroke="#7d3266" stroke-width="1.4"/>
+    <path d="M346 346 C329 334 315 316 306 295 C319 299 331 306 341 317 C342 328 344 337 346 346 Z" fill="#d94a58" stroke="#8f2430" stroke-width="1.4"/>
+
+    <path d="M162 116 C176 124 188 137 196 153" stroke="#456232" stroke-width="2"/>
+    <path d="M338 116 C324 124 312 137 304 153" stroke="#456232" stroke-width="2"/>
+    <path d="M162 384 C176 376 188 363 196 347" stroke="#456232" stroke-width="2"/>
+    <path d="M338 384 C324 376 312 363 304 347" stroke="#456232" stroke-width="2"/>
+    <path d="M116 162 C124 176 137 188 153 196" stroke="#456232" stroke-width="2"/>
+    <path d="M384 162 C376 176 363 188 347 196" stroke="#456232" stroke-width="2"/>
+    <path d="M116 338 C124 324 137 312 153 304" stroke="#456232" stroke-width="2"/>
+    <path d="M384 338 C376 324 363 312 347 304" stroke="#456232" stroke-width="2"/>
+
+    <circle cx="133" cy="250" r="5" fill="#2c4675"/>
+    <circle cx="367" cy="250" r="5" fill="#2c4675"/>
+    <circle cx="250" cy="133" r="5" fill="#2c4675"/>
+    <circle cx="250" cy="367" r="5" fill="#2c4675"/>
+
+    <rect x="92" y="214" width="316" height="72" rx="4" fill="url(#bar)" stroke="#0c1428" stroke-width="3"/>
+    <text x="250" y="260" text-anchor="middle" fill="#f7f1df" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" letter-spacing="3">WILD THYME</text>
+  </g>
+</svg>

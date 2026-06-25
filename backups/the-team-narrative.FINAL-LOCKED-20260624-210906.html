@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Team - The Wild Thyme Group</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #05070d; color: #e5e7eb; }
+    .accent { color: #f97316; }
+    .panel { background: #0f1118; border: 1px solid rgba(255,255,255,0.08); }
+
+    :root {
+      --cedar-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='none'/%3E%3Cpath d='M16 2.5c-3.4 2.5-5.8 4.5-7.9 6.9h3.5c-1.5 1.4-3 2.9-4.2 4.5h4c-1.2 1.2-2.4 2.6-3.2 4h4.3c-1 1.1-1.8 2.3-2.5 3.6H14v5.7h4v-5.7h4.1c-.7-1.3-1.5-2.5-2.5-3.6h4.3c-.8-1.4-2-2.8-3.2-4h4c-1.2-1.6-2.7-3.1-4.2-4.5H24c-2.1-2.4-4.5-4.4-8-6.9z' fill='%23006030' stroke='%2300421f' stroke-width='1.0' stroke-linejoin='round'/%3E%3Crect x='14.8' y='21.2' width='2.4' height='8' rx='0.8' fill='%235a3f22'/%3E%3C/svg%3E") 5 3;
+    }
+
+    a[href],
+    button,
+    [role="button"],
+    [onclick],
+    input[type="button"],
+    input[type="submit"],
+    .cursor-pointer {
+      cursor: var(--cedar-cursor), pointer !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen font-sans">
+  <header class="border-b border-white/10 bg-black/60 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl tracking-[0.2em] uppercase font-semibold text-white">The Team</h1>
+        <p id="team-mode-label" class="text-xs tracking-widest text-slate-400 uppercase mt-1">User View</p>
+      </div>
+      <a href="index.html#team-hub" class="text-xs uppercase tracking-widest text-white border-b border-white/40 hover:border-orange-500 hover:text-orange-400">Back to Main Site</a>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-12 space-y-10">
+    <section class="panel p-6 md:p-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-6 mb-8">
+        <div>
+          <span class="text-xs font-semibold tracking-widest accent uppercase block mb-1">Leadership Registry</span>
+          <h2 class="text-3xl font-serif text-white uppercase tracking-wider">Our Team</h2>
+        </div>
+        <button id="add-team-member-btn" class="hidden text-xs uppercase tracking-widest bg-orange-500 text-white px-5 py-3 font-medium hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2 shadow-lg opacity-50 cursor-not-allowed" disabled>+ Add Team Member</button>
+      </div>
+
+      <div id="team-feed-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+      </div>
+
+      <div id="team-member-panel" class="hidden mt-8 panel p-6">
+        <div class="flex items-center justify-between gap-4 mb-4">
+          <h3 id="team-form-title" class="text-xs uppercase tracking-widest text-amber-300 font-semibold">Add Team Member</h3>
+          <button id="cancel-team-edit-btn" type="button" class="hidden text-[10px] uppercase tracking-widest border border-white/15 px-3 py-1.5 text-slate-300 hover:bg-white hover:text-black transition-all">Cancel Edit</button>
+        </div>
+        <form id="team-member-form" class="space-y-4">
+          <input type="hidden" id="member-id">
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="member-header">Header / Name</label>
+            <input class="w-full bg-black/40 border border-white/10 px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-orange-500" type="text" id="member-header" placeholder="e.g., Nora Hospitality" required>
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="member-text">Description</label>
+            <textarea class="w-full bg-black/40 border border-white/10 px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-orange-500 min-h-[120px]" id="member-text" placeholder="Write team member narrative..." required></textarea>
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 mb-1" for="member-picture">Load Picture</label>
+            <input class="w-full bg-black/40 border border-white/10 px-3 py-2 text-xs text-white file:mr-3 file:border-0 file:bg-orange-500 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white hover:file:bg-white hover:file:text-black" type="file" id="member-picture" accept="image/*">
+          </div>
+          <button id="team-form-submit-btn" type="submit" class="w-full bg-orange-500 text-white uppercase tracking-widest text-[10px] font-semibold py-2.5 hover:bg-white hover:text-black transition-all">Add Member</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="team-admin-controls" class="hidden panel p-6 md:p-8">
+      <h3 class="text-sm uppercase tracking-widest text-white mb-4">Admin Controls</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button class="border border-white/20 px-4 py-3 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all">Edit Profiles</button>
+        <button class="border border-white/20 px-4 py-3 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all">Upload Headshots</button>
+        <button class="border border-orange-500 text-orange-400 px-4 py-3 text-xs uppercase tracking-widest hover:bg-orange-500 hover:text-white transition-all">Publish Changes</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const ADMIN_SESSION_KEY = 'wt_holding_admin_connected';
+    const TEAM_STORAGE_KEY = 'wt_holding_team_members';
+
+    const DEFAULT_TEAM_MEMBERS = [
+      {
+        id: 'team-default-1',
+        header: 'Paula Executive',
+        text: 'Overseeing strategic global scaling directives and capital portfolio allocations across our culinary properties.',
+        photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600',
+        role: 'Managing Principal'
+      },
+      {
+        id: 'team-default-2',
+        header: 'Karim Operations',
+        text: 'Leading performance systems, service standards, and culinary operations across all group entities.',
+        photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=600',
+        role: 'Operations Director'
+      }
+    ];
+
+    const addTeamMemberBtn = document.getElementById('add-team-member-btn');
+    const teamAdminControls = document.getElementById('team-admin-controls');
+    const teamModeLabel = document.getElementById('team-mode-label');
+    const teamFeedGrid = document.getElementById('team-feed-grid');
+    const teamMemberPanel = document.getElementById('team-member-panel');
+    const teamMemberForm = document.getElementById('team-member-form');
+    const teamFormTitle = document.getElementById('team-form-title');
+    const teamFormSubmitBtn = document.getElementById('team-form-submit-btn');
+    const cancelTeamEditBtn = document.getElementById('cancel-team-edit-btn');
+    const memberIdInput = document.getElementById('member-id');
+    const memberHeaderInput = document.getElementById('member-header');
+    const memberTextInput = document.getElementById('member-text');
+    const memberPictureInput = document.getElementById('member-picture');
+    const isAdminConnected = localStorage.getItem(ADMIN_SESSION_KEY) === 'true';
+    let editingMemberId = null;
+
+    function escapeHTML(value) {
+      const div = document.createElement('div');
+      div.textContent = value;
+      return div.innerHTML;
+    }
+
+    function createMemberId() {
+      return `team-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    }
+
+    function normalizeTeamMembers(items) {
+      return items.map((item) => ({
+        id: item.id || createMemberId(),
+        header: item.header || '',
+        text: item.text || '',
+        photo: item.photo || '',
+        role: item.role || ''
+      }));
+    }
+
+    function getTeamMembers() {
+      const stored = localStorage.getItem(TEAM_STORAGE_KEY);
+      if (!stored) {
+        localStorage.setItem(TEAM_STORAGE_KEY, JSON.stringify(DEFAULT_TEAM_MEMBERS));
+        return [...DEFAULT_TEAM_MEMBERS];
+      }
+
+      try {
+        const parsed = JSON.parse(stored);
+        const normalized = normalizeTeamMembers(Array.isArray(parsed) ? parsed : []);
+        localStorage.setItem(TEAM_STORAGE_KEY, JSON.stringify(normalized));
+        return normalized;
+      } catch (error) {
+        localStorage.setItem(TEAM_STORAGE_KEY, JSON.stringify(DEFAULT_TEAM_MEMBERS));
+        return [...DEFAULT_TEAM_MEMBERS];
+      }
+    }
+
+    function saveTeamMembers(members) {
+      localStorage.setItem(TEAM_STORAGE_KEY, JSON.stringify(normalizeTeamMembers(members)));
+    }
+
+    function injectTeamMemberCard(member) {
+      const markup = `
+        <article class="panel p-6 flex flex-col items-center text-center hover:border-white/20 transition-all" data-member-id="${escapeHTML(member.id)}">
+          <div class="w-32 h-32 rounded-full bg-cover bg-center mb-4 border border-white/10 bg-slate-900" style="background-image:url('${escapeHTML(member.photo)}');"></div>
+          <h3 class="text-base font-serif text-white uppercase tracking-wider">${escapeHTML(member.header)}</h3>
+          ${member.role ? `<p class="text-[10px] font-mono text-amber-300 uppercase tracking-widest mt-1">${escapeHTML(member.role)}</p>` : ''}
+          <p class="text-xs text-slate-400 mt-3 leading-relaxed">${escapeHTML(member.text)}</p>
+          ${isAdminConnected ? `
+            <div class="mt-5 flex flex-wrap justify-center gap-2 w-full">
+              <button type="button" class="team-edit-btn text-[10px] uppercase tracking-widest border border-white/20 px-3 py-2 hover:bg-white hover:text-black transition-all" data-member-id="${escapeHTML(member.id)}">Edit</button>
+              <button type="button" class="team-remove-btn text-[10px] uppercase tracking-widest border border-red-500/60 text-red-300 px-3 py-2 hover:bg-red-500 hover:text-white transition-all" data-member-id="${escapeHTML(member.id)}">Remove</button>
+            </div>
+          ` : ''}
+        </article>`;
+      teamFeedGrid.insertAdjacentHTML('beforeend', markup);
+    }
+
+    function loadSavedTeamMembers() {
+      const members = getTeamMembers();
+      members.forEach((member) => injectTeamMemberCard(member));
+    }
+
+    function renderTeamMembers() {
+      teamFeedGrid.innerHTML = '';
+      loadSavedTeamMembers();
+    }
+
+    function readFileAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('Unable to read image file'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    loadSavedTeamMembers();
+
+    if (isAdminConnected) {
+      addTeamMemberBtn.classList.remove('hidden', 'opacity-50', 'cursor-not-allowed');
+      addTeamMemberBtn.disabled = false;
+      teamAdminControls.classList.remove('hidden');
+      teamModeLabel.textContent = 'Admin Perspective';
+
+      addTeamMemberBtn.addEventListener('click', () => {
+        resetTeamForm();
+        teamMemberPanel.classList.remove('hidden');
+        memberHeaderInput.focus();
+      });
+    } else {
+      teamMemberPanel.classList.add('hidden');
+    }
+
+    function resetTeamForm() {
+      editingMemberId = null;
+      memberIdInput.value = '';
+      memberHeaderInput.value = '';
+      memberTextInput.value = '';
+      memberPictureInput.value = '';
+      teamFormTitle.textContent = 'Add Team Member';
+      teamFormSubmitBtn.textContent = 'Add Member';
+      cancelTeamEditBtn.classList.add('hidden');
+    }
+
+    function beginEditTeamMember(memberId) {
+      const members = getTeamMembers();
+      const member = members.find((item) => item.id === memberId);
+      if (!member) return;
+
+      editingMemberId = member.id;
+      memberIdInput.value = member.id;
+      memberHeaderInput.value = member.header;
+      memberTextInput.value = member.text;
+      memberPictureInput.value = '';
+      teamFormTitle.textContent = 'Edit Team Member';
+      teamFormSubmitBtn.textContent = 'Save Changes';
+      cancelTeamEditBtn.classList.remove('hidden');
+      teamMemberPanel.classList.remove('hidden');
+      memberHeaderInput.focus();
+    }
+
+    function removeTeamMember(memberId) {
+      const members = getTeamMembers().filter((member) => member.id !== memberId);
+      saveTeamMembers(members);
+      renderTeamMembers();
+      if (editingMemberId === memberId) {
+        resetTeamForm();
+      }
+    }
+
+    teamFeedGrid.addEventListener('click', (event) => {
+      const editButton = event.target.closest('.team-edit-btn');
+      const removeButton = event.target.closest('.team-remove-btn');
+
+      if (editButton) {
+        beginEditTeamMember(editButton.dataset.memberId);
+      }
+
+      if (removeButton) {
+        removeTeamMember(removeButton.dataset.memberId);
+      }
+    });
+
+    cancelTeamEditBtn.addEventListener('click', () => {
+      resetTeamForm();
+    });
+
+    teamMemberForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!isAdminConnected) return;
+
+      const header = memberHeaderInput.value.trim();
+      const text = memberTextInput.value.trim();
+      const file = memberPictureInput.files && memberPictureInput.files[0];
+      const members = getTeamMembers();
+      const existingMember = editingMemberId ? members.find((item) => item.id === editingMemberId) : null;
+
+      if (!header || !text) return;
+
+      try {
+        const photo = file ? await readFileAsDataURL(file) : (existingMember ? existingMember.photo : '');
+        const payload = {
+          id: existingMember ? existingMember.id : createMemberId(),
+          header,
+          text,
+          photo,
+          role: existingMember ? existingMember.role : ''
+        };
+
+        const updatedMembers = existingMember
+          ? members.map((member) => (member.id === existingMember.id ? payload : member))
+          : [...members, payload];
+
+        saveTeamMembers(updatedMembers);
+        renderTeamMembers();
+        teamMemberForm.reset();
+        resetTeamForm();
+        teamMemberPanel.classList.add('hidden');
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    renderTeamMembers();
+  </script>
+</body>
+</html>

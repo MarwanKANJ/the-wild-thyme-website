@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360" role="img" aria-label="Wild Thyme botanical logo">
+  <defs>
+    <linearGradient id="wt-brass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8c6b2f" />
+      <stop offset="50%" stop-color="#c6a25e" />
+      <stop offset="100%" stop-color="#7a5d27" />
+    </linearGradient>
+    <linearGradient id="wt-navy" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#18253f" />
+      <stop offset="100%" stop-color="#243556" />
+    </linearGradient>
+    <linearGradient id="wt-leaf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5b7a39" />
+      <stop offset="100%" stop-color="#30481f" />
+    </linearGradient>
+  </defs>
+  <rect width="360" height="360" fill="transparent" />
+  <circle cx="180" cy="180" r="132" fill="#f6f2e8" stroke="url(#wt-brass)" stroke-width="8" />
+  <circle cx="180" cy="180" r="121" fill="none" stroke="#c9b07a" stroke-width="2" stroke-dasharray="1 7" opacity="0.85" />
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <g opacity="0.95">
+      <path d="M180 78 C160 98 145 123 138 150 C152 143 166 127 180 110 C194 127 208 143 222 150 C215 123 200 98 180 78 Z" fill="url(#wt-leaf)" stroke="#24351d" stroke-width="2" />
+      <path d="M180 282 C160 262 145 237 138 210 C152 217 166 233 180 250 C194 233 208 217 222 210 C215 237 200 262 180 282 Z" fill="url(#wt-leaf)" stroke="#24351d" stroke-width="2" />
+      <path d="M78 180 C98 160 123 145 150 138 C143 152 127 166 110 180 C127 194 143 208 150 222 C123 215 98 200 78 180 Z" fill="url(#wt-leaf)" stroke="#24351d" stroke-width="2" />
+      <path d="M282 180 C262 160 237 145 210 138 C217 152 233 166 250 180 C233 194 217 208 210 222 C237 215 262 200 282 180 Z" fill="url(#wt-leaf)" stroke="#24351d" stroke-width="2" />
+    </g>
+    <g>
+      <path d="M180 96 C170 113 163 132 160 152 C168 147 175 140 180 130 C185 140 192 147 200 152 C197 132 190 113 180 96 Z" fill="#d94d5a" stroke="#7f1e2b" stroke-width="1.5" />
+      <path d="M180 264 C170 247 163 228 160 208 C168 213 175 220 180 230 C185 220 192 213 200 208 C197 228 190 247 180 264 Z" fill="#d94d5a" stroke="#7f1e2b" stroke-width="1.5" />
+      <path d="M96 180 C113 170 132 163 152 160 C147 168 140 175 130 180 C140 185 147 192 152 200 C132 197 113 190 96 180 Z" fill="#f1a13a" stroke="#9a5d16" stroke-width="1.5" />
+      <path d="M264 180 C247 170 228 163 208 160 C213 168 220 175 230 180 C220 185 213 192 208 200 C228 197 247 190 264 180 Z" fill="#c35ca5" stroke="#7c2f64" stroke-width="1.5" />
+      <path d="M115 115 C129 126 141 141 149 158 C138 154 126 149 116 141 C115 129 115 122 115 115 Z" fill="#f0c24f" stroke="#ad8121" stroke-width="1.5" />
+      <path d="M245 115 C231 126 219 141 211 158 C222 154 234 149 244 141 C245 129 245 122 245 115 Z" fill="#f0c24f" stroke="#ad8121" stroke-width="1.5" />
+      <path d="M115 245 C129 234 141 219 149 202 C138 206 126 211 116 219 C115 231 115 238 115 245 Z" fill="#c35ca5" stroke="#7c2f64" stroke-width="1.5" />
+      <path d="M245 245 C231 234 219 219 211 202 C222 206 234 211 244 219 C245 231 245 238 245 245 Z" fill="#d94d5a" stroke="#7f1e2b" stroke-width="1.5" />
+    </g>
+    <g fill="none" stroke="#24351d" stroke-width="1.4" opacity="0.85">
+      <path d="M180 84 L180 116" />
+      <path d="M180 244 L180 276" />
+      <path d="M84 180 L116 180" />
+      <path d="M244 180 L276 180" />
+      <path d="M143 143 L161 161" />
+      <path d="M217 143 L199 161" />
+      <path d="M143 217 L161 199" />
+      <path d="M217 217 L199 199" />
+    </g>
+    <g>
+      <path d="M105 78 C116 86 122 96 123 108 C111 104 102 97 95 86 C97 82 100 79 105 78 Z" fill="#8fa86a" stroke="#355326" stroke-width="1.2" />
+      <path d="M255 78 C244 86 238 96 237 108 C249 104 258 97 265 86 C263 82 260 79 255 78 Z" fill="#8fa86a" stroke="#355326" stroke-width="1.2" />
+      <path d="M105 282 C116 274 122 264 123 252 C111 256 102 263 95 274 C97 278 100 281 105 282 Z" fill="#8fa86a" stroke="#355326" stroke-width="1.2" />
+      <path d="M255 282 C244 274 238 264 237 252 C249 256 258 263 265 274 C263 278 260 281 255 282 Z" fill="#8fa86a" stroke="#355326" stroke-width="1.2" />
+    </g>
+    <rect x="86" y="155" width="188" height="50" rx="3" fill="url(#wt-navy)" stroke="#101828" stroke-width="2" />
+    <text x="180" y="186" text-anchor="middle" fill="#f7f0df" font-family="Georgia, 'Times New Roman', serif" font-size="22" letter-spacing="2">WILD THYME</text>
+  </g>
+</svg>

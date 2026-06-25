@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wild Thyme Group — Hospitality & Culinary Holding Group</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        holding: {
+                            dark: '#0A0A0A',
+                            charcoal: '#121212',
+                            fireball: '#FF4500',
+                            azure: '#007FFF',
+                            gold: '#C5A880',
+                            goldHover: '#E2C9A6',
+                            electricGreen: '#00FF66',
+                            electricIndigo: '#4F46E5'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        superwide: '0.25em',
+                        megawide: '0.4em'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght=0,400;0,600;1,400&family=Inter:wght=300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Global typography element transitions */
+        h2, h3, h4, p, span, a, i, button {
+            transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        /* Direct trigger states for standard text content excluding custom brand overrides */
+        h2:hover, h3:hover, h4:hover, p:hover, span:hover, a:not(.brand-link):not(.secure-login-btn):not(.portal-btn):hover {
+            color: #FF4500 !important;
+            cursor: default;
+        }
+
+        /* Custom Hover Overrides for Portfolio Brand Ecosystem Links */
+        .brand-link-wt:hover {
+            color: #00FF66 !important;
+        }
+        .brand-link-wt:hover i {
+            color: #00FF66 !important;
+        }
+        .brand-link-cc:hover {
+            color: #4F46E5 !important;
+        }
+        .brand-link-cc:hover i {
+            color: #4F46E5 !important;
+        }
+
+        /* Premium custom portal card zoom interactions */
+        .portal-card:hover .portal-bg {
+            transform: scale(1.04);
+        }
+        .portal-card:hover .portal-overlay {
+            background-color: rgba(0, 0, 0, 0.25);
+        }
+        
+        /* Custom Portal Gateway Button Rules: Font turns orange, background stays strictly transparent */
+        .portal-btn {
+            transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, transform 0.3s ease !important;
+        }
+        .portal-btn:hover {
+            background-color: transparent !important;
+            color: #FF4500 !important;
+            border-color: #FF4500 !important;
+            transform: translateY(-2px);
+            cursor: pointer;
+        }
+        .portal-btn:hover i {
+            color: #FF4500 !important;
+        }
+    </style>
+</head>
+<body class="bg-holding-dark text-slate-200 font-sans antialiased selection:bg-holding-fireball selection:text-white overflow-x-hidden">
+
+    <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-black/10 border-b border-white/5 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+            
+            <div id="logo-trigger-zone" class="flex flex-col tracking-superwide text-xs font-light text-white cursor-pointer py-2 select-none">
+                <span class="font-semibold text-sm tracking-megawide transition-colors duration-300 uppercase">THE WILD THYME GROUP</span>
+                
+                <div class="h-0 opacity-0 overflow-visible transition-all duration-500 ease-out mt-1 origin-left" id="logo-reveal-container">
+                    <span class="text-[10px] tracking-[0.5em] text-holding-gold uppercase block whitespace-nowrap hover:scale-110 transition-transform duration-300">
+                        EST. 2026 • HOLDING SYSTEM
+                    </span>
+                </div>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-10 text-xs font-medium tracking-widest text-slate-400 uppercase">
+                <a href="#portals" class="text-white transition-colors duration-300 cursor-pointer">Our Brands</a>
+                <a href="#about" class="hover:text-holding-fireball transition-colors duration-300 cursor-pointer">About the Group</a>
+                <a href="#contact" class="hover:text-holding-fireball transition-colors duration-300 cursor-pointer">Contact</a>
+            </nav>
+
+            <div class="hidden md:block">
+                <a href="#about" class="text-xs uppercase tracking-widest text-white border-b border-white/30 pb-1 hover:border-holding-fireball transition-all duration-300 cursor-pointer">
+                    Corporate Overview
+                </a>
+            </div>
+
+            <button id="mobile-menu-toggle" class="md:hidden p-2 text-slate-400 hover:text-white focus:outline-none" aria-label="Toggle Mobile Menu">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-holding-charcoal/95 backdrop-blur-xl border-b border-white/5 px-8 py-8 space-y-6 flex flex-col text-sm uppercase tracking-widest font-medium text-slate-400">
+            <a href="#portals" class="text-white">Our Brands</a>
+            <a href="#about">About the Group</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="portals" class="w-full min-h-screen md:h-screen flex flex-col md:flex-row pt-24 md:pt-0">
+            
+            <div class="portal-card relative w-full h-[50vh] md:h-full md:w-1/2 flex flex-col items-center justify-center text-center overflow-hidden border-b md:border-b-0 md:border-r border-white/5 group">
+                <div class="portal-bg absolute inset-0 bg-[url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1974&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-1000 ease-out"></div>
+                <div class="portal-overlay absolute inset-0 bg-black/50 transition-colors duration-500 ease-out z-10"></div>
+                
+                <div class="relative z-20 px-6 max-w-md flex flex-col items-center">
+                    <h2 class="font-serif font-light text-4xl sm:text-5xl md:text-6xl text-white tracking-widest uppercase mb-4">
+                        WILD THYME
+                    </h2>
+                    <p class="font-serif italic text-base sm:text-lg text-slate-300 tracking-wide font-semibold mb-8 max-w-xs">
+                        Simply Lebanese food
+                    </p>
+                    <a href="http://www.wildthymedining.com" target="_blank" rel="noopener noreferrer" class="portal-btn inline-flex items-center gap-3 px-6 py-3 rounded-none text-xs uppercase tracking-widest font-medium text-white border border-white/40 bg-transparent transform">
+                        Explore Restaurant 
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5 transition-colors duration-300"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="portal-card relative w-full h-[50vh] md:h-full md:w-1/2 flex flex-col items-center justify-center text-center overflow-hidden group">
+                <div class="portal-bg absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=1770&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-1000 ease-out"></div>
+                <div class="portal-overlay absolute inset-0 bg-black/55 transition-colors duration-500 ease-out z-10"></div>
+                
+                <div class="relative z-20 px-6 max-w-md flex flex-col items-center">
+                    <h2 class="font-serif font-light text-4xl sm:text-5xl md:text-6xl text-white tracking-widest uppercase mb-4">
+                        CLEMENTINE
+                    </h2>
+                    <p class="font-serif italic text-base sm:text-lg text-slate-300 tracking-wide font-semibold mb-8 max-w-xs">
+                        We leave an impression
+                    </p>
+                    <a href="https://www.clementine-catering.com" target="_blank" rel="noopener noreferrer" class="portal-btn inline-flex items-center gap-3 px-6 py-3 rounded-none text-xs uppercase tracking-widest font-medium text-white border border-white/40 bg-transparent transform">
+                        Explore Catering 
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5 transition-colors duration-300"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-24 md:py-32 bg-holding-charcoal border-t border-white/5 relative">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-0 relative">
+                    
+                    <div class="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-px h-24 bg-white/10"></div>
+
+                    <div class="flex flex-col items-center justify-center text-center px-4">
+                        <img src="wild-thyme-logo.png" alt="Wild Thyme Logo" class="h-16 w-auto object-contain max-w-[250px] mb-6">
+                        <h3 class="text-2xl font-sans font-medium text-white tracking-wide uppercase">Restaurant</h3>
+                    </div>
+
+                    <div class="flex flex-col items-center justify-center text-center px-4">
+                        <img src="clementine-logo.png" alt="Clementine Logo" class="h-16 w-auto object-contain max-w-[250px] mb-6">
+                        <h3 class="text-2xl font-sans font-medium text-white tracking-wide uppercase">Catering</h3>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="restricted-dashboard" class="hidden py-24 bg-zinc-950 border-t-2 border-holding-azure/30 transition-all duration-500">
+            <div class="max-w-5xl mx-auto px-6">
+                <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-8">
+                    <div>
+                        <span class="text-xs font-semibold tracking-widest text-holding-azure uppercase block mb-1">Authenticated Terminal Access</span>
+                        <h3 class="text-2xl font-serif text-white uppercase tracking-wider">Strategic Portal & Data Hub</h3>
+                    </div>
+                    <button onclick="logoutSecurePortal()" class="text-[10px] uppercase tracking-widest border border-white/20 px-4 py-2 hover:bg-white hover:text-black transition-all">
+                        Terminate Session
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-holding-charcoal p-6 border border-white/5">
+                        <h4 class="text-xs uppercase tracking-wider text-holding-gold font-semibold mb-2">Presentation Decks</h4>
+                        <p class="text-xs text-slate-400 font-light mb-4">Q3/Q4 Expansion Strategies & Regional Gastronomy Infrastructure plans.</p>
+                        <a href="#" class="text-[11px] uppercase tracking-wider text-white underline hover:text-holding-azure">Download File (PDF)</a>
+                    </div>
+                    <div class="bg-holding-charcoal p-6 border border-white/5">
+                        <h4 class="text-xs uppercase tracking-wider text-holding-gold font-semibold mb-2">Analytical Data Sheets</h4>
+                        <p class="text-xs text-slate-400 font-light mb-4">Live logistical master supply chain metrics and overhead balances.</p>
+                        <a href="#" class="text-[11px] uppercase tracking-wider text-white underline hover:text-holding-azure">Access Data Array</a>
+                    </div>
+                    <div class="bg-holding-charcoal p-6 border border-white/5">
+                        <h4 class="text-xs uppercase tracking-wider text-holding-gold font-semibold mb-2">Balance Sheets</h4>
+                        <p class="text-xs text-slate-400 font-light mb-4">Audited institutional compilation portfolios and asset equity allocations.</p>
+                        <a href="#" class="text-[11px] uppercase tracking-wider text-white underline hover:text-holding-azure">Review Statements</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 bg-holding-dark border-t border-white/5 px-6">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 items-start">
+                
+                <div class="flex flex-col">
+                    <h4 class="text-xs font-medium uppercase tracking-widest mb-6 underline" style="color:#FF4500;" onmouseenter="this.style.color='#00FF66'" onmouseleave="this.style.color='#FF4500'">Address:</h4>
+                    <a href="https://maps.google.com/?q=705+12th+street+V3M4J7+New+Westminster+BC+Canada" target="_blank" rel="noopener noreferrer" class="group block mb-4">
+                        <p class="text-sm text-slate-400 font-light leading-relaxed group-hover:text-holding-fireball transition-colors duration-300">
+                            The Wild Thyme Group Inc.<br>
+                            705 12th street, V3M4J7<br>
+                            New Westminster, BC, Canada
+                        </p>
+                    </a>
+                    <a href="mailto:Paula@thewildthymegroup.com" class="text-sm text-holding-electricGreen font-light cursor-pointer hover:text-holding-electricGreen transition-colors duration-300">
+                        Paula@thewildthymegroup.com
+                    </a>
+                </div>
+
+                <div class="flex flex-col">
+                    <h4 class="text-xs font-medium uppercase tracking-widest text-holding-fireball mb-6 underline hover:text-holding-fireball">Brands:</h4>
+                    <ul class="space-y-3 text-sm text-slate-400 font-light">
+                        <li>
+                            <a href="http://www.Wildthymedining.com" target="_blank" rel="noopener noreferrer" class="brand-link brand-link-wt transition-colors flex items-center gap-2 cursor-pointer text-slate-400">
+                                Wild Thyme Restaurant <i data-lucide="arrow-up-right" class="w-3 h-3 text-slate-600 transition-colors duration-300"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.Clementine-Catering.com" target="_blank" rel="noopener noreferrer" class="brand-link brand-link-cc transition-colors flex items-center gap-2 cursor-pointer text-slate-400">
+                                Clementine Catering Co. <i data-lucide="arrow-up-right" class="w-3 h-3 text-slate-600 transition-colors duration-300"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="flex flex-col">
+                    <h4 class="text-xs font-medium uppercase tracking-widest text-holding-fireball mb-6 underline hover:text-holding-fireball">Investors Portal</h4>
+                        <button onclick="openSecurePortalModal()" class="secure-login-btn inline-flex items-center gap-2 text-holding-fireball text-base font-medium underline tracking-wide hover:text-holding-fireball transition-colors duration-300 cursor-pointer bg-transparent border-0 p-0 outline-none w-max">
+                        Login
+                    </button>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <div id="security-modal-overlay" class="hidden fixed inset-0 z-[100] backdrop-blur-md bg-black/80 flex items-center justify-center opacity-0 transition-all duration-300 px-4">
+        <div class="bg-holding-charcoal w-full max-w-sm border border-white/10 p-8 relative flex flex-col">
+            <button onclick="closeSecurePortalModal()" class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-holding-azure/30 bg-holding-azure/5 text-holding-azure mb-3">
+                    <i data-lucide="lock" class="w-4 h-4"></i>
+                </div>
+                <h4 class="text-sm font-semibold uppercase tracking-widest text-white">System Authentication</h4>
+                <p class="text-[11px] text-slate-400 font-light mt-1">Authorized access identity checkpoint</p>
+            </div>
+
+            <form id="portal-auth-form" onsubmit="executePortalAuth(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-wider text-slate-400 font-medium mb-1.5" for="auth-username">User Account</label>
+                    <input class="w-full bg-holding-dark border border-white/10 px-3 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-holding-azure tracking-wide" type="text" id="auth-username" placeholder="Username" required autocomplete="off">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-wider text-slate-400 font-medium mb-1.5" for="auth-password">Security Password</label>
+                    <input class="w-full bg-holding-dark border border-white/10 px-3 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-holding-azure tracking-wide" type="password" id="auth-password" placeholder="••••••••••••" required>
+                </div>
+                
+                <div id="auth-error-banner" class="hidden text-[11px] font-medium text-holding-fireball text-center bg-holding-fireball/5 py-2 border border-holding-fireball/20">
+                    Invalid signature token match. Access Denied.
+                </div>
+
+                <button type="submit" class="w-full bg-white text-holding-dark uppercase tracking-widest text-[10px] font-semibold py-3 hover:bg-holding-azure hover:text-white transition-all duration-300 mt-2">
+                    Verify Credentials
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="bg-holding-dark py-12 border-t border-white/5 px-6 text-[11px] font-light tracking-wider text-slate-500">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-8">
+                <span class="text-holding-electricGreen">© 2026 The Wild Thyme Group Inc.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const triggerZone = document.getElementById('logo-trigger-zone');
+        const logoContainer = document.getElementById('logo-reveal-container');
+        const portalsBox = document.getElementById('portals');
+
+        function revealLogo() {
+            logoContainer.style.height = '24px';
+            logoContainer.style.opacity = '1';
+        }
+
+        function hideLogo() {
+            logoContainer.style.height = '0px';
+            logoContainer.style.opacity = '0';
+        }
+
+        triggerZone.addEventListener('mouseenter', revealLogo);
+        triggerZone.addEventListener('mouseleave', hideLogo);
+        portalsBox.addEventListener('mouseenter', revealLogo);
+        portalsBox.addEventListener('mouseleave', hideLogo);
+
+        // Mobile Nav Dropdown Interaction Toggle
+        const menuToggleBtn = document.getElementById('mobile-menu-toggle');
+        const mobileNavMenu = document.getElementById('mobile-menu');
+
+        menuToggleBtn.addEventListener('click', () => {
+            mobileNavMenu.classList.toggle('hidden');
+            const inlineIconNode = menuToggleBtn.querySelector('i');
+            
+            if (mobileNavMenu.classList.contains('hidden')) {
+                inlineIconNode.setAttribute('data-lucide', 'menu');
+            } else {
+                inlineIconNode.setAttribute('data-lucide', 'x');
+            }
+            lucide.createIcons();
+        });
+
+        mobileNavMenu.querySelectorAll('a').forEach(anchorLink => {
+            anchorLink.addEventListener('click', () => {
+                mobileNavMenu.classList.add('hidden');
+                menuToggleBtn.querySelector('i').setAttribute('data-lucide', 'menu');
+                lucide.createIcons();
+            });
+        });
+
+        // SECURE AUTHENTICATION SYSTEM MANAGEMENT ENGINE
+        const modalOverlay = document.getElementById('security-modal-overlay');
+        const authForm = document.getElementById('portal-auth-form');
+        const errorBanner = document.getElementById('auth-error-banner');
+        const dashboardSection = document.getElementById('restricted-dashboard');
+
+        function openSecurePortalModal() {
+            modalOverlay.classList.remove('hidden');
+            setTimeout(() => {
+                modalOverlay.classList.add('opacity-100');
+            }, 10);
+            errorBanner.classList.add('hidden');
+            authForm.reset();
+        }
+
+        function closeSecurePortalModal() {
+            modalOverlay.classList.remove('opacity-100');
+            setTimeout(() => {
+                modalOverlay.classList.add('hidden');
+            }, 300);
+        }
+
+        function executePortalAuth(event) {
+            event.preventDefault();
+            const userVal = document.getElementById('auth-username').value.trim();
+            const passVal = document.getElementById('auth-password').value;
+
+            // Secure Token Reference Match
+            if (userVal === "admin" && passVal === "holding2026") {
+                errorBanner.classList.add('hidden');
+                closeSecurePortalModal();
+                
+                // Unveil locked secure architectural metrics panel 
+                dashboardSection.classList.remove('hidden');
+                dashboardSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                errorBanner.classList.remove('hidden');
+            }
+        }
+
+        function logoutSecurePortal() {
+            dashboardSection.classList.add('hidden');
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
