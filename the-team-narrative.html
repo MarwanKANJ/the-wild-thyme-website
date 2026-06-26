@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Team - The Wild Thyme Group</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/content-sync.js"></script>
   <style>
     body { background: #05070d; color: #e5e7eb; }
     .accent { color: #f97316; }
@@ -399,7 +400,42 @@
     }
 
     function saveTeamMembers(members) {
-      localStorage.setItem(TEAM_STORAGE_KEY, JSON.stringify(normalizeTeamMembers(members)));
+      const normalizedMembers = normalizeTeamMembers(members);
+      localStorage.setItem(TEAM_STORAGE_KEY, JSON.stringify(normalizedMembers));
+      if (window.WTContentSync) {
+        WTContentSync.saveList({
+          bucket: 'team-members',
+          storageKey: TEAM_STORAGE_KEY,
+          items: normalizedMembers,
+          normalizeItem: (item) => ({
+            id: item.id || createMemberId(),
+            header: item.header || '',
+            text: item.text || '',
+            photo: item.photo || '',
+            role: item.role || ''
+          })
+        });
+      }
+    }
+
+    async function loadTeamMembersFromSync() {
+      if (!window.WTContentSync) return;
+
+      const syncedMembers = await WTContentSync.hydrateList({
+        bucket: 'team-members',
+        storageKey: TEAM_STORAGE_KEY,
+        seedItems: DEFAULT_TEAM_MEMBERS,
+        normalizeItem: (item) => ({
+          id: item.id || createMemberId(),
+          header: item.header || '',
+          text: item.text || '',
+          photo: item.photo || '',
+          role: item.role || ''
+        })
+      });
+
+      localStorage.setItem(TEAM_STORAGE_KEY, JSON.stringify(syncedMembers));
+      renderTeamMembers();
     }
 
     function injectTeamMemberCard(member) {
@@ -615,6 +651,7 @@
     });
 
     renderTeamMembers();
+    loadTeamMembersFromSync();
   </script>
 </body>
 </html>

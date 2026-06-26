@@ -32,6 +32,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght=0,400;0,600;1,400&family=Inter:wght=300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+        <script src="/content-sync.js"></script>
     <style>
         body { background: #0A0A0A; color: #e5e7eb; }
         h2, h3, h4, p, span, a, button {
@@ -427,7 +428,30 @@
         }
 
         function saveNewsItems(items) {
-            localStorage.setItem(NEWS_STORAGE_KEY, JSON.stringify(items));
+            const normalizedItems = items.map((item, index) => normalizeItem(item, index));
+            localStorage.setItem(NEWS_STORAGE_KEY, JSON.stringify(normalizedItems));
+            if (window.WTContentSync) {
+                WTContentSync.saveList({
+                    bucket: 'news-items',
+                    storageKey: NEWS_STORAGE_KEY,
+                    items: normalizedItems,
+                    normalizeItem
+                });
+            }
+        }
+
+        async function loadNewsItemsFromSync() {
+            if (!window.WTContentSync) return;
+
+            const syncedItems = await WTContentSync.hydrateList({
+                bucket: 'news-items',
+                storageKey: NEWS_STORAGE_KEY,
+                seedItems: DEFAULT_NEWS_ITEMS,
+                normalizeItem
+            });
+
+            localStorage.setItem(NEWS_STORAGE_KEY, JSON.stringify(syncedItems));
+            renderNewsFeed();
         }
 
         function updateEmptyState(items) {
@@ -528,6 +552,7 @@
             updateEmptyState(items);
         }
         renderNewsFeed();
+        loadNewsItemsFromSync();
 
         // ── Handle form submission ──
         newsForm.addEventListener('submit', function(e) {
