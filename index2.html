@@ -38,6 +38,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght=0,400;0,600;1,400&family=Inter:wght=300;400;500;600&family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="/content-sync.js"></script>
     <style>
         @font-face {
             font-family: 'Monsieur La Doulaise Local';
@@ -898,6 +899,7 @@
 
         const FOOTER_TICKER_STORAGE_KEY = 'wt_footer_ticker_items';
         const FOOTER_TICKER_SCHEMA_KEY = 'wt_footer_ticker_schema_v2';
+        const FOOTER_TICKER_BUCKET_KEY = 'homepage-footer-ticker';
         const FOOTER_TICKER_DEFAULT_LINES = [
             'Wild Thyme Group strategic updates',
             'Culinary excellence across all brands',
@@ -932,6 +934,13 @@
             return getManagedFooterTickerLines();
         }
 
+        function normalizeFooterTickerLines(lines) {
+            if (!Array.isArray(lines)) return [];
+            return lines
+                .map((line) => (typeof line === 'string' ? line.trim() : ''))
+                .filter((line) => line.length > 0);
+        }
+
         function getManagedFooterTickerLines() {
             let storedLines = [];
             try {
@@ -944,8 +953,10 @@
                 storedLines = [];
             }
 
+            storedLines = normalizeFooterTickerLines(storedLines);
+
             if (localStorage.getItem(FOOTER_TICKER_SCHEMA_KEY) !== 'true') {
-                const migratedLines = [...FOOTER_TICKER_DEFAULT_LINES, ...storedLines];
+                const migratedLines = normalizeFooterTickerLines([...FOOTER_TICKER_DEFAULT_LINES, ...storedLines]);
                 localStorage.setItem(FOOTER_TICKER_STORAGE_KEY, JSON.stringify(migratedLines));
                 localStorage.setItem(FOOTER_TICKER_SCHEMA_KEY, 'true');
                 return migratedLines;
@@ -954,9 +965,35 @@
             return storedLines;
         }
 
-        function setManagedFooterTickerLines(lines) {
-            localStorage.setItem(FOOTER_TICKER_STORAGE_KEY, JSON.stringify(lines));
+        function setManagedFooterTickerLines(lines, syncOnline = true) {
+            const normalizedLines = normalizeFooterTickerLines(lines);
+            localStorage.setItem(FOOTER_TICKER_STORAGE_KEY, JSON.stringify(normalizedLines));
             localStorage.setItem(FOOTER_TICKER_SCHEMA_KEY, 'true');
+
+            if (syncOnline && window.WTContentSync) {
+                WTContentSync.saveList({
+                    bucket: FOOTER_TICKER_BUCKET_KEY,
+                    storageKey: FOOTER_TICKER_STORAGE_KEY,
+                    items: normalizedLines,
+                    normalizeItem: (item) => (typeof item === 'string' ? item.trim() : '')
+                });
+            }
+        }
+
+        async function loadManagedFooterTickerLinesFromSync() {
+            if (!window.WTContentSync) return;
+
+            const localLines = getManagedFooterTickerLines();
+            const syncedLines = await WTContentSync.hydrateList({
+                bucket: FOOTER_TICKER_BUCKET_KEY,
+                storageKey: FOOTER_TICKER_STORAGE_KEY,
+                seedItems: localLines.length ? localLines : FOOTER_TICKER_DEFAULT_LINES,
+                normalizeItem: (item) => (typeof item === 'string' ? item.trim() : '')
+            });
+
+            setManagedFooterTickerLines(syncedLines, false);
+            renderFooterTicker();
+            renderFooterTickerCustomList();
         }
 
         function renderFooterTicker() {
@@ -1116,6 +1153,7 @@
         setFooterTickerAdminVisibility(false);
         setFooterTickerAdminVisibility(isAdminConnected());
         setAuthButtonsVisibility(isAdminConnected());
+        loadManagedFooterTickerLinesFromSync();
         window.startEditFooterTickerText = startEditFooterTickerText;
         window.saveEditedFooterTickerText = saveEditedFooterTickerText;
         window.cancelEditFooterTickerText = cancelEditFooterTickerText;
@@ -1141,8 +1179,10 @@
         const ADMIN_SESSION_USER_KEY = 'wt_holding_admin_user';
         const ADMIN_SESSION_SUPER_KEY = 'wt_holding_admin_is_super';
         const DASHBOARD_RESOURCE_STORAGE_KEY = 'wt_dashboard_resource_library_v1';
+        const DASHBOARD_RESOURCE_BUCKET_KEY = 'homepage-dashboard-resource-library';
         const DASHBOARD_RESOURCE_KEYS = ['presentationDecks', 'analyticalDataSheets', 'balanceSheets'];
         const SOCIAL_LINKS_STORAGE_KEY = 'wt_social_links_v1';
+        const SOCIAL_LINKS_BUCKET_KEY = 'homepage-social-links';
         const adminInstagramInput = document.getElementById('admin-instagram-link-input');
         const adminLinkedInInput = document.getElementById('admin-linkedin-link-input');
         const saveSocialLinksBtn = document.getElementById('save-social-links-btn');
@@ -1152,6 +1192,30 @@
         const publicInstagramLink = document.getElementById('public-instagram-link');
         const publicLinkedInLink = document.getElementById('public-linkedin-link');
 
+        function normalizeSocialLinks(links) {
+            const parsed = links && typeof links === 'object' ? links : {};
+            return {
+                instagram: typeof parsed.instagram === 'string' ? parsed.instagram.trim() : '',
+                linkedin: typeof parsed.linkedin === 'string' ? parsed.linkedin.trim() : ''
+            };
+        }
+
+        function normalizeDashboardResourceLibrary(library) {
+            const parsed = library && typeof library === 'object' ? library : {};
+            const normalized = {};
+
+            DASHBOARD_RESOURCE_KEYS.forEach((key) => {
+                const current = parsed && parsed[key] ? parsed[key] : {};
+                normalized[key] = {
+                    slidesUrl: typeof current.slidesUrl === 'string' ? current.slidesUrl.trim() : '',
+                    pdfDataUrl: typeof current.pdfDataUrl === 'string' ? current.pdfDataUrl : '',
+                    pdfFileName: typeof current.pdfFileName === 'string' ? current.pdfFileName : ''
+                };
+            });
+
+            return normalized;
+        }
+
         function getSocialLinks() {
             let parsed = {};
             try {
@@ -1160,14 +1224,36 @@
                 parsed = {};
             }
 
-            return {
-                instagram: typeof parsed.instagram === 'string' ? parsed.instagram : '',
-                linkedin: typeof parsed.linkedin === 'string' ? parsed.linkedin : ''
-            };
+            return normalizeSocialLinks(parsed);
         }
 
-        function setSocialLinks(links) {
-            localStorage.setItem(SOCIAL_LINKS_STORAGE_KEY, JSON.stringify(links));
+        function setSocialLinks(links, syncOnline = true) {
+            const normalizedLinks = normalizeSocialLinks(links);
+            localStorage.setItem(SOCIAL_LINKS_STORAGE_KEY, JSON.stringify(normalizedLinks));
+
+            if (syncOnline && window.WTContentSync) {
+                WTContentSync.saveObject({
+                    bucket: SOCIAL_LINKS_BUCKET_KEY,
+                    storageKey: SOCIAL_LINKS_STORAGE_KEY,
+                    value: normalizedLinks,
+                    normalizeValue: normalizeSocialLinks
+                });
+            }
+        }
+
+        async function loadSocialLinksFromSync() {
+            if (!window.WTContentSync) return;
+
+            const localLinks = getSocialLinks();
+            const syncedLinks = await WTContentSync.hydrateObject({
+                bucket: SOCIAL_LINKS_BUCKET_KEY,
+                storageKey: SOCIAL_LINKS_STORAGE_KEY,
+                seedValue: localLinks,
+                normalizeValue: normalizeSocialLinks
+            });
+
+            setSocialLinks(syncedLinks, false);
+            renderSocialLinks();
         }
 
         function applySocialLink(anchor, url) {
@@ -1235,21 +1321,36 @@
                 parsed = {};
             }
 
-            const normalized = {};
-            DASHBOARD_RESOURCE_KEYS.forEach((key) => {
-                const current = parsed && parsed[key] ? parsed[key] : {};
-                normalized[key] = {
-                    slidesUrl: typeof current.slidesUrl === 'string' ? current.slidesUrl : '',
-                    pdfDataUrl: typeof current.pdfDataUrl === 'string' ? current.pdfDataUrl : '',
-                    pdfFileName: typeof current.pdfFileName === 'string' ? current.pdfFileName : ''
-                };
-            });
-
-            return normalized;
+            return normalizeDashboardResourceLibrary(parsed);
         }
 
-        function setDashboardResourceLibrary(library) {
-            localStorage.setItem(DASHBOARD_RESOURCE_STORAGE_KEY, JSON.stringify(library));
+        function setDashboardResourceLibrary(library, syncOnline = true) {
+            const normalizedLibrary = normalizeDashboardResourceLibrary(library);
+            localStorage.setItem(DASHBOARD_RESOURCE_STORAGE_KEY, JSON.stringify(normalizedLibrary));
+
+            if (syncOnline && window.WTContentSync) {
+                WTContentSync.saveObject({
+                    bucket: DASHBOARD_RESOURCE_BUCKET_KEY,
+                    storageKey: DASHBOARD_RESOURCE_STORAGE_KEY,
+                    value: normalizedLibrary,
+                    normalizeValue: normalizeDashboardResourceLibrary
+                });
+            }
+        }
+
+        async function loadDashboardResourceLibraryFromSync() {
+            if (!window.WTContentSync) return;
+
+            const localLibrary = getDashboardResourceLibrary();
+            const syncedLibrary = await WTContentSync.hydrateObject({
+                bucket: DASHBOARD_RESOURCE_BUCKET_KEY,
+                storageKey: DASHBOARD_RESOURCE_STORAGE_KEY,
+                seedValue: localLibrary,
+                normalizeValue: normalizeDashboardResourceLibrary
+            });
+
+            setDashboardResourceLibrary(syncedLibrary, false);
+            renderDashboardResourceLibrary();
         }
 
         function renderDashboardResourceCard(key) {
@@ -1423,6 +1524,8 @@
             });
         }
         renderSocialLinks();
+        loadSocialLinksFromSync();
+        loadDashboardResourceLibraryFromSync();
 
         function cleanupLogoBackgrounds() {
             const logos = document.querySelectorAll('img.logo-cleanup');
