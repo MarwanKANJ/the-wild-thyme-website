@@ -841,25 +841,29 @@
             const username = usernameInput.value.trim();
             const password = passwordInput.value;
 
-            // Get existing credentials database
             const db = getAdminCredentialsDb();
             const user = db[username];
 
             if (user && user.pass === password) {
-                // Credentials match - grant preview access
                 localStorage.setItem(PREVIEW_ACCESS_KEY, 'true');
                 errorDiv.classList.remove('show');
                 gateOverlay.classList.add('hidden');
-                
-                // Optional: Auto-login the admin
+                document.body.style.overflow = 'auto';
+
+                if (!user.isSuper && user.firstLogin) {
+                    activelyConnectedUser = username;
+                    authForm.classList.add('hidden');
+                    resetWorkflow.classList.remove('hidden');
+                    openSecurePortalModal();
+                    passwordInput.value = '';
+                    return;
+                }
+
                 localStorage.setItem('wt_holding_admin_connected', 'true');
                 localStorage.setItem('wt_holding_admin_user', username);
                 localStorage.setItem('wt_holding_admin_is_super', user.isSuper ? 'true' : 'false');
-                
-                // Reload to apply authenticated state
                 location.reload();
             } else {
-                // Invalid credentials
                 errorDiv.textContent = 'Invalid username or password';
                 errorDiv.classList.add('show');
                 passwordInput.value = '';
