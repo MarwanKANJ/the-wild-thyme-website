@@ -824,6 +824,8 @@
         // ADMIN ACCESS GATE - PREVIEW MODE
         // ==========================================
         const PREVIEW_ACCESS_KEY = 'wt_preview_access_granted';
+        const ADMIN_CREDENTIALS_STORAGE_KEY = 'wt_admin_credentials_db';
+        const ADMIN_CREDENTIALS_BUCKET_KEY = 'homepage-admin-credentials-db';
 
         function hasPreviewAccess() {
             return localStorage.getItem(PREVIEW_ACCESS_KEY) === 'true';
@@ -840,7 +842,7 @@
             const password = passwordInput.value;
 
             // Get existing credentials database
-            const db = JSON.parse(localStorage.getItem('wt_admin_credentials_db') || '{}');
+            const db = getAdminCredentialsDb();
             const user = db[username];
 
             if (user && user.pass === password) {
@@ -1168,10 +1170,89 @@
             ElBro: { pass: "Peace&Love1$", isSuper: false, firstLogin: true }
         };
 
-        function initializeSecurityRoster() {
-            if (!localStorage.getItem('wt_admin_credentials_db')) {
-                localStorage.setItem('wt_admin_credentials_db', JSON.stringify(DEFAULT_ROSTER));
+        function normalizeAdminCredentialsDb(db) {
+            const parsed = db && typeof db === 'object' && !Array.isArray(db) ? db : {};
+            const normalized = {};
+
+            Object.keys(parsed).forEach((username) => {
+                const cleanUsername = String(username || '').trim();
+                if (!cleanUsername) return;
+
+                const current = parsed[username] && typeof parsed[username] === 'object' ? parsed[username] : {};
+                normalized[cleanUsername] = {
+                    pass: typeof current.pass === 'string' ? current.pass : '',
+                    isSuper: current.isSuper === true,
+                    firstLogin: current.firstLogin === true
+                };
+            });
+
+            if (Object.keys(normalized).length === 0) {
+                Object.keys(DEFAULT_ROSTER).forEach((username) => {
+                    const current = DEFAULT_ROSTER[username];
+                    normalized[username] = {
+                        pass: current.pass,
+                        isSuper: current.isSuper === true,
+                        firstLogin: current.firstLogin === true
+                    };
+                });
             }
+
+            return normalized;
+        }
+
+        function getAdminCredentialsDb() {
+            let parsed = {};
+            try {
+                parsed = JSON.parse(localStorage.getItem(ADMIN_CREDENTIALS_STORAGE_KEY) || '{}');
+            } catch (error) {
+                parsed = {};
+            }
+
+            const normalized = normalizeAdminCredentialsDb(parsed);
+            localStorage.setItem(ADMIN_CREDENTIALS_STORAGE_KEY, JSON.stringify(normalized));
+            return normalized;
+        }
+
+        function setAdminCredentialsDb(db, syncOnline = true) {
+            const normalized = normalizeAdminCredentialsDb(db);
+            localStorage.setItem(ADMIN_CREDENTIALS_STORAGE_KEY, JSON.stringify(normalized));
+
+            if (syncOnline && window.WTContentSync) {
+                WTContentSync.saveObject({
+                    bucket: ADMIN_CREDENTIALS_BUCKET_KEY,
+                    storageKey: ADMIN_CREDENTIALS_STORAGE_KEY,
+                    value: normalized,
+                    normalizeValue: normalizeAdminCredentialsDb
+                });
+            }
+
+            return normalized;
+        }
+
+        async function loadAdminCredentialsFromSync() {
+            if (!window.WTContentSync) return;
+
+            const localDb = getAdminCredentialsDb();
+            const syncedDb = await WTContentSync.hydrateObject({
+                bucket: ADMIN_CREDENTIALS_BUCKET_KEY,
+                storageKey: ADMIN_CREDENTIALS_STORAGE_KEY,
+                seedValue: localDb,
+                normalizeValue: normalizeAdminCredentialsDb
+            });
+
+            setAdminCredentialsDb(syncedDb, false);
+            if (localStorage.getItem(ADMIN_SESSION_SUPER_KEY) === 'true') {
+                renderAdminRosterRows();
+            }
+        }
+
+        function initializeSecurityRoster() {
+            if (!localStorage.getItem(ADMIN_CREDENTIALS_STORAGE_KEY)) {
+                setAdminCredentialsDb(DEFAULT_ROSTER, false);
+            } else {
+                setAdminCredentialsDb(getAdminCredentialsDb(), false);
+            }
+            loadAdminCredentialsFromSync();
         }
         initializeSecurityRoster();
 
@@ -1750,7 +1831,7 @@
             const userVal = document.getElementById('auth-username').value.trim();
             const passVal = document.getElementById('auth-password').value;
 
-            const db = JSON.parse(localStorage.getItem('wt_admin_credentials_db'));
+            const db = getAdminCredentialsDb();
             const matchedUser = db[userVal];
 
             if (matchedUser && matchedUser.pass === passVal) {
@@ -1807,10 +1888,10 @@
                 return;
             }
 
-            const db = JSON.parse(localStorage.getItem('wt_admin_credentials_db'));
+            const db = getAdminCredentialsDb();
             db[activelyConnectedUser].pass = inputVal;
             db[activelyConnectedUser].firstLogin = false;
-            localStorage.setItem('wt_admin_credentials_db', JSON.stringify(db));
+            setAdminCredentialsDb(db);
 
             alert("Security matrix configuration updated. Password successfully rotated.");
             grantAccessSession(false);
@@ -1854,7 +1935,7 @@
         const rosterRowsContainer = document.getElementById('admin-roster-rows');
 
         function renderAdminRosterRows() {
-            const db = JSON.parse(localStorage.getItem('wt_admin_credentials_db'));
+            const db = getAdminCredentialsDb();
             rosterRowsContainer.innerHTML = "";
 
             Object.keys(db).forEach(username => {
@@ -1882,7 +1963,7 @@
 
             if (!targetUsername) return;
 
-            const db = JSON.parse(localStorage.getItem('wt_admin_credentials_db'));
+            const db = getAdminCredentialsDb();
             
             if (db[targetUsername]) {
                 alert("Creation denied: Administrative account identifier already registered.");
@@ -1895,7 +1976,7 @@
                 firstLogin: true
             };
 
-            localStorage.setItem('wt_admin_credentials_db', JSON.stringify(db));
+            setAdminCredentialsDb(db);
             inputField.value = "";
             renderAdminRosterRows();
             console.log(`%c[SUPER-ADMIN COMMAND] Success: Created new admin user node for "${targetUsername}". Default initialization password assigned.`, "color: #007FFF; font-weight: bold;");
@@ -1904,9 +1985,9 @@
         function revokeAdminAccount(username) {
             if (!confirm(`Are you sure you want to securely purge the credential node for admin user "${username}"?`)) return;
             
-            const db = JSON.parse(localStorage.getItem('wt_admin_credentials_db'));
+            const db = getAdminCredentialsDb();
             delete db[username];
-            localStorage.setItem('wt_admin_credentials_db', JSON.stringify(db));
+            setAdminCredentialsDb(db);
             renderAdminRosterRows();
             console.log(`%c[SUPER-ADMIN COMMAND] Warning: Revoked all administrative system access authorization for identity token "${username}".`, "color: #FF4500; font-weight: bold;");
         }
