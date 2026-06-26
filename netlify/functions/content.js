@@ -5,9 +5,9 @@ const corsHeaders = {
 };
 
 function getSupabaseConfig() {
-  const url = process.env.SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const tableName = process.env.SUPABASE_TABLE_NAME || 'wt_content_entries';
+  const url = process.env.WT_CONTENT_DB_URL;
+  const serviceRoleKey = process.env.WT_CONTENT_DB_SERVICE_KEY;
+  const tableName = process.env.WT_CONTENT_TABLE_NAME || 'wt_content_entries';
 
   if (!url || !serviceRoleKey) {
     return null;
