@@ -429,8 +429,14 @@
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify(payload)
                 });
+                let result = null;
+                try {
+                    result = await response.json();
+                } catch (_parseError) {
+                    result = null;
+                }
 
-                if (response.ok) {
+                if (response.ok && result && result.ok === true && result.emailSent === true) {
                     this.reset();
                     successMsg.classList.remove('hidden');
                     setTimeout(() => {

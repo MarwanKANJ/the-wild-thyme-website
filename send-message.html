@@ -332,8 +332,14 @@
             referrer: document.referrer || ''
           })
         });
+        let result = null;
+        try {
+          result = await response.json();
+        } catch (_parseError) {
+          result = null;
+        }
 
-        if (response.ok) {
+        if (response.ok && result && result.ok === true && result.emailSent === true) {
           this.reset();
           window.location.href = 'thank-you.html';
         } else {

@@ -85,7 +85,7 @@ async function sendNotificationEmail(options) {
   } = options;
 
   if (!resendApiKey || to.length === 0) {
-    return { skipped: true };
+    throw new Error('Email notification is not configured. Missing WT_RESEND_API_KEY or recipient list.');
   }
 
   const safePhone = phone || '-';
@@ -189,6 +189,30 @@ exports.handler = async (event) => {
     };
   }
 
+  try {
+    const notificationConfig = getNotificationConfig();
+    await sendNotificationEmail({
+      ...notificationConfig,
+      name,
+      email,
+      phone,
+      subject,
+      message,
+      source,
+      page,
+      pageUrl,
+      referrer,
+      createdAtIso
+    });
+  } catch (notificationError) {
+    console.error('[contact-message] Email notification failed:', notificationError.message);
+    return {
+      statusCode: 502,
+      headers: corsHeaders,
+      body: JSON.stringify({ ok: false, error: 'Email delivery failed. Please try again in a minute.' })
+    };
+  }
+
   await supabaseRequest(config, config.tableName, {
     method: 'POST',
     body: JSON.stringify([
@@ -208,28 +232,9 @@ exports.handler = async (event) => {
     ])
   });
 
-  try {
-    const notificationConfig = getNotificationConfig();
-    await sendNotificationEmail({
-      ...notificationConfig,
-      name,
-      email,
-      phone,
-      subject,
-      message,
-      source,
-      page,
-      pageUrl,
-      referrer,
-      createdAtIso
-    });
-  } catch (notificationError) {
-    console.error('[contact-message] Email notification failed:', notificationError.message);
-  }
-
   return {
     statusCode: 200,
     headers: corsHeaders,
-    body: JSON.stringify({ ok: true })
+    body: JSON.stringify({ ok: true, emailSent: true })
   };
 };
