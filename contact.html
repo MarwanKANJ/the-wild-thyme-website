@@ -208,20 +208,8 @@
             </div>
 
             <!-- Right: form -->
-            <!-- =====================================================
-                 FORMSPREE SETUP (one-time, 2 minutes):
-                 1. Go to https://formspree.io and create a free account
-                 2. Click "New Form", name it "Wild Thyme Contact"
-                 3. Copy your Form Endpoint (looks like: https://formspree.io/f/xxxxxxxx)
-                 4. Replace YOUR_FORMSPREE_ENDPOINT below with that URL
-                 5. In your Formspree dashboard, add marwan@thewildthymegroup.com
-                    as a second notification recipient
-                 ===================================================== -->
             <form id="contact-form" class="space-y-5">
-                <!-- Hidden fields for Formspree routing -->
-                <input type="hidden" name="_subject" value="New Contact Form Submission — The Wild Thyme Group">
-                <input type="hidden" name="_cc" value="Marwan@thewildthymegroup.com">
-                <input type="hidden" name="_replyto" id="cf-replyto-mirror">
+                <input type="hidden" name="source" value="contact-page">
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
@@ -409,19 +397,26 @@
             }
         }
 
-        // ── Contact form → Formspree ──
-        // Replace 'YOUR_FORMSPREE_ENDPOINT' with your actual endpoint from formspree.io
-        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORMSPREE_ENDPOINT';
+        const CONTACT_MESSAGE_ENDPOINT = '/.netlify/functions/contact-message';
 
         document.getElementById('contact-form').addEventListener('submit', async function(event) {
             event.preventDefault();
 
-            // Mirror email into _replyto for reply-to header
-            document.getElementById('cf-replyto-mirror').value = document.getElementById('cf-email').value;
-
             const btn = document.getElementById('cf-submit-btn');
             const successMsg = document.getElementById('cf-success');
             const errorMsg = document.getElementById('cf-error');
+            const formData = new FormData(this);
+            const payload = {
+                name: formData.get('name')?.toString().trim() || '',
+                email: formData.get('email')?.toString().trim() || '',
+                phone: formData.get('phone')?.toString().trim() || '',
+                subject: formData.get('subject')?.toString().trim() || '',
+                message: formData.get('message')?.toString().trim() || '',
+                source: formData.get('source')?.toString().trim() || 'contact-page',
+                page: window.location.pathname,
+                pageUrl: window.location.href,
+                referrer: document.referrer || ''
+            };
 
             btn.textContent = 'Sending...';
             btn.disabled = true;
@@ -429,16 +424,18 @@
             errorMsg.classList.add('hidden');
 
             try {
-                const response = await fetch(FORMSPREE_ENDPOINT, {
+                const response = await fetch(CONTACT_MESSAGE_ENDPOINT, {
                     method: 'POST',
-                    headers: { 'Accept': 'application/json' },
-                    body: new FormData(this)
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
 
                 if (response.ok) {
                     this.reset();
                     successMsg.classList.remove('hidden');
-                    setTimeout(() => successMsg.classList.add('hidden'), 6000);
+                    setTimeout(() => {
+                        window.location.href = 'thank-you.html';
+                    }, 900);
                 } else {
                     errorMsg.classList.remove('hidden');
                 }

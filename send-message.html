@@ -199,11 +199,8 @@
       <div class="p-2 md:p-4 md:min-h-[640px]">
         <h1 class="touch-orange text-3xl md:text-4xl font-light uppercase tracking-[0.08em]">Contact Us</h1>
 
-        <form id="contact-us-form" class="mt-10 space-y-5" action="https://formsubmit.co/marwan@thewildthymegroup.com" method="POST">
-          <input type="hidden" name="_subject" value="New Contact Us Form Submission">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_template" value="table">
-          <input id="form-next-url" type="hidden" name="_next" value="">
+        <form id="contact-us-form" class="mt-10 space-y-5">
+          <input type="hidden" name="source" value="send-message-page">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="full-name" class="field-label touch-orange text-[11px] uppercase tracking-[0.15em] text-slate-300 mb-2"><span class="dot-marker" aria-hidden="true"></span>Full Name *</label>
@@ -305,10 +302,52 @@
     window.addEventListener('DOMContentLoaded', initializeAccessGate);
     initializeAccessGate();
 
-    const nextUrlInput = document.getElementById('form-next-url');
-    if (nextUrlInput) {
-      nextUrlInput.value = `${window.location.origin}/thank-you.html`;
-    }
+    const CONTACT_MESSAGE_ENDPOINT = '/.netlify/functions/contact-message';
+
+    document.getElementById('contact-us-form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const submitButton = this.querySelector('button[type="submit"]');
+      const originalLabel = submitButton ? submitButton.textContent : 'Submit';
+      const formData = new FormData(this);
+
+      if (submitButton) {
+        submitButton.textContent = 'Sending...';
+        submitButton.disabled = true;
+      }
+
+      try {
+        const response = await fetch(CONTACT_MESSAGE_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            name: formData.get('name')?.toString().trim() || '',
+            email: formData.get('email')?.toString().trim() || '',
+            subject: formData.get('subject')?.toString().trim() || '',
+            message: formData.get('message')?.toString().trim() || '',
+            phone: '',
+            source: formData.get('source')?.toString().trim() || 'send-message-page',
+            page: window.location.pathname,
+            pageUrl: window.location.href,
+            referrer: document.referrer || ''
+          })
+        });
+
+        if (response.ok) {
+          this.reset();
+          window.location.href = 'thank-you.html';
+        } else {
+          alert('Something went wrong. Please try again or email us directly.');
+        }
+      } catch (_error) {
+        alert('Something went wrong. Please try again or email us directly.');
+      } finally {
+        if (submitButton) {
+          submitButton.textContent = originalLabel;
+          submitButton.disabled = false;
+        }
+      }
+    });
   </script>
 
 </body>
