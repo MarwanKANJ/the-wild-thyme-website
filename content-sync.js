@@ -1,8 +1,10 @@
 (function () {
   const apiBase = '/.netlify/functions/content';
+  const pendingQueueStorageKey = 'wt_pending_sync_queue_v1';
   let syncState = 'checking';
   let syncMessage = 'Sync: checking';
   let syncBadge = null;
+  let isFlushingPendingQueue = false;
 
   function setSyncStatus(state, message) {
     syncState = state;
@@ -80,6 +82,65 @@
     return Boolean(value && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).length > 0);
   }
 
+  function readPendingQueue() {
+    return readCache(pendingQueueStorageKey, {});
+  }
+
+  function writePendingQueue(queue) {
+    writeCache(pendingQueueStorageKey, queue && typeof queue === 'object' ? queue : {});
+  }
+
+  function hasPendingChange(bucket) {
+    const queue = readPendingQueue();
+    return Boolean(queue && queue[bucket]);
+  }
+
+  function enqueuePendingChange(change) {
+    const queue = readPendingQueue();
+    queue[change.bucket] = {
+      bucket: change.bucket,
+      storageKey: change.storageKey,
+      items: change.items,
+      queuedAt: Date.now()
+    };
+    writePendingQueue(queue);
+  }
+
+  function clearPendingChange(bucket) {
+    const queue = readPendingQueue();
+    if (!queue[bucket]) return;
+    delete queue[bucket];
+    writePendingQueue(queue);
+  }
+
+  async function flushPendingChanges() {
+    if (isFlushingPendingQueue) return;
+
+    const queue = readPendingQueue();
+    const buckets = Object.keys(queue);
+    if (buckets.length === 0) return;
+
+    isFlushingPendingQueue = true;
+    try {
+      for (const bucket of buckets) {
+        const queued = queue[bucket];
+        if (!queued || !Array.isArray(queued.items)) continue;
+
+        try {
+          await requestContent('PUT', {
+            bucket: queued.bucket,
+            items: queued.items
+          });
+          clearPendingChange(bucket);
+        } catch (_error) {
+          setSyncStatus('offline', 'Sync: local fallback');
+        }
+      }
+    } finally {
+      isFlushingPendingQueue = false;
+    }
+  }
+
   async function requestContent(method, payload) {
     const url = method === 'GET' && payload && payload.bucket
       ? `${apiBase}?bucket=${encodeURIComponent(payload.bucket)}`
@@ -114,6 +175,11 @@
     const cached = readCache(storageKey, []);
     const localItems = Array.isArray(cached) && cached.length > 0 ? normalizeList(cached, normalizeItem) : normalizeList(seedItems, normalizeItem);
     writeCache(storageKey, localItems);
+
+    await flushPendingChanges();
+    if (hasPendingChange(bucket)) {
+      return localItems;
+    }
 
     try {
       const data = await requestContent('GET', { bucket });
@@ -151,7 +217,13 @@
         bucket,
         items: normalizedItems
       });
+      clearPendingChange(bucket);
     } catch (_error) {
+      enqueuePendingChange({
+        bucket,
+        storageKey,
+        items: normalizedItems
+      });
       setSyncStatus('offline', 'Sync: local fallback');
     }
 
@@ -169,6 +241,11 @@
     const cached = readCache(storageKey, {});
     const localValue = isMeaningfulObject(cached) ? normalizeValue(cached) : normalizeValue(seedValue);
     writeCache(storageKey, localValue);
+
+    await flushPendingChanges();
+    if (hasPendingChange(bucket)) {
+      return localValue;
+    }
 
     try {
       const data = await requestContent('GET', { bucket });
@@ -206,7 +283,13 @@
         bucket,
         items: [normalizedValue]
       });
+      clearPendingChange(bucket);
     } catch (_error) {
+      enqueuePendingChange({
+        bucket,
+        storageKey,
+        items: [normalizedValue]
+      });
       setSyncStatus('offline', 'Sync: local fallback');
     }
 
@@ -219,4 +302,12 @@
     hydrateObject,
     saveObject
   };
+
+  window.addEventListener('online', () => {
+    flushPendingChanges();
+  });
+
+  if (navigator.onLine) {
+    flushPendingChanges();
+  }
 })();
