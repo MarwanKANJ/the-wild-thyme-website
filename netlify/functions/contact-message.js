@@ -144,130 +144,140 @@ async function sendNotificationEmail(options) {
 }
 
 exports.handler = async (event) => {
-  if (event.httpMethod === 'OPTIONS') {
+  try {
+    if (event.httpMethod === 'OPTIONS') {
+      return {
+        statusCode: 200,
+        headers: corsHeaders,
+        body: ''
+      };
+    }
+
+    if (event.httpMethod !== 'POST') {
+      return {
+        statusCode: 405,
+        headers: corsHeaders,
+        body: JSON.stringify({ error: 'Method not allowed.' })
+      };
+    }
+
+    const config = getSupabaseConfig();
+    if (!config) {
+      return {
+        statusCode: 500,
+        headers: corsHeaders,
+        body: JSON.stringify({ error: 'Missing Supabase environment variables.' })
+      };
+    }
+
+    let payload = {};
+    try {
+      payload = event.body ? JSON.parse(event.body) : {};
+    } catch (_error) {
+      return {
+        statusCode: 400,
+        headers: corsHeaders,
+        body: JSON.stringify({ error: 'Invalid JSON payload.' })
+      };
+    }
+
+    const name = sanitizeText(payload.name, 160);
+    const email = sanitizeText(payload.email, 160);
+    const phone = sanitizeText(payload.phone, 80);
+    const subject = sanitizeText(payload.subject, 220);
+    const message = sanitizeText(payload.message, 5000);
+    const source = sanitizeText(payload.source, 120) || 'website';
+    const page = sanitizeText(payload.page, 180);
+    const pageUrl = sanitizeText(payload.pageUrl, 600);
+    const referrer = sanitizeText(payload.referrer, 600);
+    const headers = event && event.headers && typeof event.headers === 'object' ? event.headers : {};
+    const userAgent = sanitizeText(headers['user-agent'] || headers['User-Agent'] || '', 300);
+    const createdAtIso = new Date().toISOString();
+
+    if (!name || !email || !subject || !message) {
+      return {
+        statusCode: 400,
+        headers: corsHeaders,
+        body: JSON.stringify({ error: 'Missing required fields.' })
+      };
+    }
+
+    if (!isValidEmail(email)) {
+      return {
+        statusCode: 400,
+        headers: corsHeaders,
+        body: JSON.stringify({ error: 'Invalid email address.' })
+      };
+    }
+
+    try {
+      await supabaseRequest(config, config.tableName, {
+        method: 'POST',
+        body: JSON.stringify([
+          {
+            source,
+            name,
+            email,
+            phone: phone || null,
+            subject,
+            message,
+            page: page || null,
+            page_url: pageUrl || null,
+            referrer: referrer || null,
+            user_agent: userAgent || null,
+            created_at: createdAtIso
+          }
+        ])
+      });
+    } catch (dbError) {
+      console.error('[contact-message] DB insert failed:', dbError.message);
+      return {
+        statusCode: 500,
+        headers: corsHeaders,
+        body: JSON.stringify({ ok: false, error: 'Unable to save message right now. Please try again shortly.' })
+      };
+    }
+
+    let emailSent = false;
+    let emailError = null;
+
+    try {
+      const notificationConfig = getNotificationConfig();
+      await sendNotificationEmail({
+        ...notificationConfig,
+        name,
+        email,
+        phone,
+        subject,
+        message,
+        source,
+        page,
+        pageUrl,
+        referrer,
+        createdAtIso
+      });
+      emailSent = true;
+    } catch (notificationError) {
+      emailError = notificationError.message;
+      console.error('[contact-message] Email notification failed:', notificationError.message);
+    }
+
     return {
       statusCode: 200,
       headers: corsHeaders,
-      body: ''
+      body: JSON.stringify({
+        ok: true,
+        emailSent,
+        warning: emailSent ? null : 'Message saved but email notification failed.',
+        emailError: emailSent ? null : emailError
+      })
     };
-  }
-
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      headers: corsHeaders,
-      body: JSON.stringify({ error: 'Method not allowed.' })
-    };
-  }
-
-  const config = getSupabaseConfig();
-  if (!config) {
+  } catch (unhandledError) {
+    console.error('[contact-message] Unhandled error:', unhandledError && unhandledError.message ? unhandledError.message : unhandledError);
     return {
       statusCode: 500,
       headers: corsHeaders,
-      body: JSON.stringify({ error: 'Missing Supabase environment variables.' })
+      body: JSON.stringify({ ok: false, error: 'Internal server error.' })
     };
   }
-
-  let payload = {};
-  try {
-    payload = event.body ? JSON.parse(event.body) : {};
-  } catch (_error) {
-    return {
-      statusCode: 400,
-      headers: corsHeaders,
-      body: JSON.stringify({ error: 'Invalid JSON payload.' })
-    };
-  }
-
-  const name = sanitizeText(payload.name, 160);
-  const email = sanitizeText(payload.email, 160);
-  const phone = sanitizeText(payload.phone, 80);
-  const subject = sanitizeText(payload.subject, 220);
-  const message = sanitizeText(payload.message, 5000);
-  const source = sanitizeText(payload.source, 120) || 'website';
-  const page = sanitizeText(payload.page, 180);
-  const pageUrl = sanitizeText(payload.pageUrl, 600);
-  const referrer = sanitizeText(payload.referrer, 600);
-  const userAgent = sanitizeText(event.headers['user-agent'] || event.headers['User-Agent'] || '', 300);
-  const createdAtIso = new Date().toISOString();
-
-  if (!name || !email || !subject || !message) {
-    return {
-      statusCode: 400,
-      headers: corsHeaders,
-      body: JSON.stringify({ error: 'Missing required fields.' })
-    };
-  }
-
-  if (!isValidEmail(email)) {
-    return {
-      statusCode: 400,
-      headers: corsHeaders,
-      body: JSON.stringify({ error: 'Invalid email address.' })
-    };
-  }
-
-  try {
-    await supabaseRequest(config, config.tableName, {
-      method: 'POST',
-      body: JSON.stringify([
-        {
-          source,
-          name,
-          email,
-          phone: phone || null,
-          subject,
-          message,
-          page: page || null,
-          page_url: pageUrl || null,
-          referrer: referrer || null,
-          user_agent: userAgent || null,
-          created_at: createdAtIso
-        }
-      ])
-    });
-  } catch (dbError) {
-    console.error('[contact-message] DB insert failed:', dbError.message);
-    return {
-      statusCode: 500,
-      headers: corsHeaders,
-      body: JSON.stringify({ ok: false, error: 'Unable to save message right now. Please try again shortly.' })
-    };
-  }
-
-  let emailSent = false;
-  let emailError = null;
-
-  try {
-    const notificationConfig = getNotificationConfig();
-    await sendNotificationEmail({
-      ...notificationConfig,
-      name,
-      email,
-      phone,
-      subject,
-      message,
-      source,
-      page,
-      pageUrl,
-      referrer,
-      createdAtIso
-    });
-    emailSent = true;
-  } catch (notificationError) {
-    emailError = notificationError.message;
-    console.error('[contact-message] Email notification failed:', notificationError.message);
-  }
-
-  return {
-    statusCode: 200,
-    headers: corsHeaders,
-    body: JSON.stringify({
-      ok: true,
-      emailSent,
-      warning: emailSent ? null : 'Message saved but email notification failed.',
-      emailError: emailSent ? null : emailError
-    })
-  };
 };
