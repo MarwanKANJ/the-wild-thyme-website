@@ -59,12 +59,7 @@ function getNotificationConfig() {
   const resendApiKey = process.env.WT_RESEND_API_KEY || '';
   const from = process.env.WT_CONTACT_NOTIFY_FROM || 'onboarding@resend.dev';
   const rawTo = process.env.WT_CONTACT_NOTIFY_TO || 'Marwan@thewildthymegroup.com,Paula@thewildthymegroup.com';
-  const rawReplyTo = process.env.WT_CONTACT_REPLY_TO || 'Marwan@thewildthymegroup.com,Paula@thewildthymegroup.com';
   const to = rawTo
-    .split(',')
-    .map((entry) => sanitizeText(entry, 320).toLowerCase())
-    .filter(Boolean);
-  const replyTo = rawReplyTo
     .split(',')
     .map((entry) => sanitizeText(entry, 320).toLowerCase())
     .filter(Boolean);
@@ -72,8 +67,7 @@ function getNotificationConfig() {
   return {
     resendApiKey,
     from,
-    to,
-    replyTo
+    to
   };
 }
 
@@ -82,7 +76,6 @@ async function sendNotificationEmail(options) {
     resendApiKey,
     from,
     to,
-    replyTo,
     name,
     email,
     phone,
@@ -129,7 +122,7 @@ async function sendNotificationEmail(options) {
     body: JSON.stringify({
       from,
       to,
-      reply_to: replyTo,
+      reply_to: email,
       subject: `[Website Contact] ${subject}`,
       html
     })
