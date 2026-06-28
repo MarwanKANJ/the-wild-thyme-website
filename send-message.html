@@ -228,6 +228,12 @@
               Submit
             </button>
           </div>
+          <div id="contact-success" class="hidden text-center text-xs uppercase tracking-widest text-[#00FF66] py-2">
+            Thank you for contacting us. Your message has been received.
+          </div>
+          <div id="contact-error" class="hidden text-center text-xs uppercase tracking-widest text-red-400 py-2">
+            Something went wrong. Please try again or email us directly.
+          </div>
         </form>
       </div>
       </div>
@@ -309,7 +315,12 @@
 
       const submitButton = this.querySelector('button[type="submit"]');
       const originalLabel = submitButton ? submitButton.textContent : 'Submit';
+      const successMsg = document.getElementById('contact-success');
+      const errorMsg = document.getElementById('contact-error');
       const formData = new FormData(this);
+
+      if (successMsg) successMsg.classList.add('hidden');
+      if (errorMsg) errorMsg.classList.add('hidden');
 
       if (submitButton) {
         submitButton.textContent = 'Sending...';
@@ -339,14 +350,25 @@
           result = null;
         }
 
-        if (response.ok && result && result.ok === true && result.emailSent === true) {
+        if (response.ok && result && result.ok === true) {
           this.reset();
-          window.location.href = 'thank-you.html';
+          if (successMsg) successMsg.classList.remove('hidden');
+          setTimeout(() => {
+            window.location.href = 'thank-you.html';
+          }, 1400);
+        } else {
+          if (errorMsg) {
+            errorMsg.classList.remove('hidden');
+          } else {
+            alert('Something went wrong. Please try again or email us directly.');
+          }
+        }
+      } catch (_error) {
+        if (errorMsg) {
+          errorMsg.classList.remove('hidden');
         } else {
           alert('Something went wrong. Please try again or email us directly.');
         }
-      } catch (_error) {
-        alert('Something went wrong. Please try again or email us directly.');
       } finally {
         if (submitButton) {
           submitButton.textContent = originalLabel;

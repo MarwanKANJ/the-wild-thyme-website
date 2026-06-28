@@ -211,6 +211,13 @@
             <form id="contact-form" class="space-y-5">
                 <input type="hidden" name="source" value="contact-page">
 
+                <div>
+                    <label class="group block text-[10px] uppercase tracking-wider text-slate-400 font-medium mb-1.5 hover:text-orange-500 transition-colors duration-300" for="cf-name">
+                        Full Name <span class="text-holding-fireball group-hover:text-holding-electricGreen transition-colors duration-300">*</span>
+                    </label>
+                    <input class="w-full bg-[#17191d] border border-white/10 px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-holding-fireball transition-colors" type="text" name="name" id="cf-name" placeholder="Your full name" required>
+                </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                         <label class="group block text-[10px] uppercase tracking-wider text-slate-400 font-medium mb-1.5 hover:text-orange-500 transition-colors duration-300" for="cf-email">
@@ -242,7 +249,7 @@
                     Send Message
                 </button>
                 <div id="cf-success" class="hidden text-center text-xs uppercase tracking-widest text-holding-electricGreen py-2">
-                    Message sent. We'll be in touch soon.
+                    Thank you for contacting us. Your message has been received.
                 </div>
                 <div id="cf-error" class="hidden text-center text-xs uppercase tracking-widest text-red-400 py-2">
                     Something went wrong. Please try again or email us directly.
@@ -436,12 +443,12 @@
                     result = null;
                 }
 
-                if (response.ok && result && result.ok === true && result.emailSent === true) {
+                if (response.ok && result && result.ok === true) {
                     this.reset();
                     successMsg.classList.remove('hidden');
                     setTimeout(() => {
                         window.location.href = 'thank-you.html';
-                    }, 900);
+                    }, 1400);
                 } else {
                     errorMsg.classList.remove('hidden');
                 }

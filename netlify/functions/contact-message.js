@@ -51,11 +51,20 @@ function sanitizeText(value, maxLength = 2000) {
   return String(value || '').trim().slice(0, maxLength);
 }
 
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || '').trim());
+}
+
 function getNotificationConfig() {
   const resendApiKey = process.env.WT_RESEND_API_KEY || '';
   const from = process.env.WT_CONTACT_NOTIFY_FROM || 'onboarding@resend.dev';
-  const rawTo = process.env.WT_CONTACT_NOTIFY_TO || 'MARWAN@THEWILDTHYMEGROUP.COM,JULIE@THEWILDTHYMEGROUP.COM';
+  const rawTo = process.env.WT_CONTACT_NOTIFY_TO || 'Marwan@thewildthymegroup.com,Paula@thewildthymegroup.com';
+  const rawReplyTo = process.env.WT_CONTACT_REPLY_TO || 'Marwan@thewildthymegroup.com,Paula@thewildthymegroup.com';
   const to = rawTo
+    .split(',')
+    .map((entry) => sanitizeText(entry, 320).toLowerCase())
+    .filter(Boolean);
+  const replyTo = rawReplyTo
     .split(',')
     .map((entry) => sanitizeText(entry, 320).toLowerCase())
     .filter(Boolean);
@@ -63,7 +72,8 @@ function getNotificationConfig() {
   return {
     resendApiKey,
     from,
-    to
+    to,
+    replyTo
   };
 }
 
@@ -72,6 +82,7 @@ async function sendNotificationEmail(options) {
     resendApiKey,
     from,
     to,
+    replyTo,
     name,
     email,
     phone,
@@ -118,7 +129,7 @@ async function sendNotificationEmail(options) {
     body: JSON.stringify({
       from,
       to,
-      reply_to: email,
+      reply_to: replyTo,
       subject: `[Website Contact] ${subject}`,
       html
     })
@@ -189,6 +200,45 @@ exports.handler = async (event) => {
     };
   }
 
+  if (!isValidEmail(email)) {
+    return {
+      statusCode: 400,
+      headers: corsHeaders,
+      body: JSON.stringify({ error: 'Invalid email address.' })
+    };
+  }
+
+  try {
+    await supabaseRequest(config, config.tableName, {
+      method: 'POST',
+      body: JSON.stringify([
+        {
+          source,
+          name,
+          email,
+          phone: phone || null,
+          subject,
+          message,
+          page: page || null,
+          page_url: pageUrl || null,
+          referrer: referrer || null,
+          user_agent: userAgent || null,
+          created_at: createdAtIso
+        }
+      ])
+    });
+  } catch (dbError) {
+    console.error('[contact-message] DB insert failed:', dbError.message);
+    return {
+      statusCode: 500,
+      headers: corsHeaders,
+      body: JSON.stringify({ ok: false, error: 'Unable to save message right now. Please try again shortly.' })
+    };
+  }
+
+  let emailSent = false;
+  let emailError = null;
+
   try {
     const notificationConfig = getNotificationConfig();
     await sendNotificationEmail({
@@ -204,37 +254,20 @@ exports.handler = async (event) => {
       referrer,
       createdAtIso
     });
+    emailSent = true;
   } catch (notificationError) {
+    emailError = notificationError.message;
     console.error('[contact-message] Email notification failed:', notificationError.message);
-    return {
-      statusCode: 502,
-      headers: corsHeaders,
-      body: JSON.stringify({ ok: false, error: 'Email delivery failed. Please try again in a minute.' })
-    };
   }
-
-  await supabaseRequest(config, config.tableName, {
-    method: 'POST',
-    body: JSON.stringify([
-      {
-        source,
-        name,
-        email,
-        phone: phone || null,
-        subject,
-        message,
-        page: page || null,
-        page_url: pageUrl || null,
-        referrer: referrer || null,
-        user_agent: userAgent || null,
-        created_at: createdAtIso
-      }
-    ])
-  });
 
   return {
     statusCode: 200,
     headers: corsHeaders,
-    body: JSON.stringify({ ok: true, emailSent: true })
+    body: JSON.stringify({
+      ok: true,
+      emailSent,
+      warning: emailSent ? null : 'Message saved but email notification failed.',
+      emailError: emailSent ? null : emailError
+    })
   };
 };

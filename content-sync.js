@@ -1,10 +1,20 @@
 (function () {
   const apiBase = '/.netlify/functions/content';
   const pendingQueueStorageKey = 'wt_pending_sync_queue_v1';
+  const isLocalPreview = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
   let syncState = 'checking';
   let syncMessage = 'Sync: checking';
   let syncBadge = null;
   let isFlushingPendingQueue = false;
+
+  function showFallbackStatus() {
+    if (isLocalPreview) {
+      setSyncStatus('checking', 'Sync: preview mode');
+      return;
+    }
+
+    setSyncStatus('offline', 'Sync: local fallback');
+  }
 
   function setSyncStatus(state, message) {
     syncState = state;
@@ -133,7 +143,7 @@
           });
           clearPendingChange(bucket);
         } catch (_error) {
-          setSyncStatus('offline', 'Sync: local fallback');
+          showFallbackStatus();
         }
       }
     } finally {
@@ -155,7 +165,7 @@
     });
 
     if (!response.ok) {
-      setSyncStatus('offline', 'Sync: local fallback');
+      showFallbackStatus();
       throw new Error(`Content sync request failed (${response.status})`);
     }
 
@@ -195,7 +205,7 @@
         await saveList({ bucket, storageKey, items: localItems, normalizeItem });
       }
     } catch (_error) {
-      setSyncStatus(navigator.onLine ? 'offline' : 'offline', 'Sync: local fallback');
+      showFallbackStatus();
     }
 
     return localItems;
@@ -224,7 +234,7 @@
         storageKey,
         items: normalizedItems
       });
-      setSyncStatus('offline', 'Sync: local fallback');
+      showFallbackStatus();
     }
 
     return normalizedItems;
@@ -261,7 +271,7 @@
         await saveObject({ bucket, storageKey, value: localValue, normalizeValue });
       }
     } catch (_error) {
-      setSyncStatus('offline', 'Sync: local fallback');
+      showFallbackStatus();
     }
 
     return localValue;
@@ -290,7 +300,7 @@
         storageKey,
         items: [normalizedValue]
       });
-      setSyncStatus('offline', 'Sync: local fallback');
+      showFallbackStatus();
     }
 
     return normalizedValue;
