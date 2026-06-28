@@ -113,6 +113,8 @@ async function sendNotificationEmail(options) {
     <p style="white-space: pre-wrap;">${message}</p>
   `;
 
+  const replyTo = isValidEmail(email) ? email : undefined;
+
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -122,7 +124,7 @@ async function sendNotificationEmail(options) {
     body: JSON.stringify({
       from,
       to,
-      reply_to: email,
+      ...(replyTo && { reply_to: replyTo }),
       subject: `[Website Contact] ${subject}`,
       html
     })
