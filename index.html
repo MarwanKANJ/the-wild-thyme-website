@@ -827,12 +827,36 @@
     </div>
 
     <div id="admin-welcome-popup" class="hidden fixed inset-0 z-[110] backdrop-blur-md bg-black/75 flex items-center justify-center opacity-0 transition-all duration-300 px-4">
-        <div class="bg-holding-charcoal w-full max-w-md border border-holding-gold/30 p-8 text-center">
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full border border-holding-gold/40 bg-holding-gold/10 text-holding-gold mb-4">
+        <div class="relative overflow-hidden bg-holding-charcoal w-full max-w-md border border-holding-gold/30 p-8 text-center">
+            <div class="pointer-events-none absolute inset-0 flex items-center justify-center opacity-20">
+                <svg viewBox="0 0 300 300" class="w-[320px] h-[320px] text-holding-gold" aria-hidden="true">
+                    <g fill="currentColor">
+                        <polygon points="150,12 139,54 161,54"></polygon>
+                        <polygon points="150,288 139,246 161,246"></polygon>
+                        <polygon points="12,150 54,139 54,161"></polygon>
+                        <polygon points="288,150 246,139 246,161"></polygon>
+                        <polygon points="54,54 82,88 98,72"></polygon>
+                        <polygon points="246,246 202,228 218,212"></polygon>
+                        <polygon points="246,54 212,82 228,98"></polygon>
+                        <polygon points="54,246 88,212 72,198"></polygon>
+                        <polygon points="150,28 143,66 157,66"></polygon>
+                        <polygon points="150,272 143,234 157,234"></polygon>
+                        <polygon points="28,150 66,143 66,157"></polygon>
+                        <polygon points="272,150 234,143 234,157"></polygon>
+                        <polygon points="84,44 104,78 120,66"></polygon>
+                        <polygon points="216,256 196,222 180,234"></polygon>
+                        <polygon points="256,84 222,104 234,120"></polygon>
+                        <polygon points="44,216 78,196 66,180"></polygon>
+                        <circle cx="150" cy="150" r="62"></circle>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="relative z-10 inline-flex items-center justify-center w-12 h-12 rounded-full border border-holding-gold/40 bg-holding-gold/10 text-holding-gold mb-4">
                 <i data-lucide="heart" class="w-5 h-5"></i>
             </div>
-            <p id="admin-welcome-popup-message" class="text-sm md:text-base text-holding-gold tracking-wide leading-relaxed mb-6"></p>
-            <button id="admin-welcome-popup-enter-btn" type="button" class="inline-flex items-center gap-2 bg-holding-gold text-black font-semibold uppercase tracking-widest text-[11px] px-5 py-2.5 hover:bg-white transition-all duration-300">
+            <p id="admin-welcome-popup-message" class="relative z-10 text-sm md:text-base text-holding-gold tracking-wide leading-relaxed mb-6"></p>
+            <button id="admin-welcome-popup-enter-btn" type="button" class="relative z-10 inline-flex items-center gap-2 bg-holding-gold text-black font-semibold uppercase tracking-widest text-[11px] px-5 py-2.5 hover:bg-white transition-all duration-300">
                 <i data-lucide="heart" class="w-4 h-4"></i>
                 Heart Icon
             </button>
