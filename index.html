@@ -1205,28 +1205,6 @@
                 };
             });
 
-            if (Object.keys(normalized).length === 0) {
-                Object.keys(DEFAULT_ROSTER).forEach((username) => {
-                    const current = DEFAULT_ROSTER[username];
-                    normalized[username] = {
-                        pass: current.pass,
-                        isSuper: current.isSuper === true,
-                        firstLogin: current.firstLogin === true
-                    };
-                });
-            } else {
-                Object.keys(DEFAULT_ROSTER).forEach((username) => {
-                    if (normalized[username]) return;
-
-                    const current = DEFAULT_ROSTER[username];
-                    normalized[username] = {
-                        pass: current.pass,
-                        isSuper: current.isSuper === true,
-                        firstLogin: current.firstLogin === true
-                    };
-                });
-            }
-
             return normalized;
         }
 
