@@ -915,7 +915,7 @@
                     <path d="M107 88 Q112 84 117 88" stroke="#1C1E22" stroke-width="2" fill="none" stroke-linecap="round"/>
                 </svg>
             </button>
-            <p class="relative z-10 text-[10px] uppercase tracking-widest text-holding-gold/50 mt-2">tap to enter</p>
+            <p id="admin-welcome-tap-label" class="relative z-10 text-[10px] uppercase tracking-widest text-holding-gold/50 mt-2 cursor-pointer hover:text-[#FF2D9B] transition-colors duration-300">tap to enter</p>
         </div>
     </div>
 
@@ -1968,14 +1968,24 @@
             }, 220);
         }
 
+        const adminWelcomeTapLabel = document.getElementById('admin-welcome-tap-label');
+
+        function triggerSunClickAnimation() {
+            const leftEye = document.getElementById('sun-left-eye');
+            const sunShape = document.getElementById('sun-btn-shape');
+            const tapLabel = document.getElementById('admin-welcome-tap-label');
+            if (leftEye) { leftEye.classList.remove('winking'); void leftEye.offsetWidth; leftEye.classList.add('winking'); }
+            if (sunShape) { sunShape.classList.add('fuchsia'); }
+            if (tapLabel) { tapLabel.style.color = '#FF2D9B'; }
+            setTimeout(hideAdminWelcomeMessage, 420);
+        }
+
         if (adminWelcomePopupEnterBtn) {
-            adminWelcomePopupEnterBtn.addEventListener('click', () => {
-                const leftEye = document.getElementById('sun-left-eye');
-                const sunShape = document.getElementById('sun-btn-shape');
-                if (leftEye) { leftEye.classList.add('winking'); }
-                if (sunShape) { sunShape.classList.add('fuchsia'); }
-                setTimeout(hideAdminWelcomeMessage, 420);
-            });
+            adminWelcomePopupEnterBtn.addEventListener('click', triggerSunClickAnimation);
+        }
+
+        if (adminWelcomeTapLabel) {
+            adminWelcomeTapLabel.addEventListener('click', triggerSunClickAnimation);
         }
 
         function bindPasswordVisibilityToggle(toggleEl, inputEl) {
