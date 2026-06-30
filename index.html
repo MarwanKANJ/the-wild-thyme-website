@@ -962,7 +962,48 @@
             return localStorage.getItem(PREVIEW_ACCESS_KEY) === 'true';
         }
 
-        function handleGateLogin(event) {
+        async function getFreshAdminDbForAuth() {
+            let db = getAdminCredentialsDb();
+
+            if (!window.WTContentSync) {
+                return db;
+            }
+
+            try {
+                const syncedDb = await WTContentSync.hydrateObject({
+                    bucket: ADMIN_CREDENTIALS_BUCKET_KEY,
+                    storageKey: ADMIN_CREDENTIALS_STORAGE_KEY,
+                    seedValue: db,
+                    normalizeValue: normalizeAdminCredentialsDb
+                });
+                setAdminCredentialsDb(syncedDb, false);
+                db = getAdminCredentialsDb();
+            } catch (_error) {
+                // Keep local cache fallback for reliability when sync is unavailable.
+            }
+
+            return db;
+        }
+
+        function findAdminUserByUsername(db, usernameInput) {
+            const requested = String(usernameInput || '').trim();
+            if (!requested) {
+                return { matchedUsername: '', matchedUser: null };
+            }
+
+            if (db[requested]) {
+                return { matchedUsername: requested, matchedUser: db[requested] };
+            }
+
+            const fallbackKey = Object.keys(db).find((key) => key.toLowerCase() === requested.toLowerCase());
+            if (!fallbackKey) {
+                return { matchedUsername: requested, matchedUser: null };
+            }
+
+            return { matchedUsername: fallbackKey, matchedUser: db[fallbackKey] };
+        }
+
+        async function handleGateLogin(event) {
             event.preventDefault();
             const usernameInput = document.getElementById('gate-username');
             const passwordInput = document.getElementById('gate-password');
@@ -972,17 +1013,17 @@
             const username = usernameInput.value.trim();
             const password = passwordInput.value;
 
-            const db = getAdminCredentialsDb();
-            const user = db[username];
+            const db = await getFreshAdminDbForAuth();
+            const { matchedUsername, matchedUser } = findAdminUserByUsername(db, username);
 
-            if (user && user.pass === password) {
+            if (matchedUser && matchedUser.pass === password) {
                 localStorage.setItem(PREVIEW_ACCESS_KEY, 'true');
                 errorDiv.classList.remove('show');
                 gateOverlay.classList.add('hidden');
                 document.body.style.overflow = 'auto';
 
-                if (!user.isSuper && user.firstLogin) {
-                    activelyConnectedUser = username;
+                if (!matchedUser.isSuper && matchedUser.firstLogin) {
+                    activelyConnectedUser = matchedUsername;
                     authForm.classList.add('hidden');
                     resetWorkflow.classList.remove('hidden');
                     openSecurePortalModal();
@@ -991,8 +1032,8 @@
                 }
 
                 localStorage.setItem('wt_holding_admin_connected', 'true');
-                localStorage.setItem('wt_holding_admin_user', username);
-                localStorage.setItem('wt_holding_admin_is_super', user.isSuper ? 'true' : 'false');
+                localStorage.setItem('wt_holding_admin_user', matchedUsername);
+                localStorage.setItem('wt_holding_admin_is_super', matchedUser.isSuper ? 'true' : 'false');
                 location.reload();
             } else {
                 errorDiv.textContent = 'Invalid username or password';
@@ -2044,17 +2085,17 @@
             setTimeout(() => modalOverlay.classList.add('hidden'), 300);
         }
 
-        function executePortalAuth(event) {
+        async function executePortalAuth(event) {
             event.preventDefault();
             const userVal = document.getElementById('auth-username').value.trim();
             const passVal = document.getElementById('auth-password').value;
 
-            const db = getAdminCredentialsDb();
-            const matchedUser = db[userVal];
+            const db = await getFreshAdminDbForAuth();
+            const { matchedUsername, matchedUser } = findAdminUserByUsername(db, userVal);
 
             if (matchedUser && matchedUser.pass === passVal) {
                 errorBanner.classList.add('hidden');
-                activelyConnectedUser = userVal;
+                activelyConnectedUser = matchedUsername;
 
                 // Forced password reset prompts triggering on first match lifecycle
                 if (!matchedUser.isSuper && matchedUser.firstLogin) {
