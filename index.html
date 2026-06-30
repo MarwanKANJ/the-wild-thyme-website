@@ -897,9 +897,16 @@
                 }
                 #sun-btn-shape.fuchsia { animation: sun-to-fuchsia 0.3s ease forwards; }
                 #admin-welcome-popup-enter-btn.sun-clicked { animation: sun-grow 0.35s ease forwards; transform-origin: center; }
+                /* Mobile-friendly active states (works on touch) */
+                #admin-welcome-popup-enter-btn:active { transform: scale(1.1); }
+                #admin-welcome-tap-label:active { color: #FF2D9B !important; }
+                @media (max-width: 640px) {
+                    #admin-welcome-popup-enter-btn svg { width: 7rem; height: 7rem; }
+                    #admin-welcome-tap-label { font-size: 13px; padding: 10px 20px; letter-spacing: 0.18em; }
+                }
             </style>
-            <button id="admin-welcome-popup-enter-btn" type="button" aria-label="Enter site" class="relative z-10 inline-flex items-center justify-center hover:scale-110 transition-transform duration-300 focus:outline-none">
-                <svg id="sun-btn-svg" viewBox="0 0 200 200" class="w-20 h-20 drop-shadow-lg" xmlns="http://www.w3.org/2000/svg">
+            <button id="admin-welcome-popup-enter-btn" type="button" aria-label="Enter site" class="relative z-10 inline-flex items-center justify-center hover:scale-110 transition-transform duration-300 focus:outline-none touch-manipulation">
+                <svg id="sun-btn-svg" viewBox="0 0 200 200" class="w-20 h-20 sm:w-20 sm:h-20 md:w-24 md:h-24 drop-shadow-lg" xmlns="http://www.w3.org/2000/svg">
                     <g id="sun-btn-shape" fill="#C5A880">
                         <polygon points="100,4 94,36 106,36"/>
                         <polygon points="100,196 94,164 106,164"/>
@@ -927,7 +934,7 @@
                     <path d="M107 88 Q112 84 117 88" stroke="#1C1E22" stroke-width="2" fill="none" stroke-linecap="round"/>
                 </svg>
             </button>
-            <p id="admin-welcome-tap-label" class="relative z-10 text-[10px] uppercase tracking-widest text-holding-gold/50 mt-2 cursor-pointer hover:text-[#FF2D9B] transition-colors duration-300">tap to enter</p>
+            <p id="admin-welcome-tap-label" class="relative z-10 text-[10px] sm:text-[11px] uppercase tracking-widest text-holding-gold/50 mt-3 cursor-pointer hover:text-[#FF2D9B] transition-colors duration-300 touch-manipulation select-none py-2 px-4">tap to enter</p>
         </div>
     </div>
 
