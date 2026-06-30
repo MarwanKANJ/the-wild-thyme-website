@@ -872,9 +872,23 @@
             <p id="admin-welcome-popup-message" class="relative z-10 text-sm md:text-base text-holding-gold tracking-wide leading-relaxed mb-6 mt-2"></p>
 
             <!-- Sun as the clickable dismiss button -->
+            <style>
+                @keyframes wink {
+                    0%   { transform: scaleY(1); }
+                    30%  { transform: scaleY(0.08); }
+                    60%  { transform: scaleY(1); }
+                    100% { transform: scaleY(1); }
+                }
+                #sun-left-eye.winking { animation: wink 0.35s ease forwards; transform-origin: center; transform-box: fill-box; }
+                @keyframes sun-to-fuchsia {
+                    0%   { fill: #C5A880; }
+                    100% { fill: #FF2D9B; }
+                }
+                #sun-btn-shape.fuchsia { animation: sun-to-fuchsia 0.3s ease forwards; }
+            </style>
             <button id="admin-welcome-popup-enter-btn" type="button" aria-label="Enter site" class="relative z-10 inline-flex items-center justify-center hover:scale-110 transition-transform duration-300 focus:outline-none">
-                <svg viewBox="0 0 200 200" class="w-20 h-20 drop-shadow-lg" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="#C5A880">
+                <svg id="sun-btn-svg" viewBox="0 0 200 200" class="w-20 h-20 drop-shadow-lg" xmlns="http://www.w3.org/2000/svg">
+                    <g id="sun-btn-shape" fill="#C5A880">
                         <polygon points="100,4 94,36 106,36"/>
                         <polygon points="100,196 94,164 106,164"/>
                         <polygon points="4,100 36,94 36,106"/>
@@ -891,10 +905,10 @@
                         <polygon points="10,136 38,140 42,128 14,132"/>
                         <polygon points="190,64 162,60 158,72 186,68"/>
                         <polygon points="190,136 186,132 158,128 162,140"/>
+                        <circle cx="100" cy="100" r="44"/>
                     </g>
-                    <circle cx="100" cy="100" r="44" fill="#C5A880"/>
-                    <ellipse cx="88" cy="94" rx="4" ry="5" fill="#1C1E22"/>
-                    <ellipse cx="112" cy="94" rx="4" ry="5" fill="#1C1E22"/>
+                    <ellipse id="sun-left-eye" cx="88" cy="94" rx="4" ry="5" fill="#1C1E22"/>
+                    <ellipse id="sun-right-eye" cx="112" cy="94" rx="4" ry="5" fill="#1C1E22"/>
                     <ellipse cx="100" cy="104" rx="2.5" ry="2" fill="#1C1E22"/>
                     <path d="M87 113 Q100 122 113 113" stroke="#1C1E22" stroke-width="2.5" fill="none" stroke-linecap="round"/>
                     <path d="M83 88 Q88 84 93 88" stroke="#1C1E22" stroke-width="2" fill="none" stroke-linecap="round"/>
@@ -1955,7 +1969,13 @@
         }
 
         if (adminWelcomePopupEnterBtn) {
-            adminWelcomePopupEnterBtn.addEventListener('click', hideAdminWelcomeMessage);
+            adminWelcomePopupEnterBtn.addEventListener('click', () => {
+                const leftEye = document.getElementById('sun-left-eye');
+                const sunShape = document.getElementById('sun-btn-shape');
+                if (leftEye) { leftEye.classList.add('winking'); }
+                if (sunShape) { sunShape.classList.add('fuchsia'); }
+                setTimeout(hideAdminWelcomeMessage, 420);
+            });
         }
 
         function bindPasswordVisibilityToggle(toggleEl, inputEl) {
