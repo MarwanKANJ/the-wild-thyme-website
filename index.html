@@ -1936,7 +1936,7 @@
             if (sessionStorage.getItem(ADMIN_WELCOME_DISMISSED_KEY) === 'true') return;
 
             const displayName = typeof username === 'string' && username.trim() ? username.trim() : 'Admin';
-            adminWelcomePopupMessage.textContent = `Hello ${displayName}, You look Sunny today, and Marwan Wishes you a beautiful Day`;
+            adminWelcomePopupMessage.textContent = `Hello ${displayName}, You Look Sunny Today… Keep Walking ${displayName} Walker`;
             adminWelcomePopup.classList.remove('hidden');
             requestAnimationFrame(() => {
                 adminWelcomePopup.classList.add('opacity-100');
