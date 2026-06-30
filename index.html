@@ -526,6 +526,8 @@
                     </button>
                 </div>
 
+                <div id="admin-welcome-message" class="hidden mb-8 border border-holding-gold/30 bg-holding-gold/10 text-holding-gold px-4 py-3 text-sm tracking-wide"></div>
+
                 <div id="super-admin-management-panel" class="hidden bg-holding-charcoal p-6 border border-holding-gold/20 mb-8 transition-all duration-300">
                     <div class="flex items-center gap-2 mb-4 text-holding-gold">
                         <i data-lucide="shield-alert" class="w-4 h-4"></i>
@@ -1842,11 +1844,26 @@
         const errorBanner = document.getElementById('auth-error-banner');
         const dashboardSection = document.getElementById('restricted-dashboard');
         const superAdminPanel = document.getElementById('super-admin-management-panel');
+        const adminWelcomeMessage = document.getElementById('admin-welcome-message');
         const resetWorkflow = document.getElementById('password-reset-workflow-container');
         const authPasswordInput = document.getElementById('auth-password');
         const authShowPasswordToggle = document.getElementById('auth-show-password-toggle');
         const newPersonalPasswordInput = document.getElementById('new-personal-password');
         const resetShowPasswordToggle = document.getElementById('reset-show-password-toggle');
+
+        function updateAdminWelcomeMessage(username) {
+            if (!adminWelcomeMessage) return;
+
+            const displayName = typeof username === 'string' && username.trim() ? username.trim() : 'Admin';
+            adminWelcomeMessage.textContent = `Hello ${displayName}, You look Sunny today, and Marwan Wishes you a beautiful Day`;
+            adminWelcomeMessage.classList.remove('hidden');
+        }
+
+        function hideAdminWelcomeMessage() {
+            if (!adminWelcomeMessage) return;
+            adminWelcomeMessage.textContent = '';
+            adminWelcomeMessage.classList.add('hidden');
+        }
 
         function bindPasswordVisibilityToggle(toggleEl, inputEl) {
             if (!toggleEl || !inputEl) return;
@@ -1925,6 +1942,8 @@
                 superAdminPanel.classList.add('hidden');
             }
 
+            updateAdminWelcomeMessage(activelyConnectedUser);
+
             dashboardSection.scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -1954,6 +1973,7 @@
             setFooterTickerAdminVisibility(false);
             setAuthButtonsVisibility(false);
             setBrandNavigationAccess();
+            hideAdminWelcomeMessage();
             document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -1974,6 +1994,8 @@
             } else {
                 superAdminPanel.classList.add('hidden');
             }
+
+            updateAdminWelcomeMessage(activelyConnectedUser);
         }
 
         // ==========================================
