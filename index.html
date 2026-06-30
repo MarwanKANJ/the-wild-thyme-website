@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Wild Thyme Group — Hospitality & Culinary Holding Group</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/tailwind.cdn.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -441,7 +441,16 @@
         </div>
 
         <div id="mobile-menu" class="hidden md:hidden bg-holding-charcoal/95 backdrop-blur-xl border-b border-white/5 px-8 py-8 space-y-6 flex flex-col text-sm uppercase tracking-widest font-medium text-slate-400">
-            <a href="#portals">Brands</a>
+            <div class="space-y-3">
+                <button id="mobile-brands-toggle" type="button" class="w-full inline-flex items-center justify-between text-left text-slate-400 hover:text-holding-fireball focus:text-holding-fireball focus:outline-none transition-colors duration-300" aria-expanded="false" aria-controls="mobile-brands-dropdown">
+                    <span>Our Brands</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"></i>
+                </button>
+                <div id="mobile-brands-dropdown" class="hidden pl-4 border-l border-white/10 space-y-3 text-xs tracking-[0.2em]">
+                    <a href="wild-thyme-restaurant.html" class="block text-slate-400 hover:text-holding-fireball transition-colors duration-300">Wild Thyme Restaurant</a>
+                    <a href="clementine-catering.html" class="block text-slate-400 hover:text-holding-fireball transition-colors duration-300">Clementine Catering</a>
+                </div>
+            </div>
             <a href="about-the-group.html">About the Group</a>
             <a href="corporate-news.html">Corporate News</a>
             <a href="media-coverage-archive.html">In the Media</a>
@@ -1807,11 +1816,46 @@
             });
         }
 
+        const mobileBrandsToggle = document.getElementById('mobile-brands-toggle');
+        const mobileBrandsDropdown = document.getElementById('mobile-brands-dropdown');
+
+        if (mobileBrandsToggle && mobileBrandsDropdown) {
+            mobileBrandsToggle.addEventListener('click', () => {
+                const isOpen = !mobileBrandsDropdown.classList.contains('hidden');
+                mobileBrandsDropdown.classList.toggle('hidden', isOpen);
+                mobileBrandsToggle.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+
+                const chevronIcon = mobileBrandsToggle.querySelector('i[data-lucide="chevron-down"]');
+                if (chevronIcon) {
+                    chevronIcon.classList.toggle('rotate-180', !isOpen);
+                }
+            });
+        }
+
         menuToggleBtn.addEventListener('click', () => {
             mobileNavMenu.classList.toggle('hidden');
             const inlineIconNode = menuToggleBtn.querySelector('i');
             inlineIconNode.setAttribute('data-lucide', mobileNavMenu.classList.contains('hidden') ? 'menu' : 'x');
             lucide.createIcons();
+        });
+
+        mobileNavMenu.querySelectorAll('a').forEach((anchorLink) => {
+            anchorLink.addEventListener('click', () => {
+                mobileNavMenu.classList.add('hidden');
+                if (mobileBrandsDropdown) {
+                    mobileBrandsDropdown.classList.add('hidden');
+                }
+                if (mobileBrandsToggle) {
+                    mobileBrandsToggle.setAttribute('aria-expanded', 'false');
+                    const chevronIcon = mobileBrandsToggle.querySelector('i[data-lucide="chevron-down"]');
+                    if (chevronIcon) {
+                        chevronIcon.classList.remove('rotate-180');
+                    }
+                }
+                const iconNode = menuToggleBtn.querySelector('i');
+                iconNode.setAttribute('data-lucide', 'menu');
+                lucide.createIcons();
+            });
         });
 
         // MULTI ACCOUNT SYSTEM SECURITY AUTHENTICATION PROCESSOR
