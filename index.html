@@ -526,8 +526,6 @@
                     </button>
                 </div>
 
-                <div id="admin-welcome-message" class="hidden mb-8 border border-holding-gold/30 bg-holding-gold/10 text-holding-gold px-4 py-3 text-sm tracking-wide"></div>
-
                 <div id="super-admin-management-panel" class="hidden bg-holding-charcoal p-6 border border-holding-gold/20 mb-8 transition-all duration-300">
                     <div class="flex items-center gap-2 mb-4 text-holding-gold">
                         <i data-lucide="shield-alert" class="w-4 h-4"></i>
@@ -825,6 +823,19 @@
                     Commit Changes
                 </button>
             </div>
+        </div>
+    </div>
+
+    <div id="admin-welcome-popup" class="hidden fixed inset-0 z-[110] backdrop-blur-md bg-black/75 flex items-center justify-center opacity-0 transition-all duration-300 px-4">
+        <div class="bg-holding-charcoal w-full max-w-md border border-holding-gold/30 p-8 text-center">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full border border-holding-gold/40 bg-holding-gold/10 text-holding-gold mb-4">
+                <i data-lucide="heart" class="w-5 h-5"></i>
+            </div>
+            <p id="admin-welcome-popup-message" class="text-sm md:text-base text-holding-gold tracking-wide leading-relaxed mb-6"></p>
+            <button id="admin-welcome-popup-enter-btn" type="button" class="inline-flex items-center gap-2 bg-holding-gold text-black font-semibold uppercase tracking-widest text-[11px] px-5 py-2.5 hover:bg-white transition-all duration-300">
+                <i data-lucide="heart" class="w-4 h-4"></i>
+                Heart Icon
+            </button>
         </div>
     </div>
 
@@ -1844,25 +1855,41 @@
         const errorBanner = document.getElementById('auth-error-banner');
         const dashboardSection = document.getElementById('restricted-dashboard');
         const superAdminPanel = document.getElementById('super-admin-management-panel');
-        const adminWelcomeMessage = document.getElementById('admin-welcome-message');
+        const adminWelcomePopup = document.getElementById('admin-welcome-popup');
+        const adminWelcomePopupMessage = document.getElementById('admin-welcome-popup-message');
+        const adminWelcomePopupEnterBtn = document.getElementById('admin-welcome-popup-enter-btn');
         const resetWorkflow = document.getElementById('password-reset-workflow-container');
         const authPasswordInput = document.getElementById('auth-password');
         const authShowPasswordToggle = document.getElementById('auth-show-password-toggle');
         const newPersonalPasswordInput = document.getElementById('new-personal-password');
         const resetShowPasswordToggle = document.getElementById('reset-show-password-toggle');
+        const ADMIN_WELCOME_DISMISSED_KEY = 'wt_admin_welcome_popup_dismissed';
 
         function updateAdminWelcomeMessage(username) {
-            if (!adminWelcomeMessage) return;
+            if (!adminWelcomePopup || !adminWelcomePopupMessage) return;
+            if (sessionStorage.getItem(ADMIN_WELCOME_DISMISSED_KEY) === 'true') return;
 
             const displayName = typeof username === 'string' && username.trim() ? username.trim() : 'Admin';
-            adminWelcomeMessage.textContent = `Hello ${displayName}, You look Sunny today, and Marwan Wishes you a beautiful Day`;
-            adminWelcomeMessage.classList.remove('hidden');
+            adminWelcomePopupMessage.textContent = `Hello ${displayName}, You look Sunny today, and Marwan Wishes you a beautiful Day`;
+            adminWelcomePopup.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                adminWelcomePopup.classList.add('opacity-100');
+            });
         }
 
         function hideAdminWelcomeMessage() {
-            if (!adminWelcomeMessage) return;
-            adminWelcomeMessage.textContent = '';
-            adminWelcomeMessage.classList.add('hidden');
+            if (!adminWelcomePopup || !adminWelcomePopupMessage) return;
+
+            sessionStorage.setItem(ADMIN_WELCOME_DISMISSED_KEY, 'true');
+            adminWelcomePopup.classList.remove('opacity-100');
+            setTimeout(() => {
+                adminWelcomePopup.classList.add('hidden');
+                adminWelcomePopupMessage.textContent = '';
+            }, 220);
+        }
+
+        if (adminWelcomePopupEnterBtn) {
+            adminWelcomePopupEnterBtn.addEventListener('click', hideAdminWelcomeMessage);
         }
 
         function bindPasswordVisibilityToggle(toggleEl, inputEl) {
@@ -1918,6 +1945,7 @@
         function grantAccessSession(isSuperAdmin) {
             closeSecurePortalModal();
             localStorage.setItem('wt_holding_admin_connected', 'true');
+            sessionStorage.removeItem(ADMIN_WELCOME_DISMISSED_KEY);
             if (activelyConnectedUser) {
                 localStorage.setItem(ADMIN_SESSION_USER_KEY, activelyConnectedUser);
             }
@@ -1973,6 +2001,7 @@
             setFooterTickerAdminVisibility(false);
             setAuthButtonsVisibility(false);
             setBrandNavigationAccess();
+            sessionStorage.removeItem(ADMIN_WELCOME_DISMISSED_KEY);
             hideAdminWelcomeMessage();
             document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
         }
