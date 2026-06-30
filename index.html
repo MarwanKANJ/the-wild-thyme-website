@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Wild Thyme Group — Hospitality & Culinary Holding Group</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/tailwind.cdn.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -419,10 +419,10 @@
                     </button>
                     
                     <div id="brands-menu-dropdown" class="opacity-0 pointer-events-none scale-95 absolute top-full left-0 mt-4 min-w-[250px] bg-transparent border-0 backdrop-blur-none p-0 space-y-3 transition-all duration-200 ease-out z-50" role="menu" aria-label="Our Brands options">
-                        <button type="button" role="menuitem" data-href="wild-thyme-restaurant.html" class="block w-full text-left py-1 text-xs font-medium tracking-widest text-slate-400 hover:text-holding-fireball focus:text-holding-fireball focus:outline-none transition-colors duration-300 bg-transparent uppercase">
+                        <button type="button" role="menuitem" data-href="wild-thyme-restaurant.html" class="pointer-events-auto block w-full text-left py-1 text-xs font-medium tracking-widest text-slate-400 hover:text-holding-fireball focus:text-holding-fireball focus:outline-none transition-colors duration-300 bg-transparent uppercase">
                             Wild Thyme Restaurant
                         </button>
-                        <button type="button" role="menuitem" data-href="clementine-catering.html" class="block w-full text-left py-1 text-xs font-medium tracking-widest text-slate-400 hover:text-holding-fireball focus:text-holding-fireball focus:outline-none transition-colors duration-300 bg-transparent uppercase">
+                        <button type="button" role="menuitem" data-href="clementine-catering.html" class="pointer-events-auto block w-full text-left py-1 text-xs font-medium tracking-widest text-slate-400 hover:text-holding-fireball focus:text-holding-fireball focus:outline-none transition-colors duration-300 bg-transparent uppercase">
                             Clementine Catering
                         </button>
                     </div>
@@ -874,20 +874,12 @@
             const gateOverlay = document.getElementById('admin-access-gate');
             const gateForm = document.getElementById('gate-login-form');
 
-            if (!hasPreviewAccess()) {
-                // Show gate - block access to main content
-                if (gateOverlay) {
-                    gateOverlay.classList.remove('hidden');
-                }
-                // Prevent scrolling while gate is active
-                document.body.style.overflow = 'hidden';
-            } else {
-                // Hide gate - allow full access
-                if (gateOverlay) {
-                    gateOverlay.classList.add('hidden');
-                }
-                document.body.style.overflow = 'auto';
+            // Always allow public access to the site
+            // Hide gate and allow full content viewing
+            if (gateOverlay) {
+                gateOverlay.classList.add('hidden');
             }
+            document.body.style.overflow = 'auto';
         }
 
         // Show/hide password toggle for gate
@@ -1802,11 +1794,15 @@
             });
 
             brandsMenuDropdown.querySelectorAll('button[data-href]').forEach((item) => {
-                item.addEventListener('click', () => {
-                    if (isAdminConnected()) return;
+                item.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
                     const href = item.getAttribute('data-href');
+                    console.log('Dropdown item clicked:', item.textContent, 'href:', href);
                     if (!href) return;
-                    window.location.href = href;
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 100);
                 });
             });
         }
