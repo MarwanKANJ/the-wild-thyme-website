@@ -23,7 +23,7 @@ jobs:
           node-version: 20
 
       - name: Deploy to Netlify production via CLI
-        run: npx netlify-cli deploy --prod --dir=. --functions=netlify/functions --message "GitHub Actions production deploy #${{ github.run_number }}"
+        run: npx -y netlify-cli@latest deploy --prod --dir=. --functions=netlify/functions --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --message "GitHub Actions production deploy #${{ github.run_number }}"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
