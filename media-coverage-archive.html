@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>In The Media - The Wild Thyme Group</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="/content-sync.js?v=20260628"></script>
+  <script src="/content-sync.js?v=20260701"></script>
   <style>
     body { background: #05070d; color: #e5e7eb; }
     .accent { color: #f97316; }
@@ -286,26 +286,7 @@
     const ADMIN_SESSION_KEY = 'wt_holding_admin_connected';
     const MEDIA_STORAGE_KEY = 'wt_holding_media_items';
     const MEDIA_SCHEMA_KEY = 'wt_holding_media_schema_v2';
-    const DEFAULT_MEDIA_ITEMS = [
-      {
-        id: 'media-seed-1',
-        outlet: 'Vanguard Culinary Journal',
-        headline: 'The Fine Art of Modern Lebanese Catering Engineering',
-        url: 'https://example.com/culinary-journal',
-        imageUrl: '',
-        imageDataUrl: '',
-        socialUrl: ''
-      },
-      {
-        id: 'media-seed-2',
-        outlet: 'Hospitality Masterclass Review',
-        headline: 'How Clementine Systems Are Redefining Boutique Private Events',
-        url: 'https://example.com/hospitality-masterclass',
-        imageUrl: '',
-        imageDataUrl: '',
-        socialUrl: ''
-      }
-    ];
+    const DEFAULT_MEDIA_ITEMS = [];
 
     const addMediaBtn = document.getElementById('add-media-btn');
     const mediaAdminPanel = document.getElementById('media-admin-panel');

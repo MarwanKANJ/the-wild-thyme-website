@@ -195,7 +195,8 @@
     } = options;
 
     const cached = readCache(storageKey, []);
-    const localItems = Array.isArray(cached) && cached.length > 0 ? normalizeList(cached, normalizeItem) : normalizeList(seedItems, normalizeItem);
+    const hasCachedItems = Array.isArray(cached) && cached.length > 0;
+    const localItems = hasCachedItems ? normalizeList(cached, normalizeItem) : normalizeList(seedItems, normalizeItem);
     writeCache(storageKey, localItems);
 
     await flushPendingChanges();
@@ -208,15 +209,24 @@
       const remoteItems = Array.isArray(data.items) ? data.items.map((item) => item.payload) : [];
 
       if (remoteItems.length > 0) {
+        // Server has data — it is authoritative. Update cache and return.
         const normalizedRemoteItems = normalizeList(remoteItems, normalizeItem);
         writeCache(storageKey, normalizedRemoteItems);
         return normalizedRemoteItems;
       }
 
-      if (localItems.length > 0) {
+      // Server responded successfully but is empty.
+      if (!hasCachedItems && localItems.length > 0) {
+        // First-ever visit with no cache: seed the server from hardcoded defaults.
         await saveList({ bucket, storageKey, items: localItems, normalizeItem });
+        return localItems;
       }
+
+      // Server is empty and user has stale cache — trust the server (admin cleared it).
+      writeCache(storageKey, []);
+      return [];
     } catch (_error) {
+      // Network/server error only — fall back to whatever we have locally.
       showFallbackStatus();
     }
 
