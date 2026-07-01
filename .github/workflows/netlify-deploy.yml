@@ -17,14 +17,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy to Netlify production
-        uses: nwtgck/actions-netlify@v3.0
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          publish-dir: .
-          functions-dir: netlify/functions
-          production-deploy: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "GitHub Actions production deploy #${{ github.run_number }}"
+          node-version: 20
+
+      - name: Deploy to Netlify production via CLI
+        run: npx netlify-cli deploy --prod --dir=. --functions=netlify/functions --message "GitHub Actions production deploy #${{ github.run_number }}"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
