@@ -7,6 +7,10 @@
   let syncBadge = null;
   let isFlushingPendingQueue = false;
 
+  function shouldDisplaySyncBadge() {
+    return localStorage.getItem('wt_holding_admin_connected') === 'true';
+  }
+
   function showFallbackStatus() {
     if (isLocalPreview) {
       setSyncStatus('checking', 'Sync: preview mode');
@@ -19,6 +23,14 @@
   function setSyncStatus(state, message) {
     syncState = state;
     syncMessage = message;
+
+    if (!shouldDisplaySyncBadge()) {
+      if (syncBadge) {
+        syncBadge.remove();
+        syncBadge = null;
+      }
+      return;
+    }
 
     if (!syncBadge && document.body) {
       syncBadge = document.createElement('div');
