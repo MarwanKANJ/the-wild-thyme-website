@@ -1349,17 +1349,10 @@
                 if (!cleanUsername) return;
 
                 const current = parsed[username] && typeof parsed[username] === 'object' ? parsed[username] : {};
-                const defaultUser = DEFAULT_ROSTER[cleanUsername];
                 const currentPass = typeof current.pass === 'string' ? current.pass : '';
-                let inferredFirstLogin = current.firstLogin === true;
-
-                if (defaultUser && defaultUser.firstLogin === false) {
-                    inferredFirstLogin = false;
-                }
-
-                if (defaultUser && defaultUser.isSuper !== true && currentPass && currentPass !== defaultUser.pass) {
-                    inferredFirstLogin = false;
-                }
+                const inferredFirstLogin = typeof current.firstLogin === 'boolean'
+                    ? current.firstLogin
+                    : false;
 
                 normalized[cleanUsername] = {
                     pass: currentPass,
