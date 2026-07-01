@@ -313,7 +313,8 @@
         const PREVIEW_ACCESS_KEY = 'wt_preview_access_granted';
 
         function hasPreviewAccess() {
-          return localStorage.getItem(PREVIEW_ACCESS_KEY) === 'true';
+                    return localStorage.getItem(PREVIEW_ACCESS_KEY) === 'true'
+                        || localStorage.getItem('wt_holding_admin_connected') === 'true';
         }
 
         function handleGateLogin(event) {

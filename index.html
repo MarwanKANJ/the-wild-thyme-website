@@ -2164,6 +2164,7 @@
             dashboardSection.classList.add('hidden');
             activelyConnectedUser = null;
             localStorage.setItem('wt_holding_admin_connected', 'false');
+            localStorage.removeItem(PREVIEW_ACCESS_KEY);
             localStorage.removeItem(ADMIN_SESSION_USER_KEY);
             localStorage.removeItem(ADMIN_SESSION_SUPER_KEY);
             setFooterTickerAdminVisibility(false);
