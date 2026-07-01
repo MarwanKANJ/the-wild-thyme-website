@@ -5,9 +5,9 @@ const corsHeaders = {
 };
 
 function getSupabaseConfig() {
-  const url = process.env.WT_CONTENT_DB_URL;
-  const serviceRoleKey = process.env.WT_CONTENT_DB_SERVICE_KEY;
-  const tableName = process.env.WT_CONTENT_TABLE_NAME || 'wt_content_entries';
+  const url = process.env.WT_CONTENT_DB_URL || process.env.SUPABASE_URL;
+  const serviceRoleKey = process.env.WT_CONTENT_DB_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const tableName = process.env.WT_CONTENT_TABLE_NAME || process.env.CONTENT_TABLE_NAME || 'wt_content_entries';
 
   if (!url || !serviceRoleKey) {
     return null;
@@ -61,75 +61,97 @@ async function supabaseRequest(config, path, init = {}) {
 }
 
 exports.handler = async (event) => {
-  if (event.httpMethod === 'OPTIONS') {
-    return {
-      statusCode: 200,
-      headers: corsHeaders,
-      body: ''
-    };
-  }
+  try {
+    if (event.httpMethod === 'OPTIONS') {
+      return {
+        statusCode: 200,
+        headers: corsHeaders,
+        body: ''
+      };
+    }
 
-  const config = getSupabaseConfig();
-  if (!config) {
-    return {
-      statusCode: 500,
-      headers: corsHeaders,
-      body: JSON.stringify({ error: 'Missing Supabase environment variables.' })
-    };
-  }
+    const config = getSupabaseConfig();
+    if (!config) {
+      return {
+        statusCode: 500,
+        headers: corsHeaders,
+        body: JSON.stringify({
+          ok: false,
+          error: 'Missing Supabase environment variables. Configure WT_CONTENT_DB_URL + WT_CONTENT_DB_SERVICE_KEY (or SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY).'
+        })
+      };
+    }
 
-  const queryParams = event.queryStringParameters || {};
-  const parsedBody = event.body ? JSON.parse(event.body) : {};
-  const bucket = queryParams.bucket || parsedBody.bucket;
+    const queryParams = event.queryStringParameters || {};
+    let parsedBody = {};
+    try {
+      parsedBody = event.body ? JSON.parse(event.body) : {};
+    } catch (_error) {
+      return {
+        statusCode: 400,
+        headers: corsHeaders,
+        body: JSON.stringify({ ok: false, error: 'Invalid JSON payload.' })
+      };
+    }
 
-  if (!bucket) {
-    return {
-      statusCode: 400,
-      headers: corsHeaders,
-      body: JSON.stringify({ error: 'Missing bucket.' })
-    };
-  }
+    const bucket = queryParams.bucket || parsedBody.bucket;
 
-  if (event.httpMethod === 'GET') {
-    const rows = await supabaseRequest(
-      config,
-      `${config.tableName}?select=entry_key,bucket,id,sort_order,payload&bucket=eq.${encodeURIComponent(bucket)}&order=sort_order.asc,id.asc`
-    );
+    if (!bucket) {
+      return {
+        statusCode: 400,
+        headers: corsHeaders,
+        body: JSON.stringify({ ok: false, error: 'Missing bucket.' })
+      };
+    }
 
-    return {
-      statusCode: 200,
-      headers: corsHeaders,
-      body: JSON.stringify({ items: Array.isArray(rows) ? rows : [] })
-    };
-  }
+    if (event.httpMethod === 'GET') {
+      const rows = await supabaseRequest(
+        config,
+        `${config.tableName}?select=entry_key,bucket,id,sort_order,payload&bucket=eq.${encodeURIComponent(bucket)}&order=sort_order.asc,id.asc`
+      );
 
-  if (event.httpMethod === 'PUT' || event.httpMethod === 'POST') {
-    const items = Array.isArray(parsedBody.items) ? parsedBody.items : [];
+      return {
+        statusCode: 200,
+        headers: corsHeaders,
+        body: JSON.stringify({ items: Array.isArray(rows) ? rows : [] })
+      };
+    }
 
-    await supabaseRequest(config, `${config.tableName}?bucket=eq.${encodeURIComponent(bucket)}`, {
-      method: 'DELETE'
-    });
+    if (event.httpMethod === 'PUT' || event.httpMethod === 'POST') {
+      const items = Array.isArray(parsedBody.items) ? parsedBody.items : [];
 
-    if (items.length > 0) {
-      await supabaseRequest(config, config.tableName, {
-        method: 'POST',
-        body: JSON.stringify(buildRows(bucket, items)),
-        headers: {
-          Prefer: 'resolution=merge-duplicates,return=minimal'
-        }
+      await supabaseRequest(config, `${config.tableName}?bucket=eq.${encodeURIComponent(bucket)}`, {
+        method: 'DELETE'
       });
+
+      if (items.length > 0) {
+        await supabaseRequest(config, config.tableName, {
+          method: 'POST',
+          body: JSON.stringify(buildRows(bucket, items)),
+          headers: {
+            Prefer: 'resolution=merge-duplicates,return=minimal'
+          }
+        });
+      }
+
+      return {
+        statusCode: 200,
+        headers: corsHeaders,
+        body: JSON.stringify({ ok: true, count: items.length })
+      };
     }
 
     return {
-      statusCode: 200,
+      statusCode: 405,
       headers: corsHeaders,
-      body: JSON.stringify({ ok: true, count: items.length })
+      body: JSON.stringify({ ok: false, error: 'Method not allowed.' })
+    };
+  } catch (error) {
+    console.error('[content-sync] request failed:', error && error.message ? error.message : error);
+    return {
+      statusCode: 500,
+      headers: corsHeaders,
+      body: JSON.stringify({ ok: false, error: 'Content sync service error.' })
     };
   }
-
-  return {
-    statusCode: 405,
-    headers: corsHeaders,
-    body: JSON.stringify({ error: 'Method not allowed.' })
-  };
 };
